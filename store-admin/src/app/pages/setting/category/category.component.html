@@ -1,0 +1,80 @@
+<div class="row">
+  <nz-page-header class="col-12"
+                  nzTitle="{{'settingModule.category' | translate}}">
+  </nz-page-header>
+  <div class="col-md-12">
+    <div class="row">
+      <thd-input class="col-md-10" [showLabel]="false" [isSearch]="true" [(ngModel)]="searchObject.keyword" placeHolder="{{'common.inputSearch'|translate}}"
+                 (keydown.enter)="submitSearch()" [addOnAfter]="suffixIconButton"></thd-input>
+      <ng-template #suffixIconButton>
+        <button (click)="submitSearch()" nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span>
+        </button>
+      </ng-template>
+      <div class="col-md-2 d-flex justify-content-center">
+        <button (click)="onCreateOrUpdate(null)" nz-button nzType="primary">
+          <span nz-icon nzType="plus"></span>{{'common.add'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+  <nz-table [(nzPageIndex)]="searchObject.pageIndex" [(nzPageSize)]="searchObject.pageSize"
+            nzFrontPagination="false"
+            [nzTotal]="totalElement" (nzQueryParams)="pageChange($event)"
+            nzBordered="true" class="col-12 mt-2" nzSize="small" #table
+            nzShowPagination nzShowSizeChanger [nzData]="categories">
+    <thead>
+    <tr>
+      <th>{{'common.code' |translate}}</th>
+      <th>{{'common.name' |translate}}</th>
+      <th>{{'common.description' |translate}}</th>
+      <th style="width: 100px">{{'common.status' |translate}}</th>
+      <th style="width: 100px">{{'common.action' |translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of table.data">
+      <td>{{ data.code }}</td>
+      <td>{{ data.name }}</td>
+      <td>{{ data.description }}</td>
+      <td class="text-center">
+        <span *ngIf="!data.voided" class="badge text-bg-success">{{'common.voidedFalse' | translate}}</span>
+        <span *ngIf="data.voided" class="badge text-bg-danger">{{'common.voidedTrue' | translate}}</span>
+      </td>
+      <td class="text-center" style="width: 100px">
+        <nz-button-group>
+          <button (click)="onCreateOrUpdate(data)"
+                  nz-tooltip="{{'common.edit'|translate}}" nz-button nzType="link">
+            <span  (click)="onCreateOrUpdate(data)" nz-icon nzType="edit"></span>
+          </button>
+          <button nzOkDanger nzIcon="delete" nz-tooltip="{{'common.delete'|translate}}" (nzOnConfirm)="delete(data.id)" nz-popconfirm
+                  nzPopconfirmTitle="{{'common.confirmDelete' |translate}}" nz-button nzType="link" nzDanger>
+            <span nz-icon nzType="delete"></span>
+          </button>
+        </nz-button-group>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>
+<nz-modal [(nzVisible)]="isVisible" [nzOkDisabled]="formGroup?.invalid" (nzOnOk)="onSubmit()"
+          (nzOnCancel)="isVisible=false" nzTitle="{{(entity?.id?'common.update':'common.create')|translate}}">
+  <ng-container *nzModalContent>
+    <div class="row" nz-form nzLayout="horizontal" [formGroup]="formGroup">
+      <thd-input class="col-md-12" label="{{'common.code'|translate}}" [hasFeedback]="true"
+                 formControlName="code"
+                 [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('code')">
+      </thd-input>
+      <thd-input class="col-md-12" label="{{'common.name'|translate}}" [hasFeedback]="true" formControlName="name"
+                 [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('name')">
+      </thd-input>
+      <thd-input class="col-md-12" label="{{'common.description'|translate}}" [hasFeedback]="true"
+                 formControlName="description"
+                 [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('description')">
+      </thd-input>
+      <thd-input class="col-md-12" label="{{'common.status'|translate}}" [hasFeedback]="true" formControlName="voided"
+                 [labelSpan]="6" [inputSpan]="18" bindValue="value" [isTranslation]="true" bindLabel="label"
+                 [items]="voidedList" type="select">
+      </thd-input>
+    </div>
+  </ng-container>
+</nz-modal>

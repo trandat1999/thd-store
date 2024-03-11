@@ -1,0 +1,34 @@
+<div class="w-100 h-100 d-flex align-items-center justify-content-center bg-body-secondary">
+  <div class="card">
+    <div class="card-header text-center">
+      <h4>{{'auth.register' | translate}}!</h4>
+    </div>
+    <div nz-form nzLayout="horizontal" [formGroup]="formGroup" class="card-body row">
+      <div class="">
+        <thd-input [labelSpan]="6" [inputSpan]="18" label="{{'auth.fullName' | translate}}"
+                   formControlName="fullName" [errorText]="getErrorMessage('fullName')"></thd-input>
+        <thd-input [labelSpan]="6" [inputSpan]="18" label="{{'auth.email' | translate}}"
+                   formControlName="email" [errorText]="getErrorMessage('email')"></thd-input>
+        <thd-input [labelSpan]="6" [inputSpan]="18" label="{{'auth.username' | translate}}"
+                   formControlName="username" [errorText]="getErrorMessage('username')"></thd-input>
+        <thd-input [labelSpan]="6" [inputSpan]="18" label="{{'auth.password' | translate}}"
+                   formControlName="password" [type]="passwordVisible?'text':'password'" [suffix]="suffixTemplate"
+                   [errorText]="getErrorMessage('password')"></thd-input>
+        <thd-input [labelSpan]="6" [inputSpan]="18" label="{{'auth.confirmPassword' | translate}}" [suffix]="suffixTemplate"
+                   formControlName="confirmPassword" [type]="passwordVisible?'text':'password'"
+                   [errorText]="getErrorMessage('confirmPassword')">
+        </thd-input>
+      </div>
+      <ng-template #suffixTemplate>
+      <span
+        nz-icon
+        [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+        (click)="passwordVisible = !passwordVisible"
+      ></span>
+      </ng-template>
+      <button nz-button type="submit" (click)="submitForm()" [nzType]="'primary'">{{'auth.register' | translate}}</button>
+      <p class="mt-2">{{'auth.ifExistAccount' | translate}}?<a class="mr-2" routerLink="/login"> {{'auth.login' | translate}}</a></p>
+    </div>
+  </div>
+</div>
+

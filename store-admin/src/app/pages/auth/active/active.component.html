@@ -1,0 +1,39 @@
+<div class="w-100 h-100 d-flex align-items-center justify-content-center bg-body-secondary">
+  <div class="card">
+    <div class="card-body">
+      {{activeResult?.message}}
+    </div>
+    <div class="card-footer gap-1">
+      <nz-space>
+        <a *nzSpaceItem nz-button nzType="primary" routerLink="/login">
+          <span nz-icon nzType="rollback"></span> {{'auth.backToLogin' | translate}}
+        </a>
+        <ng-container *ngIf="activeResult?.code==400">
+          <button (click)="generateToken()" *nzSpaceItem nz-button nzType="primary">
+            <span nz-icon nzType="sync"></span>{{'auth.generateToken' | translate}}
+          </button>
+        </ng-container>
+        <a *nzSpaceItem nz-button nzType="primary" routerLink="/register">
+          <span nz-icon nzType="rollback"></span>{{'auth.backToRegister' | translate}}
+        </a>
+      </nz-space>
+    </div>
+  </div>
+</div>
+<nz-modal [(nzVisible)]="isVisible"
+          (nzOnCancel)="isVisible=false"
+          [nzOkLoading] = "isLoading"
+          (nzOnOk)="handleOk()"
+          nzCancelText="{{'common.cancel' | translate}}"
+          nzOkText="{{'common.ok' | translate}}"
+          [nzOkDisabled] = "formGroup.invalid"
+          nzTitle="{{'auth.confirmUsername'|translate}}">
+  <ng-container *nzModalContent [formGroup]="formGroup">
+    <nz-form-item>
+      <nz-form-label  nzXl="24" nzLg="24" nzMd="24" [nzSm]="24" [nzXs]="24" nzRequired nzFor="username">{{'user.username'|translate}}</nz-form-label>
+      <nz-form-control [nzErrorTip]="getErrorMessage('username')" nzXl="24"  nzLg="24" nzMd="24" [nzSm]="24" [nzXs]="24">
+        <input nz-input formControlName="username" id="username" />
+      </nz-form-control>
+    </nz-form-item>
+  </ng-container>
+</nz-modal>

@@ -1,0 +1,182 @@
+{
+  "common": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "back": "Back",
+    "action": "Action",
+    "edit": "Edit",
+    "delete": "Delete",
+    "done": "Done",
+    "close": "Close",
+    "create": "Create",
+    "update": "Update",
+    "loading": "Loading",
+    "ok": "Ok",
+    "save": "Save",
+    "noEntriesFound": "No Entries Found",
+    "search": "Search",
+    "none": "None",
+    "success": "Success",
+    "notification": "Notification",
+    "confirmDelete": "Confirm delete?",
+    "deleteSuccess": "Delete Successfully",
+    "error": "Error",
+    "commonError": "An error occurred, please try again later",
+    "backToHome": "Back to Home",
+    "404Title": "Page Not Found",
+    "404Message": "This is not the web page you are looking for.",
+    "updateSuccess": "Update successfully",
+    "createdSuccess": "Created successfully",
+    "inputSearch": "Please enter text for search",
+    "noResultRecord": "No records",
+    "fieldRequired": "Field is required",
+    "fieldInvalid": "Field is invalid",
+    "choiceFile" : "Choose file",
+    "addFile": "Add file",
+    "name": "Name",
+    "code": "Code",
+    "description": "Description",
+    "province" : "Province",
+    "district": "District",
+    "commune": "Commune",
+    "address": "Address",
+    "phoneNumber": "Phone Number",
+    "uploadExcel": "Upload Excel",
+    "fileNotSelect": "File not selected",
+    "clearAll": "Clear All",
+    "quantity": "Quantity",
+    "total": "Total",
+    "add": "Add",
+    "voidedFalse": "Active",
+    "voidedTrue": "Voided",
+    "status": "Status",
+    "uploadFile": "Upload File"
+  },
+  "loginComponent": {
+    "username": "username",
+    "password": "password"
+  },
+  "categoryComponent": {
+    "title": "Category",
+    "name": "Name",
+    "inputName": "Please enter name for search",
+    "code": "Code",
+    "inputCode": "Please enter code for search",
+    "parent": "Parent",
+    "description": "Description",
+    "codeRequired": "Code is required",
+    "nameRequired": "Name is required"
+  },
+  "paginator": {
+    "itemsPerPageLabel": "items per page",
+    "nextPageLabel": "Next page",
+    "previousPageLabel": "Previous page",
+    "lastPageLabel": "Last page",
+    "firstPageLabel": "first page"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "category": "Category",
+    "profile": "Profile",
+    "settings": "Settings",
+    "manage": "Manage",
+    "users": "Users",
+    "roles": "Role",
+    "country": "Country",
+    "movie": "Movie",
+    "movieEpisode": "Movie Episode"
+  },
+  "user": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "email": "Email",
+    "required": "User is required",
+    "status": "Status",
+    "statusEnabled" : "Enabled",
+    "statusDisabled" : "Disabled"
+  },
+  "profile": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "edit": "Edit Profile",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "gender": "Gender",
+    "birthDate": "Birth Date",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "idNumber": "Id Number",
+    "idNumberIssueDate": "Id Issue Date"
+  },
+  "gender": {
+    "male": "Male",
+    "female": "Female",
+    "unknown": "Unknown"
+  },
+  "validation": {
+    "required": "Field is required",
+    "invalid": "Field is invalid",
+    "password_not_match": "Confirm password must be match password",
+    "email" : "Email must be a valid email address"
+  },
+  "person": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email" : "Email"
+  },
+  "role": {
+    "name": "Roles"
+  },
+  "auth": {
+    "backToLogin": "Back to login",
+    "generateToken": "Generate token",
+    "backToRegister": "Back to register",
+    "confirmUsername": "Confirm username",
+    "fillUsernameAndEmail": "Please fill in your username and email to reset a new password",
+    "forgotPassword": "Forgot password",
+    "username": "Username",
+    "password": "Password",
+    "email": "Email",
+    "fullName": "Full name",
+    "login": "Login",
+    "ifExistAccount" : "If already account",
+    "confirmPassword": "Confirm password",
+    "register" : "Register"
+  },
+  "settingModule": {
+    "category": "Category",
+    "country": "Country",
+    "movie": "Movie",
+    "movieEpisode": "Movie episode"
+  },
+  "movie":{
+    "publishYear": "Publish Year",
+    "category": "Category",
+    "otherName": "Other name",
+    "image": "Image",
+    "episode": "Episode",
+    "part": "Part",
+    "link": "Link",
+    "orderNumber": "Number Order",
+    "embeddedLink": "Embedded Link",
+    "file": "File",
+    "previousEpisode": "Episode previous"
+  },
+  "layout": {
+    "english": "English",
+    "vietnamese": "Vietnamese",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "breadcrumb": {
+    "none": "",
+    "home": "Home",
+    "category": "Category",
+    "country": "Country",
+    "movieEpisode": "Movie Episode",
+    "movie": "Movie"
+  }
+}
