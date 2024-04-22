@@ -28,3 +28,9 @@ nz-form-label{
 a{
   text-decoration: auto;
 }
+.ant-form-item-label{
+  padding: 0 !important;
+}
+span:has(i) {
+  vertical-align:0 !important;
+}

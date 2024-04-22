@@ -5,3 +5,11 @@ export interface BaseResponse{
   status?: string;
   code?: number;
 }
+export interface BaseObject {
+  name?:string;
+  code?:string;
+  description?:string;
+  shortDescription?:string;
+  id?:number;
+  voided?:boolean;
+}

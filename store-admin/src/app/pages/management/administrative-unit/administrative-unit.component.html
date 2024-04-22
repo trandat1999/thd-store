@@ -1,0 +1,150 @@
+<div class="row">
+  <nz-page-header class="col-12"
+                  nzTitle="{{'management.administrativeUnit' | translate}}">
+  </nz-page-header>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-3 mt-2 ">
+        <nz-upload class="col-md-2 mt-2 me-2"
+                   [nzAction]="serverUrl+'/api/v1/administrative-units/import-excel'"
+                   nzName="file"
+                   nzListType="text"
+                   [nzLimit]="1"
+                   [nzShowUploadList]="false"
+                   (nzChange)="handleChangeFileUpload($event)">
+          <button nz-button nzType="primary" [disabled]="uploading">
+            <span nz-icon [nzType]="uploading ? 'loading' : 'upload'"></span>{{ 'common.importExcel'|translate }}
+          </button>
+        </nz-upload>
+        <button (click)="onCreateOrUpdate(null)" nz-button nzType="primary">
+          <span nz-icon nzType="plus"></span>{{ 'common.add'|translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive-md">
+    <nz-table class="col-12 mt-2" nzTableLayout="fixed"
+              nzFrontPagination="false" nzOuterBordered="true"
+              nzBordered="true" nzSize="small" #table
+              [nzShowPagination]="false" nzShowSizeChanger [nzData]="entities">
+      <thead>
+      <tr>
+        <th style="width: 100px" nzLeft>{{ 'common.action' |translate }}</th>
+        <th>{{ 'common.code' |translate }}</th>
+        <th>{{ 'common.name' |translate }}</th>
+        <th>{{ 'category.level' |translate }}</th>
+        <th style="width: 100px">{{ 'common.status' |translate }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let province of table.data">
+        <tr>
+          <td class="text-center" style="width: 100px" nzLeft>
+            <nz-button-group>
+              <button (click)="onCreateOrUpdate(province)"
+                      nz-tooltip="{{'common.edit'|translate}}" nz-button nzType="link">
+                <span (click)="onCreateOrUpdate(province)" nz-icon nzType="edit"></span>
+              </button>
+              <button nzOkDanger nzIcon="delete" nz-tooltip="{{'common.delete'|translate}}"
+                      (nzOnConfirm)="delete(province.id)" nz-popconfirm
+                      nzPopconfirmTitle="{{'common.confirmDelete' |translate}}" nz-button nzType="link" nzDanger>
+                <span nz-icon nzType="delete"></span>
+              </button>
+            </nz-button-group>
+          </td>
+          <td [nzShowExpand]="province.level==1 || province.level==2"
+              [(nzExpand)]="province.expand"
+              (nzExpandChange)="toggleRow(province,$event)"
+          >{{ province.code }}</td>
+          <td>{{ province.name }}</td>
+          <td>{{ province.level }}</td>
+          <td class="text-center">
+            <span *ngIf="!province.voided" class="badge text-bg-success">{{ 'common.voidedFalse' | translate }}</span>
+            <span *ngIf="province.voided" class="badge text-bg-danger">{{ 'common.voidedTrue' | translate }}</span>
+          </td>
+        </tr>
+        <ng-container *ngIf="province.expand && province.children?.length>0">
+          <ng-container *ngFor="let district of province.children">
+            <tr>
+              <td class="text-center" style="width: 100px" nzLeft>
+                <nz-button-group>
+                  <button (click)="onCreateOrUpdate(district)"
+                          nz-tooltip="{{'common.edit'|translate}}" nz-button nzType="link">
+                    <span (click)="onCreateOrUpdate(district)" nz-icon nzType="edit"></span>
+                  </button>
+                  <button nzOkDanger nzIcon="delete" nz-tooltip="{{'common.delete'|translate}}"
+                          (nzOnConfirm)="delete(district.id)" nz-popconfirm
+                          nzPopconfirmTitle="{{'common.confirmDelete' |translate}}" nz-button nzType="link" nzDanger>
+                    <span nz-icon nzType="delete"></span>
+                  </button>
+                </nz-button-group>
+              </td>
+              <td [nzShowExpand]="district.level==1 || district.level==2"
+                  [(nzExpand)]="district.expand"
+                  [nzIndentSize]="20"
+                  (nzExpandChange)="toggleRow(district,$event)"
+              >{{ district.code }}</td>
+              <td>{{ district.name }}</td>
+              <td>{{ district.level }}</td>
+              <td class="text-center">
+                <span *ngIf="!district.voided" class="badge text-bg-success">{{ 'common.voidedFalse' | translate }}</span>
+                <span *ngIf="district.voided" class="badge text-bg-danger">{{ 'common.voidedTrue' | translate }}</span>
+              </td>
+            </tr>
+            <ng-container *ngIf="district.expand && district.children?.length>0">
+              <ng-container *ngFor="let commune of province.children">
+                <tr>
+                  <td class="text-center" style="width: 100px" nzLeft>
+                    <nz-button-group>
+                      <button (click)="onCreateOrUpdate(commune)"
+                              nz-tooltip="{{'common.edit'|translate}}" nz-button nzType="link">
+                        <span (click)="onCreateOrUpdate(commune)" nz-icon nzType="edit"></span>
+                      </button>
+                      <button nzOkDanger nzIcon="delete" nz-tooltip="{{'common.delete'|translate}}"
+                              (nzOnConfirm)="delete(commune.id)" nz-popconfirm
+                              nzPopconfirmTitle="{{'common.confirmDelete' |translate}}" nz-button nzType="link" nzDanger>
+                        <span nz-icon nzType="delete"></span>
+                      </button>
+                    </nz-button-group>
+                  </td>
+                  <td [nzIndentSize]="40">{{ commune.code }}</td>
+                  <td>{{ commune.name }}</td>
+                  <td>{{ commune.level }}</td>
+                  <td class="text-center">
+                    <span *ngIf="!commune.voided" class="badge text-bg-success">{{ 'common.voidedFalse' | translate }}</span>
+                    <span *ngIf="commune.voided" class="badge text-bg-danger">{{ 'common.voidedTrue' | translate }}</span>
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+<nz-modal [(nzVisible)]="isVisible" nzWidth="50%" [nzOkDisabled]="formGroup?.invalid" (nzOnOk)="onSubmit()"
+          (nzOnCancel)="isVisible=false" nzTitle="{{(entity?.id?'common.update':'common.create')|translate}}">
+  <ng-container *nzModalContent>
+    <div class="row" nz-form nzLayout="horizontal" [formGroup]="formGroup">
+      <thd-input class="col-md-12" label="{{'common.code'|translate}}" [hasFeedback]="true"
+                 formControlName="code"
+                 [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('code')">
+      </thd-input>
+      <thd-input class="col-md-12" label="{{'common.name'|translate}}" [hasFeedback]="true" formControlName="name"
+                 [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('name')">
+      </thd-input>
+      <thd-input class="col-md-12" label="{{'common.description'|translate}}" [hasFeedback]="true"
+                 formControlName="description"
+                 [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('description')">
+      </thd-input>
+      <thd-input class="col-md-12" label="{{'common.status'|translate}}" [hasFeedback]="true" formControlName="voided"
+                 [labelSpan]="6" [inputSpan]="18" bindValue="value" [isTranslation]="true" bindLabel="label"
+                 [items]="voidedList" type="select">
+      </thd-input>
+    </div>
+  </ng-container>
+</nz-modal>
+

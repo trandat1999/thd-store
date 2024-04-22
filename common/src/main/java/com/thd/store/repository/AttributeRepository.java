@@ -20,7 +20,7 @@ public interface AttributeRepository extends JpaRepository<Attribute,Long> {
     long countExistByCode(String code, Long id);
 
     @Query(value = "select new com.thd.store.dto.product.AttributeDto(entity) " +
-            "from Attribute entity where entity.voided <> true")
+            "from Attribute entity where entity.voided <> true order by entity.name")
     List<AttributeDto> getAll();
 
     @Query(value = "select new com.thd.store.dto.product.AttributeDto(entity) from Attribute entity " +

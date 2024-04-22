@@ -10,6 +10,8 @@ import com.thd.store.dto.BaseResponse;
  */
 public interface CategoryService {
     BaseResponse getAll();
+    BaseResponse getAllByLevel(Integer level);
+    BaseResponse getAllByParentId(Long parentId);
     BaseResponse getById(Long id);
     BaseResponse saveOrUpdate(CategoryDto category, Long id);
     BaseResponse deleteById(Long id);

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +21,9 @@ import java.util.Map;
 @NoArgsConstructor
 public class Product extends BaseInformation{
     @OneToMany(mappedBy = "product",orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<ProductFile> files;
+    private List<ProductFile> files = new ArrayList<>();
     @ElementCollection
-    @MapKeyColumn(name="name")
+    @MapKeyColumn(name="attribute_key")
     @Column(name="value")
     @CollectionTable(name="product_attributes", joinColumns=@JoinColumn(name="product_id"))
     private Map<String, String> attributes = new HashMap<>();

@@ -1,5 +1,6 @@
 package com.thd.store.service.impl;
 
+import com.thd.store.repository.RoleRepository;
 import com.thd.store.service.UserService;
 import com.thd.store.dto.BaseResponse;
 import com.thd.store.dto.user.UserDto;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl extends BaseService implements UserService{
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     @Override
     public BaseResponse getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -30,5 +32,10 @@ public class UserServiceImpl extends BaseService implements UserService{
             return getResponse200(new UserDto(userOptional.get()),getMessage(SystemMessage.SUCCESS));
         }
         return getResponse400(null);
+    }
+
+    @Override
+    public BaseResponse getRoles() {
+        return getResponse200(roleRepository.getAll(),getMessage(SystemMessage.SUCCESS));
     }
 }

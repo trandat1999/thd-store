@@ -1,0 +1,65 @@
+export interface NavigationItem {
+  translateKey?: string;
+  name?: string;
+  link?: string;
+  iconType?: string;
+  iconClass?: string;
+  iconLink?: string;
+  children?: NavigationItem[];
+}
+
+export const navigation: NavigationItem[] = [
+  {
+    translateKey: 'navigation.dashboard',
+    iconType: "dashboard",
+    children: [
+      {
+        name: 'Welcome',
+        link: '/welcome'
+      },
+    ],
+  },
+  {
+    translateKey: 'navigation.settings',
+    iconType: "setting",
+    children: [
+      {
+        translateKey: 'navigation.category',
+        link: '/setting/category'
+      }, {
+        translateKey: 'navigation.country',
+        link: '/setting/country'
+      }, {
+        translateKey: 'navigation.attribute',
+        link: '/setting/attribute'
+      }, {
+        translateKey: 'navigation.product',
+        link: '/setting/product'
+      }, {
+        translateKey: 'navigation.warehouse',
+        link: '/setting/warehouse'
+      },
+    ],
+  }, {
+    translateKey: 'navigation.productImport',
+    iconType: "shopping-cart",
+    children: [
+      {
+        translateKey: 'navigation.supplier',
+        link: '/product-import/supplier'
+      }, {
+        translateKey: 'navigation.inventoryImport',
+        link: '/product-import/inventory-import'
+      },
+    ]
+  }, {
+    translateKey: 'navigation.management',
+    iconType: "appstore",
+    children: [
+      {
+        translateKey: 'navigation.administrativeUnit',
+        link: '/management/administrative-unit'
+      },
+    ]
+  }
+]

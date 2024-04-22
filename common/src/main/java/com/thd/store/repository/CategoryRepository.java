@@ -21,8 +21,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     long countExistByCode(String code, Long id);
 
     @Query(value = "select new com.thd.store.dto.category.CategoryDto(entity) " +
-            "from Category entity where entity.voided <> true")
-    List<CategoryDto> getAll();
+            "from Category entity where entity.voided <> true " +
+            "and (:level is null or entity.level = :level) " +
+            "and (:parentId is null or entity.parentId = :parentId)")
+    List<CategoryDto> getAll(Integer level,Long parentId);
 
     @Query(value = "select new com.thd.store.dto.category.CategoryDto(entity) from Category entity " +
             "where (:voided is null or entity.voided =:voided) " +

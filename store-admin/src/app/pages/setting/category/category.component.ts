@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {Category} from "../setting.model";
 import {CategoryService} from "./category.service";
 import {CategorySearch} from "../../../utils/search-object";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {TranslateService} from "@ngx-translate/core";
-import {VOIDED_CHOICE} from "../../../utils/ConstUtil";
+import {getErrorMessage, VOIDED_CHOICE} from "../../../utils/ConstUtil";
 
 @Component({
   selector: 'thd-category',
@@ -17,13 +17,13 @@ export class CategoryComponent implements OnInit {
   entity:Category;
   formGroup: FormGroup;
   voidedList = VOIDED_CHOICE
-
   searchObject : CategorySearch ={
     pageIndex: 1,
     pageSize: 10,
   }
   totalElement = 0;
   categories: Category[] = [];
+  categoryParents: Category[] = [];
   constructor(private categoryService: CategoryService,
               private translate : TranslateService) { }
 
@@ -53,26 +53,44 @@ export class CategoryComponent implements OnInit {
       code : new FormControl(this.entity.code,[Validators.required]),
       description : new FormControl(this.entity.description),
       voided : new FormControl(this.entity.voided?this.entity.voided:false),
+      parentId : new FormControl(this.entity.parentId),
+      level : new FormControl(this.entity.level,[Validators.required,
+        Validators.min(1),Validators.max(3)])
+    },this.parentRequiredValidator)
+    if(this.entity.level>1){
+      this.getCategoryByLevel(this.entity.level-1);
+    }
+  }
+  changeLevel(){
+    let levelValue = this.formGroup?.get("level")?.value;
+    if(levelValue>1){
+      this.getCategoryByLevel(levelValue-1);
+    }else{
+      this.formGroup?.get("parentId")?.setValue(null);
+      this.categoryParents = [];
+    }
+  }
+  getCategoryByLevel(level:number){
+    this.categoryService.getAllByLevel(level).subscribe(data =>{
+      this.categoryParents = data.body || [];
     })
   }
-  getErrorMessage(control:string):string{
-    if (this.formGroup && control) {
-      if (control == "code" && this.formGroup.controls[control].errors) {
-        if (this.formGroup.controls[control].errors?.['required']) {
-          return this.translate.instant("common.fieldRequired");
-        }
-        if (this.formGroup.controls[control].errors?.['serverError'] ||
-          this.formGroup.controls[control].errors?.['serverErrorMess']) {
-          return this.formGroup.controls[control].errors?.['serverErrorMess'];
-        }
+  parentRequiredValidator: ValidatorFn = (control: AbstractControl) => {
+    let levelValue = this.formGroup?.get("level")?.value;
+    let parentId = this.formGroup?.get("parentId");
+    if(parentId){
+      if(levelValue>1 && !parentId.value){
+        parentId.setValidators(Validators.required)
+        parentId.setErrors({required: true })
+        return null;
       }
-      if (control == "name" && this.formGroup.controls[control].errors) {
-        if (this.formGroup.controls[control].errors?.['required']) {
-          return this.translate.instant("common.fieldRequired");
-        }
-      }
+      parentId.setValidators(null)
+      parentId.setErrors(null)
     }
-    return "";
+    return null;
+  };
+  getErrorMessage(control:string):string{
+    return getErrorMessage(control,this.formGroup,this.translate);
   }
   onSubmit(){
     this.categoryService.save(this.formGroup.getRawValue()).subscribe(data=>{

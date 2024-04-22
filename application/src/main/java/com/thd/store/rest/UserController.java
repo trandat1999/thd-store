@@ -4,6 +4,7 @@ import com.thd.store.service.UserService;
 import com.thd.store.dto.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,5 +21,10 @@ public class UserController {
     @GetMapping("/current")
     public ResponseEntity<BaseResponse> getCurrentUser(){
         return ResponseEntity.ok(userService.getCurrentUser());
+    }
+    @GetMapping("/roles")
+    @PreAuthorize("hasAnyAuthority(T(com.thd.store.util.ConstUtil).ADMIN_ROLE)")
+    public BaseResponse getRoles(){
+        return userService.getRoles();
     }
 }

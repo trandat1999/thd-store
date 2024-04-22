@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {AuthService} from "../auth/auth.service";
 import {Router} from "@angular/router";
 import {StorageService} from "../../services/storage.service";
 import {TranslateService} from "@ngx-translate/core";
 import {TranslateConfigService} from "../../services/translate.service";
 import {BehaviorSubject} from "rxjs";
+import {NavigationItem, navigation} from "./layout.model";
 
 @Component({
   selector: 'thd-layout',
@@ -14,7 +15,7 @@ import {BehaviorSubject} from "rxjs";
 export class LayoutComponent implements OnInit {
   isCollapsed = false;
   currentLanguage = "en";
-
+  navigation = navigation;
   constructor(private authService: AuthService,
               private translateService: TranslateConfigService,
               private router: Router,
@@ -53,11 +54,13 @@ export class LayoutComponent implements OnInit {
       this.isVisible$.next(true);
     }, 1);
   }
-  isOpen(url: string[]){
-    let currentUrl = this.router.url;
-    for(let item of url) {
-      if(currentUrl.startsWith(item)){
-        return true;
+  isOpen(item : NavigationItem): boolean {
+    if(item.children){
+      let currentUrl = this.router.url;
+      for(let sub of item.children){
+        if(currentUrl.startsWith(sub.link)){
+          return true;
+        }
       }
     }
     return false;

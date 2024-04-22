@@ -1,12 +1,12 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
+  ElementRef, EventEmitter,
   HostBinding,
   Input,
   OnChanges,
   OnDestroy,
-  OnInit, Optional, Self,
+  OnInit, Optional, Output, Self,
   SimpleChanges, TemplateRef,
   ViewChild
 } from '@angular/core';
@@ -105,6 +105,8 @@ export class NuclearInputComponent implements OnInit, ControlValueAccessor, OnCh
   @Input() addOnBeforeIcon: string;
   @Input() addOnAfterIcon: string;
   @Input() isSearch : boolean = false;
+  @Input() offMb : boolean = false;
+  @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();
 
   get value(): any {
     return this.val;
@@ -113,6 +115,7 @@ export class NuclearInputComponent implements OnInit, ControlValueAccessor, OnCh
     this.val = val;
     if(this.onChange){
       this.onChange(this.value);
+      this.valueChange.emit(val);
     }
     this.onTouched();
     const errors = this.ngControl?.control?.errors;
@@ -146,6 +149,12 @@ export class NuclearInputComponent implements OnInit, ControlValueAccessor, OnCh
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
+  onSelectionChange(val: any) {
+    // if(this.inputElement?.control){
+    //   this.value = val;
+    // }
+    this.valueChange.emit(this.value);
+  }
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
@@ -158,18 +167,14 @@ export class NuclearInputComponent implements OnInit, ControlValueAccessor, OnCh
         this.inputElement?.control.markAsDirty();
       });
     }
-    // const validators = this.control?.control?.validator;
-    // this.control?.control.setValidators(validators ? validators : null);
-    // const errors = this.control?.control?.errors;
-    // this.control?.control?.setErrors(errors ? errors : null);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.errorText = changes['errorText']?.currentValue;
+    this.errorText = changes['errorText']?.currentValue || this.errorText;
     this.label = changes['label']?.currentValue?changes['label']?.currentValue:this.label;
-    this.placeHolder = changes['placeHolder']?.currentValue?changes['placeHolder']?.currentValue:this.label;
-    this.warningText = changes['warningText']?.currentValue?changes['warningText']?.currentValue:this.label;
-    this.hint = changes['hint']?.currentValue?changes['hint']?.currentValue:this.label;
+    this.placeHolder = changes['placeHolder']?.currentValue?changes['placeHolder']?.currentValue:this.placeHolder;
+    this.warningText = changes['warningText']?.currentValue?changes['warningText']?.currentValue:this.warningText;
+    this.hint = changes['hint']?.currentValue?changes['hint']?.currentValue:this.hint;
     const errors = this.ngControl?.control?.errors;
     this.inputElement?.control?.setErrors(errors ? errors : null);
   }

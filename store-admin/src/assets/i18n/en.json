@@ -36,6 +36,7 @@
     "name": "Name",
     "code": "Code",
     "description": "Description",
+    "shortDescription": "Short description",
     "province" : "Province",
     "district": "District",
     "commune": "Commune",
@@ -50,29 +51,10 @@
     "voidedFalse": "Active",
     "voidedTrue": "Voided",
     "status": "Status",
-    "uploadFile": "Upload File"
-  },
-  "loginComponent": {
-    "username": "username",
-    "password": "password"
-  },
-  "categoryComponent": {
-    "title": "Category",
-    "name": "Name",
-    "inputName": "Please enter name for search",
-    "code": "Code",
-    "inputCode": "Please enter code for search",
-    "parent": "Parent",
-    "description": "Description",
-    "codeRequired": "Code is required",
-    "nameRequired": "Name is required"
-  },
-  "paginator": {
-    "itemsPerPageLabel": "items per page",
-    "nextPageLabel": "Next page",
-    "previousPageLabel": "Previous page",
-    "lastPageLabel": "Last page",
-    "firstPageLabel": "first page"
+    "uploadFile": "Upload File",
+    "key": "Key",
+    "value": "Value",
+    "importExcel": "Import Excel"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -83,33 +65,14 @@
     "users": "Users",
     "roles": "Role",
     "country": "Country",
-    "movie": "Movie",
-    "movieEpisode": "Movie Episode"
-  },
-  "user": {
-    "profile": "Profile",
-    "settings": "Settings",
-    "logout": "Logout",
-    "username": "Username",
-    "password": "Password",
-    "email": "Email",
-    "required": "User is required",
-    "status": "Status",
-    "statusEnabled" : "Enabled",
-    "statusDisabled" : "Disabled"
-  },
-  "profile": {
-    "profile": "Profile",
-    "settings": "Settings",
-    "edit": "Edit Profile",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "gender": "Gender",
-    "birthDate": "Birth Date",
-    "phoneNumber": "Phone Number",
-    "email": "Email",
-    "idNumber": "Id Number",
-    "idNumberIssueDate": "Id Issue Date"
+    "attribute": "Attribute",
+    "supplier" : "Supplier",
+    "productImport": "Product Import",
+    "product": "Product",
+    "inventoryImport": "Inventory import",
+    "administrativeUnit": "Administrative Unit",
+    "management": "Management",
+    "warehouse": "Warehouse"
   },
   "gender": {
     "male": "Male",
@@ -120,7 +83,8 @@
     "required": "Field is required",
     "invalid": "Field is invalid",
     "password_not_match": "Confirm password must be match password",
-    "email" : "Email must be a valid email address"
+    "email" : "Email must be a valid email address",
+    "phoneNumber": "Phone number must be a valid"
   },
   "person": {
     "firstName": "First Name",
@@ -149,21 +113,10 @@
   "settingModule": {
     "category": "Category",
     "country": "Country",
-    "movie": "Movie",
-    "movieEpisode": "Movie episode"
-  },
-  "movie":{
-    "publishYear": "Publish Year",
-    "category": "Category",
-    "otherName": "Other name",
-    "image": "Image",
-    "episode": "Episode",
-    "part": "Part",
-    "link": "Link",
-    "orderNumber": "Number Order",
-    "embeddedLink": "Embedded Link",
-    "file": "File",
-    "previousEpisode": "Episode previous"
+    "attribute": "Attribute",
+    "supplier" : "Supplier",
+    "product" : "Product",
+    "warehouse" : "Warehouse"
   },
   "layout": {
     "english": "English",
@@ -177,6 +130,34 @@
     "category": "Category",
     "country": "Country",
     "movieEpisode": "Movie Episode",
-    "movie": "Movie"
+    "movie": "Movie",
+    "attribute" : "Attribute",
+    "supplier" : "Supplier",
+    "product" : "Product",
+    "edit" : "Edit",
+    "create" : "Create",
+    "detail" : "Detail",
+    "inventoryImport": "Inventory import",
+    "administrativeUnit": "Administrative Unit",
+    "warehouse": "Warehouse"
+  },
+  "category": {
+    "level": "Level",
+    "parent": "Category parent"
+  },
+  "supplier" :{
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "product": "Product"
+  },
+  "productImport": {
+
+  },
+  "product": {
+    "images" : "Images",
+    "attributes" : "Attributes"
+  },
+  "management": {
+    "administrativeUnit" : "Administrative Unit"
   }
 }

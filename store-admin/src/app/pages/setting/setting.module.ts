@@ -20,7 +20,10 @@ import {NzUploadModule} from "ng-zorro-antd/upload";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzToolTipModule} from "ng-zorro-antd/tooltip";
 import { ProductComponent } from './product/product.component';
-import { SupplierComponent } from './supplier/supplier.component';
+import { AttributeComponent } from './attribute/attribute.component';
+import { ProductEditComponent } from './product/product-edit/product-edit.component';
+import {NzAffixModule} from "ng-zorro-antd/affix";
+import { WarehouseComponent } from './warehouse/warehouse.component';
 
 
 @NgModule({
@@ -28,7 +31,9 @@ import { SupplierComponent } from './supplier/supplier.component';
     CategoryComponent,
     CountryComponent,
     ProductComponent,
-    SupplierComponent,
+    AttributeComponent,
+    ProductEditComponent,
+    WarehouseComponent,
   ],
     imports: [
         CommonModule,
@@ -48,7 +53,8 @@ import { SupplierComponent } from './supplier/supplier.component';
         NzPopconfirmModule,
         NzUploadModule,
         NzSelectModule,
-        NzToolTipModule
+        NzToolTipModule,
+        NzAffixModule
     ]
 })
 export class SettingModule { }

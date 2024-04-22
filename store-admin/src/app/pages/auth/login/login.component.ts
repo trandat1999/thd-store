@@ -3,6 +3,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../auth.service";
 import {StorageService} from "../../../services/storage.service";
 import {Router} from "@angular/router";
+import {getErrorMessage} from "../../../utils/ConstUtil";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'thd-login',
@@ -12,13 +14,13 @@ import {Router} from "@angular/router";
 export class LoginComponent implements OnInit {
   constructor(private authService: AuthService,
               private router: Router,
+              private translate: TranslateService,
               private storageService: StorageService) {
   }
   ngOnInit(): void {
     this.formGroup = new FormGroup({
       username: new FormControl("",[Validators.required]),
       password: new FormControl("",[Validators.required]),
-      remember: new FormControl(true),
     })
   }
   formGroup : FormGroup;
@@ -37,5 +39,8 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["/welcome"])
       }
     })
+  }
+  getErrorMessage(control : string): string {
+    return getErrorMessage(control,this.formGroup,this.translate)
   }
 }

@@ -19,16 +19,20 @@ export const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
   });
 export const getErrorMessage = (control:string,formGroup: FormGroup,translate: TranslateService)=>{
   if (formGroup && control) {
-    if (formGroup.get(control).errors?.['serverError'] ||
-      formGroup.get(control).errors?.['serverErrorMess']) {
-      return formGroup.get(control).errors?.['serverErrorMess'];
+    if (formGroup.get(control)?.errors?.['serverError'] ||
+      formGroup.get(control)?.errors?.['serverErrorMess']) {
+      return formGroup.get(control)?.errors?.['serverErrorMess'];
     }
-    if (formGroup.get(control).errors?.['required']) {
+    if (formGroup.get(control)?.errors?.['required']) {
       return translate.instant("validation.required");
     }
-    if (formGroup.get(control).errors?.['email']) {
+    if (formGroup.get(control)?.errors?.['email']) {
       return translate.instant("validation.email");
+    }
+    if (formGroup.get(control)?.errors?.['phoneNumber']) {
+      return translate.instant("validation.phoneNumber");
     }
   }
   return "";
 }
+export const PHONE_NUMBER_REGEX = "((84|0|'+'84)[3|5|7|8|9])+([0-9]{8})";

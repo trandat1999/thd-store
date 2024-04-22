@@ -1,22 +1,29 @@
-export interface BaseObject {
-  name?:string;
-  code?:string;
-  description?:string;
-  id?:number;
-  voided?:boolean;
-}
+import {BaseObject} from "../../utils/BaseResponse";
+import {AdministrativeUnit} from "../management/management.model";
+
 export interface Category extends BaseObject{
+  level?:number;
+  parentId?:number;
 }
 export interface Country extends BaseObject{
 }
-export interface Movie extends BaseObject{
-  publishYear?:number;
-  country?:Country;
-  file?:File;
-  otherName?:string;
-  categories?:Category[];
+export interface Attribute extends BaseObject{
 }
-export interface File extends BaseObject{
-  size?:number;
-  path?:string;
+export interface File extends BaseObject {
+  size?: number;
+  path?: string;
+}
+export interface Product extends BaseObject{
+  files?: File[];
+  attributes?: KeyValue[];
+}
+export interface KeyValue{
+  key?: string;
+  value?: string;
+}
+export interface Warehouse extends BaseObject{
+  province?:AdministrativeUnit;
+  district?:AdministrativeUnit;
+  commune?:AdministrativeUnit;
+  address?:string;
 }

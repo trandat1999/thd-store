@@ -1,0 +1,111 @@
+<div class="row">
+  <nz-page-header class="col-12"
+                  nzTitle="{{'settingModule.warehouse' | translate}}">
+  </nz-page-header>
+  <div class="col-md-12">
+    <div class="row">
+      <thd-input [offMb]="true" class="col-md-4 mt-2" [showLabel]="false" [isSearch]="true" [(ngModel)]="searchObject.keyword" placeHolder="{{'common.inputSearch'|translate}}"
+                 (keydown.enter)="submitSearch()" [addOnAfter]="suffixIconButton"></thd-input>
+      <ng-template #suffixIconButton>
+        <button (click)="submitSearch()" nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span>
+        </button>
+      </ng-template>
+      <thd-input [offMb]="true" [showLabel]="false" class="col-md-2 mt-2" type="select" [items]="provinces" bindLabel="name" bindValue="id" [(ngModel)]="searchObject.provinceId"
+                 placeHolder="{{'common.province' |translate}}" [allowClear]="true"
+                 (valueChange)="getAllByParent('district',false,true)"></thd-input>
+      <thd-input [offMb]="true" [showLabel]="false" class="col-md-2 mt-2" type="select" [items]="districts" bindLabel="name" bindValue="id" [(ngModel)]="searchObject.districtId"
+                 placeHolder="{{'common.district' |translate}}" [allowClear]="true"
+                 (ngModelChange)="getAllByParent('commune',false,true)"></thd-input>
+      <thd-input [offMb]="true" [showLabel]="false" class="col-md-2 mt-2" type="select" [items]="communes" bindLabel="name" bindValue="id" [(ngModel)]="searchObject.communeId"
+                 placeHolder="{{'common.commune' |translate}}" [allowClear]="true"></thd-input>
+      <div class="col-md-1 mt-2 d-flex justify-content-center">
+        <button (click)="submitSearch()" nz-button nzType="primary">
+          <span nz-icon nzType="search"></span>{{'common.search'|translate}}
+        </button>
+      </div>
+      <div class="col-md-1 mt-2 d-flex justify-content-center">
+        <button (click)="onCreateOrUpdate(null)" nz-button nzType="primary">
+          <span nz-icon nzType="plus"></span>{{'common.add'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+  <nz-table [(nzPageIndex)]="searchObject.pageIndex" [(nzPageSize)]="searchObject.pageSize"
+            nzFrontPagination="false"
+            [nzTotal]="totalElement" (nzQueryParams)="pageChange($event)"
+            nzBordered="true" class="col-12 mt-2" nzSize="small" #table
+            nzShowPagination nzShowSizeChanger [nzData]="entities">
+    <thead>
+    <tr>
+      <th style="width: 100px">{{'common.action' |translate}}</th>
+      <th>{{'common.code' |translate}}</th>
+      <th>{{'common.name' |translate}}</th>
+      <th>{{'common.province' |translate}}</th>
+      <th>{{'common.district' |translate}}</th>
+      <th>{{'common.commune' |translate}}</th>
+      <th>{{'common.description' |translate}}</th>
+      <th style="width: 100px">{{'common.status' |translate}}</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of table.data">
+      <td class="text-center" style="width: 100px">
+        <nz-button-group>
+          <button (click)="onCreateOrUpdate(data)"
+                  nz-tooltip="{{'common.edit'|translate}}" nz-button nzType="link">
+            <span  (click)="onCreateOrUpdate(data)" nz-icon nzType="edit"></span>
+          </button>
+          <button nzOkDanger nzIcon="delete" nz-tooltip="{{'common.delete'|translate}}" (nzOnConfirm)="delete(data.id)" nz-popconfirm
+                  nzPopconfirmTitle="{{'common.confirmDelete' |translate}}" nz-button nzType="link" nzDanger>
+            <span nz-icon nzType="delete"></span>
+          </button>
+        </nz-button-group>
+      </td>
+      <td>{{ data.code }}</td>
+      <td>{{ data.name }}</td>
+      <td>{{ data.province?.name }}</td>
+      <td>{{ data.district?.name }}</td>
+      <td>{{ data.commune?.name }}</td>
+      <td>{{ data.description }}</td>
+      <td class="text-center">
+        <span *ngIf="!data.voided" class="badge text-bg-success">{{'common.voidedFalse' | translate}}</span>
+        <span *ngIf="data.voided" class="badge text-bg-danger">{{'common.voidedTrue' | translate}}</span>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>
+<nz-modal nzWidth="600px" [(nzVisible)]="isVisible" [nzOkDisabled]="formGroup?.invalid" (nzOnOk)="onSubmit()" (nzOnCancel)="isVisible=false" nzTitle="{{(entity?.id?'common.update':'common.create')|translate}}" >
+  <ng-container *nzModalContent >
+    <div class="row" nz-form nzLayout="vertical" [formGroup]="formGroup">
+      <thd-input class="col-md-6 mt-2" label="{{'common.code'|translate}}" [hasFeedback]="true"
+                 formControlName="code" [errorText]="getErrorMessage('code')">
+      </thd-input>
+      <thd-input class="col-md-6 mt-2" label="{{'common.name'|translate}}" [hasFeedback]="true"  formControlName="name"
+                 [errorText]="getErrorMessage('name')">
+      </thd-input>
+      <thd-input class="col-md-6 mt-2" label="{{'common.description'|translate}}" [hasFeedback]="true"  formControlName="description"
+                 [errorText]="getErrorMessage('description')">
+      </thd-input>
+      <thd-input class="col-md-6 mt-2" label="{{'common.status'|translate}}" [hasFeedback]="true"  formControlName="voided"
+                 bindValue="value" [isTranslation]="true" bindLabel="label"
+                 [items]="voidedList" type="select">
+      </thd-input>
+      <thd-input class="col-md-6 mt-2" type="select" [items]="provinces" bindLabel="name" formControlName="province"
+                 placeHolder="{{'common.province' |translate}}" [hasFeedback]="true" label="{{'common.province' |translate}}"
+                 (valueChange)="getAllByParent('district',true,true)"
+                 [errorText]="getErrorMessage('province')"></thd-input>
+      <thd-input class="col-md-6 mt-2" type="select" [items]="modalDistricts" bindLabel="name" formControlName="district"
+                 placeHolder="{{'common.district' |translate}}" [hasFeedback]="true" label="{{'common.district' |translate}}"
+                 (valueChange)="getAllByParent('commune',true,true)" [errorText]="getErrorMessage('district')"></thd-input>
+      <thd-input class="col-md-6 mt-2" type="select" [items]="modalCommunes" bindLabel="name" formControlName="commune"
+                 [errorText]="getErrorMessage('commune')"
+                 placeHolder="{{'common.commune' |translate}}" [hasFeedback]="true" label="{{'common.commune' |translate}}"></thd-input>
+      <thd-input class="col-md-6 mt-2" label="{{'common.address'|translate}}" [hasFeedback]="true"  formControlName="address"
+                 [errorText]="getErrorMessage('address')">
+      </thd-input>
+    </div>
+  </ng-container>
+</nz-modal>
+

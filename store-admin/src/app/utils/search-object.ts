@@ -10,3 +10,10 @@ export interface CountrySearch extends SearchObject {
 }
 export interface MovieSearch extends SearchObject {
 }
+export interface ProductSearch extends SearchObject {
+}
+export interface WarehouseSearch extends SearchObject {
+  provinceId?:number;
+  districtId?:number;
+  communeId?:number;
+}

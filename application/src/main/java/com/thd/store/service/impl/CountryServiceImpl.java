@@ -9,6 +9,9 @@ import com.thd.store.repository.CountryRepository;
 import com.thd.store.util.SystemMessage;
 import com.thd.store.util.SystemVariable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,10 +22,12 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames={"country"})
 public class CountryServiceImpl extends BaseService implements CountryService {
     private final CountryRepository countryRepository;
 
     @Override
+    @Cacheable
     public BaseResponse getAll() {
         return getResponse200(countryRepository.getAll(), getMessage(SystemMessage.SUCCESS));
     }
@@ -37,6 +42,7 @@ public class CountryServiceImpl extends BaseService implements CountryService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public BaseResponse saveOrUpdate(CountryDto request, Long id) {
         var validator = validation(request);
         if (!validator.isEmpty()) {
@@ -67,6 +73,7 @@ public class CountryServiceImpl extends BaseService implements CountryService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public BaseResponse deleteById(Long id) {
         Optional<Country> countryOptional = countryRepository.findById(id);
         if (countryOptional.isEmpty()) {
@@ -79,6 +86,7 @@ public class CountryServiceImpl extends BaseService implements CountryService {
         return getResponse200(new CountryDto(entity), getMessage(SystemMessage.SUCCESS));
     }
 
+    @Cacheable(key = "#search.hashCode()")
     @Override
     public BaseResponse search(CountrySearch search) {
         if (search.getVoided() != null && !search.getVoided()) {

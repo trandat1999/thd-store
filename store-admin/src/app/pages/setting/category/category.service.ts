@@ -17,6 +17,12 @@ export class CategoryService {
   search(search: CategorySearch) {
     return this.base.post(this.URL+"/pages", search);
   }
+  getAllByLevel(level:number){
+    return this.base.get(this.URL+"/level/"+level);
+  }
+  getAllByParent(parentId:number){
+    return this.base.get(this.URL+"/parent/"+parentId);
+  }
   get(id:number){
     return this.base.get(this.URL+"/"+id);
   }

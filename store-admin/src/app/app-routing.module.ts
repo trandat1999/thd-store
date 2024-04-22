@@ -21,6 +21,18 @@ const routes: Routes = [
         },
         loadChildren: () => import('./pages/setting/setting.module').then(m => m.SettingModule)
       },
+      { path: 'product-import',
+        data: {
+          breadcrumb: 'breadcrumb.none',
+        },
+        loadChildren: () => import('./pages/product-import/product-import.module').then(m => m.ProductImportModule)
+      },
+      { path: 'management',
+        data: {
+          breadcrumb: 'breadcrumb.none',
+        },
+        loadChildren: () => import('./pages/management/management.module').then(m => m.ManagementModule)
+      },
     ]
   },
   {path: "verification-account/:token", component: ActiveComponent},

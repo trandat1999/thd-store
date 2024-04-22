@@ -27,7 +27,7 @@ export function rootLoaderI18n(http: HttpClient) {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

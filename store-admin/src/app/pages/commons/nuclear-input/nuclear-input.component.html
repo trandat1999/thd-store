@@ -1,4 +1,4 @@
-<nz-form-item class="w-100" id="{{id}}">
+<nz-form-item [ngClass]="{'mb-0':offMb}" class="w-100" id="{{id}}">
   <nz-form-label *ngIf="showLabel" [nzRequired]="isRequired" [nzTooltipTitle]="tooltipTitle" [nzSpan]="labelSpan">{{label}}</nz-form-label>
   <nz-form-control [nzSpan]="inputSpan" [nzWarningTip]="warningText" [nzValidatingTip]="hint"
                    [nzErrorTip]="errorText" [nzHasFeedback]="hasFeedback">
@@ -16,19 +16,19 @@
         <nz-option *ngFor="let item of items" [nzValue]="bindValue?item[bindValue]:item"
                    [nzLabel]="isTranslation?(bindLabel?translate.instant(item[bindLabel]):translate.instant(item)):(bindLabel?item[bindLabel]:item)"></nz-option>
       </nz-select>
-      <nz-input-group *ngSwitchCase="type == 'editor' || type =='number' || type == 'date' ? type : ''"
-                      [nzPrefix]="prefix" [nzAddOnBefore]="addOnBefore" [nzAddOnAfter]="addOnAfter" [nzAddOnBeforeIcon]="addOnBeforeIcon" [nzAddOnAfterIcon]="addOnAfterIcon">
-        <angular-editor [placeholder]="placeHolder" [disabled]="isDisabled || ngControl?.disabled"
-                        #inputElements3="ngModel" [(ngModel)]="value" *ngIf="type == 'editor'"></angular-editor>
+      <angular-editor *ngSwitchCase="'editor'" [placeholder]="placeHolder" [disabled]="isDisabled || ngControl?.disabled"
+                      #inputElements3="ngModel" [(ngModel)]="value"></angular-editor>
+      <nz-date-picker class="w-100" [nzPlaceHolder]="placeHolder" [nzDisabled]="isDisabled || ngControl?.disabled"
+                      *ngSwitchCase="'date'" #inputElements5="ngModel" [nzShowTime]="showTime" [nzShowNow]="showNow"
+                      [nzShowToday]="showToday" [nzFormat]="dateTimeFormat"
+                      [(ngModel)]="value" [nzSize]="size"></nz-date-picker>
+      <nz-input-number-group class="w-100" *ngSwitchCase="'number'"  [nzPrefix]="prefix"
+                             [nzAddOnBefore]="addOnBefore" [nzAddOnAfter]="addOnAfter"
+                             [nzAddOnBeforeIcon]="addOnBeforeIcon" [nzAddOnAfterIcon]="addOnAfterIcon">
         <nz-input-number [nzPlaceHolder]="placeHolder" [nzDisabled]="isDisabled || ngControl?.disabled"
                          [style.width.%]="100"  #inputElements4="ngModel" [nzMin]="min" [nzMax]="max" [nzSize]="size"
-                         [(ngModel)]="value" [nzStep]="step"
-                         *ngIf="type == 'number'"></nz-input-number>
-        <nz-date-picker [style.width.%]="100"  [nzPlaceHolder]="placeHolder" [nzDisabled]="isDisabled || ngControl?.disabled"
-                        *ngIf="type == 'date'" #inputElements5="ngModel" [nzShowTime]="showTime" [nzShowNow]="showNow"
-                        [nzShowToday]="showToday" [nzFormat]="dateTimeFormat"
-                        [(ngModel)]="value" [nzSize]="size"></nz-date-picker>
-      </nz-input-group>
+                         [(ngModel)]="value" [nzStep]="step"></nz-input-number>
+      </nz-input-number-group>
     </ng-container>
   </nz-form-control>
 </nz-form-item>

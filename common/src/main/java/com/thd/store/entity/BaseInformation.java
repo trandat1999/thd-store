@@ -25,6 +25,6 @@ public class BaseInformation extends BaseEntity{
     private String description;
     @Column(name = "short_description")
     private String shortDescription;
-    @Column(name = "code")
+    @Column(name = "code",unique = true)
     private String code;
 }

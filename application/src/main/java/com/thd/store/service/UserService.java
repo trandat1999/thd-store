@@ -8,4 +8,5 @@ import com.thd.store.dto.BaseResponse;
  */
 public interface UserService {
     BaseResponse getCurrentUser();
+    BaseResponse getRoles();
 }

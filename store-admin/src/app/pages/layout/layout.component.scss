@@ -8,20 +8,19 @@
 .app-layout {
   min-height: 100vh;
 }
-
 .menu-sidebar {
   //position: relative;
   z-index: 10;
   min-height: 100vh;
-  box-shadow: 2px 0 6px rgba(0,21,41,.35);
+  box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
 }
 
 .header-trigger {
   height: 64px;
-  padding: 0px 24px;
+  padding: 0 24px;
   font-size: 20px;
   cursor: pointer;
-  transition: all .3s,padding 0s;
+  transition: all .3s, padding 0s;
 }
 
 .trigger:hover {
@@ -51,7 +50,7 @@
   color: #fff;
   font-weight: 600;
   font-size: 14px;
-  font-family: Avenir,Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
   vertical-align: middle;
 }
 
@@ -66,7 +65,7 @@ nz-header {
   height: 64px;
   padding: 0;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
 }
 
 nz-content {
@@ -76,8 +75,43 @@ nz-content {
 .inner-content {
   padding: 10px;
   background: #fff;
-  height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  min-height: 50%;
+  //height: 100%;
 }
-.spacer {
-  flex: 1 1;
+.ant-menu-inline .ant-menu-item{
+  margin-bottom: 0;
+  margin-top: 0;
 }
+.ant-menu-submenu{
+  box-shadow: inset 0 -0.3px 0 0 #98a1a1;
+}
+//.ant-menu.ant-menu-dark{
+//  box-shadow: inset 0 -0.5px 0 0 #c9e0e3;
+//}
+::ng-deep .ant-menu-submenu-title:hover{
+  font-weight: bold !important;
+}
+::ng-deep .ant-menu-submenu-open .ant-menu-submenu-title  {
+  font-weight: bold !important;
+}
+::ng-deep .ant-menu-submenu-selected .ant-menu-submenu-title  {
+  font-weight: bold !important;
+}
+.ant-menu-item a:hover {
+  font-weight: bold;
+}
+.ant-menu-item-selected{
+  font-weight: bold;
+}
+.ant-menu-item{
+  margin: 0 !important;
+}
+::ng-deep .ant-menu-vertical .ant-menu-submenu-selected{
+  box-shadow: inset 4px 0 0 #1890ff,inset 0 -0.3px 0 0 #98a1a1 !important;
+}
+//::ng-deep .ant-menu-submenu-title{
+//  margin-top: 0 !important;
+//  padding-top: 4px !important;
+//}

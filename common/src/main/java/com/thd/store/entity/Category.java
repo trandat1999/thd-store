@@ -18,13 +18,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category extends BaseEntity{
-    @Column(name = "name")
-    private String name;
-    @Column(name = "description")
-    private String description;
-    @Column(name = "code")
-    private String code;
+public class Category extends BaseInformation{
     @Column(name = "parent_id")
     private Long parentId;
+    @Column(name = "level")
+    private Integer level;
 }

@@ -1,4 +1,4 @@
-package com.thd.store.listenner;
+package com.thd.store.config;
 
 import com.thd.store.entity.Person;
 import com.thd.store.entity.Role;
@@ -9,28 +9,32 @@ import com.thd.store.type.Gender;
 import com.thd.store.util.ConstUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * @author DatNuclear 22/03/2024
+ * @project store
+ */
 @Component
 @AllArgsConstructor
 @Slf4j
-public class ApplicationStartListener implements ApplicationListener<ContextRefreshedEvent> {
-
+public class ApplicationStartUp {
     private final Environment env;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final RedisTemplate redisTemplate;
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        log.info("Application started.");
+    @EventListener
+    public void onApplicationEvent(ApplicationReadyEvent event) {
+        redisTemplate.getConnectionFactory().getConnection().flushAll();
         if (env.containsProperty(ConstUtil.PATH_FILE_IMAGE_PROPERTY) && env.getProperty(ConstUtil.PATH_FILE_IMAGE_PROPERTY) != null) {
             ConstUtil.FILE_PATH_IMAGE = env.getProperty(ConstUtil.PATH_FILE_IMAGE_PROPERTY);
         }
@@ -45,6 +49,7 @@ public class ApplicationStartListener implements ApplicationListener<ContextRefr
         }
         createAdminUser();
     }
+
     private void createAdminUser() {
         User user = userRepository.findByUsername(ConstUtil.ADMIN_USERNAME).orElse(null);
         if (user == null) {
@@ -71,5 +76,4 @@ public class ApplicationStartListener implements ApplicationListener<ContextRefr
             userRepository.save(user);
         }
     }
-
 }

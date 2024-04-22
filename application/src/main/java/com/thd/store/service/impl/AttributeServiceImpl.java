@@ -9,6 +9,9 @@ import com.thd.store.service.AttributeService;
 import com.thd.store.util.SystemMessage;
 import com.thd.store.util.SystemVariable;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,9 +22,11 @@ import java.util.Optional;
  */
 @Service
 @AllArgsConstructor
+@CacheConfig(cacheNames = {"attribute"})
 public class AttributeServiceImpl extends BaseService implements AttributeService {
     private final AttributeRepository attributeRepository;
     @Override
+    @Cacheable
     public BaseResponse getAll() {
         return getResponse200(attributeRepository.getAll(),getMessage(SystemMessage.SUCCESS));
     }
@@ -35,6 +40,7 @@ public class AttributeServiceImpl extends BaseService implements AttributeServic
         return getResponse400(getMessage(SystemMessage.NOT_FOUND, SystemVariable.ATTRIBUTE));
     }
 
+    @CacheEvict(allEntries = true)
     @Override
     public BaseResponse saveOrUpdate(AttributeDto request, Long id) {
         var validator = validation(request);
@@ -65,6 +71,7 @@ public class AttributeServiceImpl extends BaseService implements AttributeServic
         return getResponse200(new AttributeDto(entity),getMessage(SystemMessage.SUCCESS));
     }
 
+    @CacheEvict(allEntries = true)
     @Override
     public BaseResponse deleteById(Long id) {
         Optional<Attribute> AttributeOptional = attributeRepository.findById(id);
@@ -79,6 +86,7 @@ public class AttributeServiceImpl extends BaseService implements AttributeServic
     }
 
     @Override
+    @Cacheable(key = "#search.hashCode()")
     public BaseResponse search(SearchRequest search) {
         if(search.getVoided()!=null && !search.getVoided()){
             search.setVoided(null);

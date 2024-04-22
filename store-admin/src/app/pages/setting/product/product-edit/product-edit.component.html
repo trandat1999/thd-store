@@ -1,0 +1,93 @@
+<div class="row" nz-form nzLayout="vertical" [formGroup]="formGroup">
+  <thd-input class="col-md-6" label="{{'common.code'|translate}}" [hasFeedback]="true"
+             formControlName="code" [errorText]="getErrorMessage('code')">
+  </thd-input>
+  <thd-input class="col-md-6" label="{{'common.name'|translate}}" [hasFeedback]="true" formControlName="name"
+              [errorText]="getErrorMessage('name')">
+  </thd-input>
+  <thd-input class="col-md-6" label="{{'common.shortDescription'|translate}}" [hasFeedback]="true" formControlName="shortDescription"
+             [errorText]="getErrorMessage('shortDescription')">
+  </thd-input>
+  <thd-input class="col-md-6" label="{{'common.status'|translate}}" [hasFeedback]="true" formControlName="voided"
+             bindValue="value" [isTranslation]="true" bindLabel="label"
+             [items]="voidedList" type="select">
+  </thd-input>
+  <thd-input class="col-md-12" label="{{'common.description'|translate}}" [hasFeedback]="true"
+             formControlName="description" type="editor"
+             [errorText]="getErrorMessage('description')">
+  </thd-input>
+  <div class="col-md-12">
+    <nz-form-item>
+      <nz-form-label nzRequired>{{'product.images' |translate}} &nbsp;<span class="text-danger">{{getErrorMessage("files")}}</span></nz-form-label>
+      <nz-upload
+        [nzAction]="serverUrl+'/api/v1/files'"
+        nzName="file"
+        nzListType="picture-card"
+        [nzFileList]="fileList"
+        [nzPreview]="handlePreview"
+        [nzDownload]="handleDownload"
+        [nzShowButton]="fileList.length<5"
+        (nzChange)="handleChangeFileUpload($event)"
+      >
+        <ng-container>
+          <span nz-icon [nzType]="uploading ? 'loading' : 'plus'"></span>
+          <div>Upload</div>
+        </ng-container>
+      </nz-upload>
+    </nz-form-item>
+  </div>
+  <div class="col-md-12">
+    <nz-form-label>{{ 'product.attributes' | translate }}</nz-form-label>
+    <nz-table nzSize="small" nzBordered="true" nzOuterBordered="true" nzShowPagination="false"
+              nzFrontPagination="false" [nzData]="dataTable">
+      <thead>
+      <tr>
+        <th><span class="text-danger">*</span>{{'common.key' |translate}}</th>
+        <th><span class="text-danger">*</span>{{'common.value' | translate}}</th>
+        <th class="text-center">
+          <button nzSize="small" (click)="addAttribute()" type="button" nz-button nzType="primary">
+            <span nz-icon nzType="plus"></span> {{'common.add'|translate}}</button>
+        </th>
+      </tr>
+      </thead>
+      <tbody formArrayName="attributes">
+      <tr *ngFor="let attribute of attributes.controls;index as i">
+        <ng-container [formGroupName]="i">
+          <td>
+            <thd-input [showLabel]="false" formControlName="key" type="select" [items]="attributeList"
+                       [errorText]="getErrorMessage('attributes.'+i+'.key')"
+                       [hasFeedback]="true" bindLabel="name" bindValue="code">
+            </thd-input>
+          </td>
+          <td>
+            <thd-input [showLabel]="false" formControlName="value"
+                       [errorText]="getErrorMessage('attributes.'+i+'.value')"
+                       [hasFeedback]="true">
+            </thd-input>
+          </td>
+          <td style="vertical-align: top">
+            <button nzOkDanger nzIcon="delete" (nzOnConfirm)="attributes.removeAt(i)" nz-popconfirm
+                    nzPopconfirmTitle="{{'common.confirmDelete' |translate}}" nz-button nzType="primary" nzDanger>
+              <span nz-icon nzType="delete"></span>{{ 'common.delete'|translate }}
+            </button>
+          </td>
+
+        </ng-container>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  <nz-affix [nzOffsetBottom]="10" class="col-md-12 text-center mt-2">
+    <button (click)="back()" class="me-2" nz-button nzType="default"><span nz-icon nzType="backward"></span>{{'common.back' |translate}}</button>
+    <button (click)="onSubmit()" nz-button nzType="primary"><span nz-icon nzType="save"></span>{{'common.save' |translate}}</button>
+  </nz-affix>
+</div>
+<nz-modal
+  [nzVisible]="previewVisible"
+  [nzContent]="modalContent"
+  [nzFooter]="null"
+  (nzOnCancel)="previewVisible = false">
+  <ng-template #modalContent>
+    <img [src]="previewImage" [ngStyle]="{ width: '100%' }"  alt="image"/>
+  </ng-template>
+</nz-modal>

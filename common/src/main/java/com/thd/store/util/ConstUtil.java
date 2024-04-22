@@ -32,6 +32,11 @@ public class ConstUtil {
     public static final String PLUS = "+";
     public static final String COLON = ":";
     public static final String DASH = "-";
+    public static final String XLSX = "xlsx";
+    public static final String XLS = "xls";
+    public static final String DOT_XLSX = ".xlsx";
+    public static final String DOT_XLS = ".xls";
+
 
     public static final long TIMEOUT_TOKEN = 3000L;
     public static final long TIMEOUT_REFRESH_TOKEN = 18000L;
@@ -53,4 +58,6 @@ public class ConstUtil {
     public static final String PARAM_NEW_PASSWORD = "newPassword";
     public static final String AUTHORIZATION = "Authorization";
     public static final String BEARER = "Bearer ";
+    public static final String LAST_MODIFIED_DATE = "lastModifiedDate";
+
 }

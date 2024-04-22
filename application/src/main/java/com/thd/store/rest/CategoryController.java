@@ -4,10 +4,13 @@ import com.thd.store.service.CategoryService;
 import com.thd.store.dto.category.CategoryDto;
 import com.thd.store.dto.category.CategorySearch;
 import com.thd.store.dto.BaseResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Enumeration;
 
 /**
  * @author DatNuclear 05/02/2024
@@ -32,8 +35,16 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.search(request));
     }
     @GetMapping("/{id}")
-    public ResponseEntity<BaseResponse> search(@PathVariable("id") Long id){
+    public ResponseEntity<BaseResponse> get(@PathVariable("id") Long id, HttpServletRequest request){
         return ResponseEntity.ok(categoryService.getById(id));
+    }
+    @GetMapping("/level/{level}")
+    public ResponseEntity<BaseResponse> getByLevel(@PathVariable("level") Integer level){
+        return ResponseEntity.ok(categoryService.getAllByLevel(level));
+    }
+    @GetMapping("/parent/{parentId}")
+    public ResponseEntity<BaseResponse> getByLevel(@PathVariable("parentId") Long parentId){
+        return ResponseEntity.ok(categoryService.getAllByParentId(parentId));
     }
     @PreAuthorize("hasAnyAuthority(T(com.thd.store.util.ConstUtil).ADMIN_ROLE)")
     @DeleteMapping("/{id}")

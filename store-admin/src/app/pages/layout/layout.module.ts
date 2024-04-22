@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { LayoutComponent } from './layout.component';
 import {NzLayoutModule} from "ng-zorro-antd/layout";
 import {NzMenuModule} from "ng-zorro-antd/menu";
@@ -13,6 +13,7 @@ import {NzSelectModule} from "ng-zorro-antd/select";
 import {FormsModule} from "@angular/forms";
 import {CommonsModule} from "../commons/commons.module";
 import {NzBreadCrumbModule} from "ng-zorro-antd/breadcrumb";
+import {NzInputModule} from "ng-zorro-antd/input";
 
 
 
@@ -35,7 +36,9 @@ import {NzBreadCrumbModule} from "ng-zorro-antd/breadcrumb";
         NzSelectModule,
         FormsModule,
         CommonsModule,
-        NzBreadCrumbModule
+        NzBreadCrumbModule,
+        NzInputModule,
+        NgOptimizedImage
     ]
 })
 export class LayoutModule { }

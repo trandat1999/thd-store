@@ -9,12 +9,15 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Set;
+
+import static com.thd.store.util.ConstUtil.LAST_MODIFIED_DATE;
 
 /**
  * @author DatNuclear 16/01/2024
@@ -108,7 +111,7 @@ public abstract class BaseService {
         if (!ObjectUtils.isEmpty(searchRequest.getPageSize()) && searchRequest.getPageSize() > 0) {
             pageSize = searchRequest.getPageSize();
         }
-        return PageRequest.of(pageIndex, pageSize);
+        return PageRequest.of(pageIndex, pageSize, Sort.by(LAST_MODIFIED_DATE).descending());
     }
 
     protected HashMap<String, String> validation(Object object) {

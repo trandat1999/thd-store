@@ -5,7 +5,6 @@ import {VOIDED_CHOICE} from "../../../utils/ConstUtil";
 import {CountrySearch} from "../../../utils/search-object";
 import {TranslateService} from "@ngx-translate/core";
 import {CountryService} from "./country.service";
-import {BreadcrumbItem} from "../../commons/breadcrumb/breadcrumb.component";
 
 @Component({
   selector: 'thd-country',
@@ -13,9 +12,6 @@ import {BreadcrumbItem} from "../../commons/breadcrumb/breadcrumb.component";
   styleUrls: ['./country.component.scss']
 })
 export class CountryComponent implements OnInit {
-  breadcrumbs : BreadcrumbItem[] = [
-    {link: null, name : this.translate.instant("settingModule.country")}
-  ]
   deleting : boolean = false
   isVisible= false;
   entity:Country;
