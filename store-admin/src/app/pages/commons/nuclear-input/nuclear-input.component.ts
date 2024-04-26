@@ -1,24 +1,18 @@
 import {
-  AfterViewInit,
   Component,
-  ElementRef, EventEmitter,
+  EventEmitter,
   HostBinding,
   Input,
   OnChanges,
-  OnDestroy,
-  OnInit, Optional, Output, Self,
-  SimpleChanges, TemplateRef,
+  OnInit,
+  Optional,
+  Output,
+  Self,
+  SimpleChanges,
+  TemplateRef,
   ViewChild
 } from '@angular/core';
-import {
-  AbstractControl,
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  NgControl, ValidationErrors,
-  Validator,
-  Validators
-} from "@angular/forms";
-import {FocusMonitor} from "@angular/cdk/a11y";
+import {ControlValueAccessor, NgControl, Validators} from "@angular/forms";
 import {TranslateService} from "@ngx-translate/core";
 import {BooleanInput} from "ng-zorro-antd/core/types";
 
@@ -107,6 +101,7 @@ export class NuclearInputComponent implements OnInit, ControlValueAccessor, OnCh
   @Input() isSearch : boolean = false;
   @Input() offMb : boolean = false;
   @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() disabledDate : (current: Date) => boolean
 
   get value(): any {
     return this.val;

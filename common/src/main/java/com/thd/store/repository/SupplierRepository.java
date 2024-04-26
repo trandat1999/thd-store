@@ -18,7 +18,7 @@ public interface SupplierRepository extends JpaRepository<Supplier,Long> {
             "and (:id is null or entity.id != :id)")
     long countExistByCode(String code, Long id);
 
-    @Query(value = "select new com.thd.store.dto.supplier.SupplierDto(entity) " +
+    @Query(value = "select new com.thd.store.dto.supplier.SupplierDto(entity,true) " +
             "from Supplier entity where entity.voided <> true ")
     List<SupplierDto> getAll();
 

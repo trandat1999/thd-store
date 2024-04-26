@@ -1,12 +1,21 @@
-import { Component } from '@angular/core';
-import {Supplier} from "../product-import.model";
-import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
-import {PHONE_NUMBER_REGEX, VOIDED_CHOICE, getErrorMessage} from "../../../utils/ConstUtil";
-import {CategorySearch} from "../../../utils/search-object";
-import {Product} from "../../setting/setting.model";
+import {Component} from '@angular/core';
+import {
+  InventoryImport,
+  InventoryImportItem,
+  InventoryImportSearch,
+  InventoryImportStatus,
+  InventoryImportStatusColor,
+  Supplier
+} from "../product-import.model";
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {getErrorMessage, VOIDED_CHOICE} from "../../../utils/ConstUtil";
+import {Product, Warehouse} from "../../setting/setting.model";
 import {SupplierService} from "../supplier/supplier.service";
-import {ProductService} from "../../setting/product/product.service";
 import {TranslateService} from "@ngx-translate/core";
+import {InventoryImportService} from "./inventory-import.service";
+import {WarehouseService} from "../../setting/warehouse/warehouse.service";
+import {differenceInCalendarDays} from 'date-fns';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'thd-inventory-import',
@@ -16,25 +25,32 @@ import {TranslateService} from "@ngx-translate/core";
 export class InventoryImportComponent {
   deleting = false;
   isVisible = false;
-  entity: Supplier;
   formGroup: FormGroup;
+  entity: InventoryImport
   voidedList = VOIDED_CHOICE
-  searchObject: CategorySearch = {
+  searchObject: InventoryImportSearch = {
     pageIndex: 1,
     pageSize: 10,
   }
   totalElement = 0;
-  entities: Supplier[] = [];
+  entities: InventoryImport[] = [];
   products: Product[] = [];
-
+  suppliers: Supplier[] = [];
+  warehouses : Warehouse[] = [];
+  disabledDate = (current: Date): boolean => differenceInCalendarDays(current, new Date()) < 0;
   constructor(private supplierService: SupplierService,
-              private productService: ProductService,
+              private invoiceImportService: InventoryImportService,
+              private warehouseService: WarehouseService,
+              private router: Router,
               private translate: TranslateService) {
   }
 
   ngOnInit(): void {
-    this.productService.getAll().subscribe(data => {
-      this.products = data.body || [];
+    this.supplierService.getAll().subscribe(data => {
+      this.suppliers = data.body || [];
+    })
+    this.warehouseService.getAll().subscribe(data => {
+      this.warehouses = data.body || [];
     })
   }
 
@@ -46,7 +62,7 @@ export class InventoryImportComponent {
   loadTable() {
     let search = {...this.searchObject}
     search.pageIndex = search.pageIndex - 1;
-    this.supplierService.search(search).subscribe(data => {
+    this.invoiceImportService.search(search).subscribe(data => {
       if (data.body) {
         this.entities = data.body.content;
         this.totalElement = data.body.totalElements;
@@ -55,44 +71,33 @@ export class InventoryImportComponent {
   }
 
   onCreateOrUpdate(data: any) {
+    if(data && data.id){
+      this.router.navigate(["/product-import/inventory-import", data.id])
+      return;
+    }
     this.isVisible = true;
-    this.entity = data ? data : {}
     this.formGroup = new FormGroup({
-      id: new FormControl(this.entity.id),
-      name: new FormControl(this.entity.name, [Validators.required]),
-      code: new FormControl(this.entity.code, [Validators.required]),
-      description: new FormControl(this.entity.description),
-      voided: new FormControl(this.entity.voided ? this.entity.voided : false),
-      products: new FormControl(this.entity.products),
-      email: new FormControl(this.entity.email, [Validators.required, Validators.email]),
-      phoneNumber: new FormControl(this.entity.phoneNumber, [Validators.required, this.phoneNumberValidator]),
+      importDate: new FormControl(null, [Validators.required]),
+      warehouse: new FormControl(null, [Validators.required]),
+      supplier: new FormControl(null, [Validators.required]),
+      note: new FormControl(null, [Validators.required]),
+      items: new FormArray([], [Validators.required]),
     })
   }
-
-  phoneNumberValidator: ValidatorFn = (control: AbstractControl) => {
-    if (!control.value) {
-      return {required: true}
-    }
-    if (control.value) {
-      let regex = new RegExp(PHONE_NUMBER_REGEX)
-      if (!regex.test(control.value)) {
-        return {phoneNumber: true}
-      }
-    }
-    return {};
-  };
 
   getErrorMessage(control: string): string {
     return getErrorMessage(control, this.formGroup, this.translate);
   }
 
   onSubmit() {
-    this.supplierService.save(this.formGroup.getRawValue()).subscribe(data => {
+    this.invoiceImportService.save(this.formGroup.getRawValue()).subscribe(data => {
       if (data.code == 400) {
         if (data.body) {
           Object.keys(data.body).forEach(key => {
-            this.formGroup.controls[key]?.setErrors({'serverError': true, 'serverErrorMess': data.body[key]});
-          });
+            let field = key.replace("]","");
+            field = field.replace("[",".");
+            this.formGroup.get(field)?.setErrors({ 'serverError': true, 'serverErrorMess': data.body[key] });
+           });
           return;
         }
       } else {
@@ -108,9 +113,39 @@ export class InventoryImportComponent {
 
   delete(id: number) {
     this.deleting = true;
-    this.supplierService.delete(id).subscribe(data => {
+    this.invoiceImportService.delete(id).subscribe(data => {
       this.deleting = false;
       this.loadTable();
     })
   }
+
+  get items(){
+    return this.formGroup?.get("items") as FormArray
+  }
+  get dataTable(){
+    return [...this.items.controls]
+  }
+  initItem(data: InventoryImportItem){
+    return new FormGroup({
+      quantity: new FormControl(data.quantity, [Validators.required,Validators.min(1)]),
+      price: new FormControl(data.price, [Validators.required]),
+      product: new FormControl(data.product, [Validators.required]),
+    })
+  }
+  addItem() {
+    this.items.push(this.initItem({}));
+  }
+  supplierChange(supplier: Supplier){
+    this.products = supplier?.products || [];
+  }
+  getTotalPrice(){
+    let total = 0;
+    for(let item of this.items?.controls){
+      total += (item.get('quantity')?.value || 0) * (item.get('price')?.value || 0);
+    }
+    return total;
+  }
+
+  protected readonly InventoryImportStatusColor = InventoryImportStatusColor;
+  protected readonly InventoryImportStatus = InventoryImportStatus;
 }

@@ -1,6 +1,6 @@
 <div class="row">
   <nz-page-header class="col-12"
-                  nzTitle="{{'settingModule.supplier' | translate}}">
+                  nzTitle="Inventory import">
   </nz-page-header>
   <div class="col-md-12">
     <div class="row">
@@ -27,11 +27,10 @@
       <tr>
         <th style="width: 100px" nzLeft>{{'common.action' |translate}}</th>
         <th>{{'common.code' |translate}}</th>
-        <th>{{'common.name' |translate}}</th>
-        <th>{{'common.description' |translate}}</th>
-        <th>{{'supplier.email' |translate}}</th>
-        <th>{{'supplier.phoneNumber' |translate}}</th>
-        <th style="width: 100px">{{'common.status' |translate}}</th>
+        <th>Status</th>
+        <th>Supplier</th>
+        <th>Warehouse</th>
+        <th>Note</th>
       </tr>
       </thead>
       <tbody>
@@ -40,61 +39,100 @@
           <nz-button-group>
             <button (click)="onCreateOrUpdate(data)"
                     nz-tooltip="{{'common.edit'|translate}}" nz-button nzType="link">
-              <span  (click)="onCreateOrUpdate(data)" nz-icon nzType="edit"></span>
+              <span nz-icon nzType="edit"></span>
             </button>
-            <button nzOkDanger nzIcon="delete" nz-tooltip="{{'common.delete'|translate}}" (nzOnConfirm)="delete(data.id)" nz-popconfirm
+            <button nzOkDanger nzIcon="delete"
+                    nz-tooltip="{{'common.delete'|translate}}" (nzOnConfirm)="delete(data.id)" nz-popconfirm
                     nzPopconfirmTitle="{{'common.confirmDelete' |translate}}" nz-button nzType="link" nzDanger>
-              <span nz-icon nzType="delete"></span>
+              <span nz-icon ><i class="fa fa-times-circle" aria-hidden="true"></i></span>
             </button>
           </nz-button-group>
         </td>
         <td>{{ data.code }}</td>
-        <td>{{ data.name }}</td>
-        <td>{{ data.description }}</td>
-        <td>{{ data.email }}</td>
-        <td>{{ data.phoneNumber }}</td>
-        <td class="text-center">
-          <span *ngIf="!data.voided" class="badge text-bg-success">{{'common.voidedFalse' | translate}}</span>
-          <span *ngIf="data.voided" class="badge text-bg-danger">{{'common.voidedTrue' | translate}}</span>
-        </td>
-
+        <td><nz-tag [nzColor]="InventoryImportStatusColor[data.status]"><span class="fw-bold">{{InventoryImportStatus[data.status]}}</span></nz-tag></td>
+        <td>{{ data.supplier?.name }}</td>
+        <td>{{ data.warehouse?.name }}</td>
+        <td>{{ data.note }}</td>
       </tr>
       </tbody>
     </nz-table>
   </div>
 </div>
-<nz-modal [(nzVisible)]="isVisible" nzWidth="50%" [nzOkDisabled]="formGroup?.invalid" (nzOnOk)="onSubmit()"
+<nz-modal [(nzVisible)]="isVisible" nzWidth="70%" [nzOkDisabled]="formGroup?.invalid" (nzOnOk)="onSubmit()"
           (nzOnCancel)="isVisible=false" nzTitle="{{(entity?.id?'common.update':'common.create')|translate}}">
   <ng-container *nzModalContent>
-    <div class="row" nz-form nzLayout="horizontal" [formGroup]="formGroup">
-      <thd-input class="col-md-12" label="{{'common.code'|translate}}" [hasFeedback]="true"
-                 formControlName="code"
-                 [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('code')">
+    <div class="row" nz-form nzLayout="vertical" [formGroup]="formGroup">
+      <thd-input class="col-md-4" label="Import date" [hasFeedback]="true"
+                 formControlName="importDate" type="date" [disabledDate]="disabledDate"
+                 [errorText]="getErrorMessage('importDate')">
       </thd-input>
-      <thd-input class="col-md-12" label="{{'common.name'|translate}}" [hasFeedback]="true" formControlName="name"
-                 [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('name')">
+      <thd-input (valueChange)="supplierChange($event)" class="col-md-4" label="Supplier" [hasFeedback]="true"
+                 formControlName="supplier" type="select" bindLabel="name" [items]="suppliers"
+                 [errorText]="getErrorMessage('supplier')">
       </thd-input>
-      <thd-input class="col-md-12" label="{{'common.description'|translate}}" [hasFeedback]="true"
-                 formControlName="description"
-                 [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('description')">
+      <thd-input class="col-md-4" label="Warehouse" [hasFeedback]="true"
+                 formControlName="warehouse" type="select" bindLabel="name" [items]="warehouses"
+                 [errorText]="getErrorMessage('warehouse')">
       </thd-input>
-      <thd-input class="col-md-12" label="{{'common.status'|translate}}" [hasFeedback]="true" formControlName="voided"
-                 [labelSpan]="6" [inputSpan]="18" bindValue="value" [isTranslation]="true" bindLabel="label"
-                 [items]="voidedList" type="select">
+      <thd-input class="col-md-12" label="Note" [hasFeedback]="true"
+                 formControlName="note"
+                 [errorText]="getErrorMessage('note')">
       </thd-input>
-      <thd-input class="col-md-12" label="{{'supplier.email'|translate}}" [hasFeedback]="true"
-                 formControlName="email"
-                 [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('email')">
-      </thd-input>
-      <thd-input class="col-md-12" label="{{'supplier.phoneNumber'|translate}}" [hasFeedback]="true"
-                 formControlName="phoneNumber"
-                 [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('phoneNumber')">
-      </thd-input>
-      <thd-input class="col-md-12" label="{{'supplier.product'|translate}}" [hasFeedback]="true"
-                 formControlName="products" type="select" bindLabel="name" [items]="products" selectMode="multiple"
-                 [labelSpan]="6" [inputSpan]="18">
-      </thd-input>
+      <div class="col-md-12">
+        <nz-form-label>Items  &nbsp;<span class="text-danger">{{getErrorMessage("items")}}</span></nz-form-label>
+        <nz-table [nzFooter]="footer" nzSize="small" nzBordered="true" nzOuterBordered="true" nzShowPagination="false"
+                  nzFrontPagination="false" [nzData]="dataTable">
+          <thead>
+          <tr>
+            <th><span class="text-danger">*</span>Product</th>
+            <th><span class="text-danger">*</span>Quantity</th>
+            <th><span class="text-danger">*</span>Price</th>
+            <th>Total</th>
+            <th class="text-center">
+              <button nzSize="small" (click)="addItem()" type="button" nz-button nzType="primary">
+                <span nz-icon nzType="plus"></span> {{'common.add'|translate}}</button>
+            </th>
+          </tr>
+          </thead>
+          <tbody formArrayName="items">
+          <tr *ngFor="let item of items.controls;index as i">
+            <ng-container [formGroupName]="i">
+              <td>
+                <thd-input [showLabel]="false" formControlName="product" type="select" [items]="products"
+                           [errorText]="getErrorMessage('items.'+i+'.product')"
+                           [hasFeedback]="true" bindLabel="name">
+                </thd-input>
+              </td>
+              <td>
+                <thd-input [showLabel]="false" type="number" [min]="1" [step]="1" formControlName="quantity"
+                           [errorText]="getErrorMessage('items.'+i+'.quantity')"
+                           [hasFeedback]="true">
+                </thd-input>
+              </td>
+              <td>
+                <thd-input [showLabel]="false" type="number" formControlName="price"
+                           [errorText]="getErrorMessage('items.'+i+'.price')"
+                           [hasFeedback]="true" addOnAfter="vnđ">
+                </thd-input>
+              </td>
+              <td style="vertical-align: top" class="fw-bold text-end">
+                {{(item.get('quantity')?.value || 0) * (item.get('price')?.value || 0) | currency : "VND":"vnđ":"":"vi"}}
+              </td>
+              <td style="vertical-align: top">
+                <button nzOkDanger nzIcon="delete" (nzOnConfirm)="items.removeAt(i)" nz-popconfirm
+                        nzPopconfirmTitle="{{'common.confirmDelete' |translate}}" nz-button nzType="primary" nzDanger>
+                  <span nz-icon nzType="delete"></span>{{ 'common.delete'|translate }}
+                </button>
+              </td>
+
+            </ng-container>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
     </div>
   </ng-container>
 </nz-modal>
-
+<ng-template #footer>
+  <span class="fw-bold">Total: {{getTotalPrice() | currency : "VND":"vnđ":"":"vi"}} </span>
+</ng-template>

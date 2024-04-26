@@ -7,16 +7,18 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.util.CollectionUtils;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author DatNuclear 21/03/2024
  * @project store
  */
 @Data
+@NoArgsConstructor
 public class SupplierDto extends BaseInformationDto {
     @NotNull(message = "{store.validation.NotNull}")
     @NotBlank(message = "{store.validation.NotBlank}")
@@ -25,10 +27,8 @@ public class SupplierDto extends BaseInformationDto {
     @NotNull(message = "{store.validation.NotNull}")
     @NotBlank(message = "{store.validation.NotBlank}")
     private String phoneNumber;
-    private Set<ProductDto> products = new HashSet<>();
+    private List<ProductDto> products = new ArrayList<>();
 
-    public SupplierDto() {
-    }
     public SupplierDto(Supplier entity) {
         if (entity != null) {
             this.id = entity.getId();

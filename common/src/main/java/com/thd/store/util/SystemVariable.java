@@ -26,6 +26,7 @@ public class SystemVariable {
     public static final String PROVINCE = "store.variable.province";
     public static final String DISTRICT = "store.variable.district";
     public static final String COMMUNE = "store.variable.commune";
+    public static final String INVOICE_IMPORT = "store.variable.invoiceImport";
 
     public static final String ADMINISTRATIVE_UNIT = "AdministrativeUnit";
     public static final String PRODUCT = "store.variable.product";

@@ -16,6 +16,7 @@ import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzFormModule} from "ng-zorro-antd/form";
 import { InventoryImportComponent } from './inventory-import/inventory-import.component';
 import { InventoryImportDetailComponent } from './inventory-import/inventory-import-detail/inventory-import-detail.component';
+import {NzTagModule} from "ng-zorro-antd/tag";
 
 
 @NgModule({
@@ -24,21 +25,22 @@ import { InventoryImportDetailComponent } from './inventory-import/inventory-imp
     InventoryImportComponent,
     InventoryImportDetailComponent
   ],
-  imports: [
-    CommonModule,
-    ProductImportRoutingModule,
-    TranslateModule,
-    NzPageHeaderModule,
-    CommonsModule,
-    FormsModule,
-    NzButtonModule,
-    NzIconModule,
-    NzTableModule,
-    NzToolTipModule,
-    NzPopconfirmModule,
-    NzModalModule,
-    ReactiveFormsModule,
-    NzFormModule
-  ]
+    imports: [
+        CommonModule,
+        ProductImportRoutingModule,
+        TranslateModule,
+        NzPageHeaderModule,
+        CommonsModule,
+        FormsModule,
+        NzButtonModule,
+        NzIconModule,
+        NzTableModule,
+        NzToolTipModule,
+        NzPopconfirmModule,
+        NzModalModule,
+        ReactiveFormsModule,
+        NzFormModule,
+        NzTagModule
+    ]
 })
 export class ProductImportModule { }

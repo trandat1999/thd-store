@@ -1,17 +1,13 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BaseService} from "../../../services/base.service";
 import {CategorySearch} from "../../../utils/search-object";
-import {Category} from "../../setting/setting.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventoryImportService {
-  private readonly URL = "/api/v1/inventory-import"
+  private readonly URL = "/api/v1/invoice-imports"
   constructor(private base : BaseService) {
-  }
-  getAll() {
-    return this.base.get(this.URL);
   }
   search(search: CategorySearch) {
     return this.base.post(this.URL+"/pages", search);
@@ -19,11 +15,11 @@ export class InventoryImportService {
   get(id:number){
     return this.base.get(this.URL+"/"+id);
   }
-  save(category:Category){
-    return this.base.post(this.URL,category);
+  save(entity:any){
+    return this.base.post(this.URL,entity);
   }
-  update(category:Category,id:number){
-    return this.base.put(this.URL+"/"+id,category);
+  update(entity:any,id:number){
+    return this.base.put(this.URL+"/"+id,entity);
   }
   delete(id:number){
     return this.base.delete(this.URL+"/"+id);

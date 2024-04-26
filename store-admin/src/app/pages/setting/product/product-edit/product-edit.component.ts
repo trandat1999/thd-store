@@ -34,7 +34,6 @@ export class ProductEditComponent implements OnInit {
               private translate: TranslateService) {
     this.serverUrl = this.configService.apiBaseUrl;
     let id = this.route.snapshot.params["id"];
-    console.log(id);
     if(id){
       this.productService.get(id).subscribe(data => {
         if(data.body){

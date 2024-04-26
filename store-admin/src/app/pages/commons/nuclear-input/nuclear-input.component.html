@@ -20,7 +20,7 @@
                       #inputElements3="ngModel" [(ngModel)]="value"></angular-editor>
       <nz-date-picker class="w-100" [nzPlaceHolder]="placeHolder" [nzDisabled]="isDisabled || ngControl?.disabled"
                       *ngSwitchCase="'date'" #inputElements5="ngModel" [nzShowTime]="showTime" [nzShowNow]="showNow"
-                      [nzShowToday]="showToday" [nzFormat]="dateTimeFormat"
+                      [nzShowToday]="showToday" [nzFormat]="dateTimeFormat" [nzDisabledDate]="disabledDate"
                       [(ngModel)]="value" [nzSize]="size"></nz-date-picker>
       <nz-input-number-group class="w-100" *ngSwitchCase="'number'"  [nzPrefix]="prefix"
                              [nzAddOnBefore]="addOnBefore" [nzAddOnAfter]="addOnAfter"

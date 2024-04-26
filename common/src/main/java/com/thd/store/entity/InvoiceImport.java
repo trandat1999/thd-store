@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
 /**
  * @author DatNuclear 17/04/2024
@@ -20,7 +21,7 @@ import java.util.UUID;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class InvoiceImport extends BaseInformation{
+public class InvoiceImport extends BaseEntity{
     @ManyToOne
     @JoinColumn(name="supplier_id")
     private Supplier supplier;
@@ -32,6 +33,12 @@ public class InvoiceImport extends BaseInformation{
     private Warehouse warehouse;
     @Column(name="import_date")
     private Date importDate;
-    @Column(name="uuid_code")
-    private UUID uuidCode;
+    @Column(name="code")
+    private String code;
+    @OneToMany(mappedBy = "invoice",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+    private List<InvoiceImportItem> items = new ArrayList<>();
+    @Column(name="total")
+    private Double total;
+    @Column(name="note")
+    private String note;
 }

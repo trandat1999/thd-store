@@ -26,5 +26,12 @@ public class InvoiceImportItem extends BaseEntity{
     private Double price;
     @ManyToOne
     @JoinColumn(name="invoice_import_id")
-    private InvoiceImport invoiceImport;
+    private InvoiceImport invoice;
+
+    public InvoiceImportItem(Product product, Integer quantity, Double price, InvoiceImport invoice) {
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+        this.invoice = invoice;
+    }
 }
