@@ -47,7 +47,7 @@ public class InvoiceImportDto extends BaseDto {
                 this.warehouse = new WarehouseDto(entity.getWarehouse());
             }
             if(entity.getSupplier()!=null) {
-                this.supplier = new SupplierDto(entity.getSupplier());
+                this.supplier = new SupplierDto(entity.getSupplier(),true);
             }
         }
     }

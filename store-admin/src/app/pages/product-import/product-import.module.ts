@@ -17,6 +17,9 @@ import {NzFormModule} from "ng-zorro-antd/form";
 import { InventoryImportComponent } from './inventory-import/inventory-import.component';
 import { InventoryImportDetailComponent } from './inventory-import/inventory-import-detail/inventory-import-detail.component';
 import {NzTagModule} from "ng-zorro-antd/tag";
+import {NzStepsModule} from "ng-zorro-antd/steps";
+import {NzQRCodeModule} from "ng-zorro-antd/qr-code";
+import {NzAffixModule} from "ng-zorro-antd/affix";
 
 
 @NgModule({
@@ -40,7 +43,10 @@ import {NzTagModule} from "ng-zorro-antd/tag";
         NzModalModule,
         ReactiveFormsModule,
         NzFormModule,
-        NzTagModule
+        NzTagModule,
+        NzStepsModule,
+        NzQRCodeModule,
+        NzAffixModule
     ]
 })
 export class ProductImportModule { }

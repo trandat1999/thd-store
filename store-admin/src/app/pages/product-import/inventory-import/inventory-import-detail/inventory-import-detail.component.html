@@ -1,1 +1,126 @@
-<p>inventory-import-detail works!</p>
+<div class="row">
+  <div class="mt-3 col-md-12" >
+    <nz-steps [nzCurrent]="currentStatus()" nzStatus="finish" [nzLabelPlacement]="'vertical'">
+      <nz-step class="text-danger" [nzTitle]="InventoryImportStatus.NEW" nzIcon="group"></nz-step>
+      <nz-step  [nzTitle]="InventoryImportStatus.ORDER"  nzIcon="shopping-cart"></nz-step>
+      <nz-step  [nzTitle]="InventoryImportStatus.APPROVED" nzIcon="check-circle"></nz-step>
+      <nz-step  [nzTitle]="InventoryImportStatus.TRANSPORT" [nzIcon]="transport">
+        <ng-template #transport>
+          <i class="fa fa-plane" aria-hidden="true"></i>
+        </ng-template>
+      </nz-step>
+      <nz-step  class="col-md-2"  [nzTitle]="InventoryImportStatus.PAID" [nzIcon]="paid">
+        <ng-template #paid>
+          <i class="fa fa-money" aria-hidden="true"></i>
+        </ng-template>
+      </nz-step>
+      <nz-step  class="col-md-2"  [nzTitle]="InventoryImportStatus.WAREHOUSED" [nzIcon]="done">
+        <ng-template #done>
+          <i class="fa fa-check-circle" aria-hidden="true"></i>
+        </ng-template>
+      </nz-step>
+    </nz-steps>
+  </div>
+  <div class="mt-3 col-md-12">
+    <div class="row" nz-form nzLayout="vertical" [formGroup]="formGroup" >
+      <div class="col-md-10">
+        <div class="row">
+          <thd-input class="col-md-4" label="{{'productImport.importDate' |translate}}" [hasFeedback]="true"
+                     formControlName="importDate" type="date" [disabledDate]="disabledDate"
+                     [errorText]="getErrorMessage('importDate')">
+          </thd-input>
+          <thd-input (valueChange)="supplierChange($event)" class="col-md-4" label="{{'productImport.supplier' |translate}}" [hasFeedback]="true"
+                     formControlName="supplier" type="select" bindLabel="name" [items]="suppliers"
+                     [errorText]="getErrorMessage('supplier')">
+          </thd-input>
+          <thd-input class="col-md-4" label="{{'productImport.warehouse' |translate}}" [hasFeedback]="true"
+                     formControlName="warehouse" type="select" bindLabel="name" [items]="warehouses"
+                     [errorText]="getErrorMessage('warehouse')">
+          </thd-input>
+          <thd-input class="col-md-12" label="{{'productImport.note' |translate}}" [hasFeedback]="true"
+                     formControlName="note"
+                     [errorText]="getErrorMessage('note')">
+          </thd-input>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <nz-qrcode [nzSize]="120" nzValue="https://ng.ant.design/"></nz-qrcode>
+      </div>
+      <div class="col-md-12">
+        <nz-form-label>Items  &nbsp;<span class="text-danger">{{getErrorMessage("items")}}</span></nz-form-label>
+        <nz-table [nzFooter]="footer" nzSize="small" nzBordered="true" nzOuterBordered="true" nzShowPagination="false"
+                  nzFrontPagination="false" [nzData]="dataTable">
+          <thead>
+          <tr>
+            <th><span class="text-danger">*</span>{{'productImport.product' |translate}}</th>
+            <th><span class="text-danger">*</span>{{'productImport.quantity' |translate}}</th>
+            <th><span class="text-danger">*</span>{{'productImport.price' |translate}}</th>
+            <th>{{'productImport.total' |translate}}</th>
+            <th class="text-center" *ngIf="formGroup.disabled">
+              <button nzSize="small" (click)="addItem()" type="button" nz-button nzType="primary">
+                <span nz-icon nzType="plus"></span> {{'common.add'|translate}}</button>
+            </th>
+          </tr>
+          </thead>
+          <tbody formArrayName="items">
+          <tr *ngFor="let item of items.controls;index as i">
+            <ng-container [formGroupName]="i">
+              <td>
+                <thd-input [showLabel]="false" formControlName="product" type="select" [items]="products"
+                           [errorText]="getErrorMessage('items.'+i+'.product')"
+                           [hasFeedback]="true" bindLabel="name">
+                </thd-input>
+              </td>
+              <td>
+                <thd-input [showLabel]="false" type="number" [min]="1" [step]="1" formControlName="quantity"
+                           [errorText]="getErrorMessage('items.'+i+'.quantity')"
+                           [hasFeedback]="true">
+                </thd-input>
+              </td>
+              <td>
+                <thd-input [showLabel]="false" type="number" formControlName="price"
+                           [errorText]="getErrorMessage('items.'+i+'.price')"
+                           [hasFeedback]="true" addOnAfter="vnđ">
+                </thd-input>
+              </td>
+              <td style="vertical-align: top" class="fw-bold text-end">
+                {{(item.get('quantity')?.value || 0) * (item.get('price')?.value || 0) | currency : "VND":"vnđ":"":"vi"}}
+              </td>
+              <td style="vertical-align: top" class="text-center" *ngIf="formGroup.disabled">
+                <button nzOkDanger nzIcon="delete" (nzOnConfirm)="items.removeAt(i)" nz-popconfirm
+                        nzPopconfirmTitle="{{'common.confirmDelete' |translate}}" nz-button nzType="primary" nzDanger>
+                  <span nz-icon nzType="delete"></span>{{ 'common.delete'|translate }}
+                </button>
+              </td>
+
+            </ng-container>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+  </div>
+  <nz-affix [nzOffsetBottom]="10" class="col-md-12 text-center mt-3">
+    <button (click)="back()" class="me-2" nz-button nzType="default"><span nz-icon nzType="backward"></span>{{'common.back' |translate}}</button>
+    <button *ngIf="status=='NEW'" class="me-2" (click)="onSubmit()" [disabled]="formGroup.invalid" nz-button nzType="primary">
+      <span nz-icon nzType="save"></span>{{'common.save' |translate}}</button>
+    <button *ngIf="status=='NEW'" class="text-white"  [ngStyle]="{'background': InventoryImportStatusColor.ORDER}"
+            (click)="changeStatus('order')" [disabled]="formGroup.invalid" nz-button nzType="default">
+      <span nz-icon nzType="shopping-cart"></span>{{'productImport.order' |translate}}</button>
+    <button *ngIf="status=='ORDER'" class="text-white"  [ngStyle]="{'background': InventoryImportStatusColor.APPROVED}"
+            (click)="changeStatus('approve')" [disabled]="formGroup.invalid" nz-button nzType="default">
+      <span nz-icon nzType="check-circle"></span>{{'productImport.approve' |translate}}</button>
+    <button *ngIf="status=='APPROVED'" class="text-white"  [ngStyle]="{'background': InventoryImportStatusColor.TRANSPORT}"
+            (click)="changeStatus('ship')" [disabled]="formGroup.invalid" nz-button nzType="default">
+      <span nz-icon> <i class="fa fa-plane" aria-hidden="true"></i></span>{{'productImport.transport' |translate}}</button>
+    <button *ngIf="status=='TRANSPORT'" class="text-white"  [ngStyle]="{'background': InventoryImportStatusColor.PAID}"
+            (click)="changeStatus('paid')" [disabled]="formGroup.invalid" nz-button nzType="default">
+      <span nz-icon><i class="fa fa-money" aria-hidden="true"></i></span>{{'productImport.paid' |translate}}</button>
+    <button *ngIf="status=='PAID'" class="text-white"  [ngStyle]="{'background': InventoryImportStatusColor.WAREHOUSED}"
+            (click)="changeStatus('warehoused')" [disabled]="formGroup.invalid" nz-button nzType="default">
+      <span nz-icon><i class="fa fa-check-circle" aria-hidden="true"></i></span>{{'productImport.warehoused' |translate}}</button>
+  </nz-affix>
+</div>
+<ng-template #footer>
+  <span class="fw-bold">{{'productImport.total' |translate}}: {{getTotalPrice() | currency : "VND":"vnđ":"":"vi"}} </span>
+</ng-template>

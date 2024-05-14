@@ -1,0 +1,58 @@
+<div class="row">
+  <nz-page-header class="col-12"
+                  nzTitle="Inventory import">
+  </nz-page-header>
+  <div class="col-md-12">
+    <div class="row">
+      <thd-input [offMb]="true" class="col-md-11 mt-2" [showLabel]="false" [isSearch]="true" [(ngModel)]="searchObject.keyword" placeHolder="{{'common.inputSearch'|translate}}"
+                 (keydown.enter)="submitSearch()" [addOnAfter]="suffixIconButton"></thd-input>
+      <ng-template #suffixIconButton>
+        <button (click)="submitSearch()" nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span>
+        </button>
+      </ng-template>
+      <div class="col-md-1 mt-2 d-flex justify-content-center">
+<!--        <button (click)="testSignal()" nz-button nzType="primary">-->
+<!--          <span nz-icon nzType="plus"></span>{{'common.add'|translate}}-->
+<!--        </button>-->
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive-md">
+    <nz-table  [(nzPageIndex)]="searchObject.pageIndex" [(nzPageSize)]="searchObject.pageSize"
+               nzFrontPagination="false"
+               [nzTotal]="totalElement" (nzQueryParams)="pageChange($event)"
+               nzBordered="true" class="col-12 mt-2" nzSize="small" #table
+               nzShowPagination nzShowSizeChanger [nzData]="entities">
+      <thead>
+      <tr>
+        <th style="width: 100px" nzLeft>{{'common.action' |translate}}</th>
+        <th>{{'common.code' |translate}}</th>
+        <th>{{'sale.type' |translate}}</th>
+        <th>{{'sale.status' |translate}}</th>
+        <th>{{'sale.total' |translate}}</th>
+        <th>{{'sale.note' |translate}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of table.data">
+        <td class="text-center" style="width: 100px" nzLeft>
+          <nz-button-group>
+            <button
+                    nz-tooltip="{{'common.edit'|translate}}" nz-button nzType="link">
+              <span nz-icon nzType="edit"></span>
+            </button>
+            <button nzOkDanger nzIcon="delete"
+                    nz-tooltip="{{'common.delete'|translate}}" (nzOnConfirm)="delete(data.id)" nz-popconfirm
+                    nzPopconfirmTitle="{{'common.confirmDelete' |translate}}" nz-button nzType="link" nzDanger>
+              <span nz-icon ><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </button>
+          </nz-button-group>
+        </td>
+        <td>{{ data.code }}</td>
+        <td><nz-tag [nzColor]="InventoryImportStatusColor[data.status]"><span class="fw-bold">{{InventoryImportStatus[data.status]}}</span></nz-tag></td>
+        <td>{{ data.note }}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

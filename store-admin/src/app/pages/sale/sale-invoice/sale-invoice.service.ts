@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {BaseService} from "../../../services/base.service";
 import {CategorySearch} from "../../../utils/search-object";
 
 @Injectable({
   providedIn: 'root'
 })
-export class InventoryImportService {
-  private readonly URL = "/api/v1/invoice-imports"
+export class SaleInvoiceService {
+  private readonly URL = "/api/v1/sale-invoices"
   constructor(private base : BaseService) {
   }
   search(search: CategorySearch) {

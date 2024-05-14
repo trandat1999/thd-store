@@ -8,7 +8,7 @@ export interface Supplier extends BaseObject{
   products?: Product[];
 }
 
-export interface InventoryImportItem extends BaseObject{
+export interface InvoiceItem extends BaseObject{
   product?:Product;
   quantity?:number;
   price?: number;
@@ -17,7 +17,7 @@ export interface InventoryImport extends BaseObject{
   status?:string;
   supplier?:Supplier;
   warehouse?:Warehouse;
-  items?: InventoryImportItem[]
+  items?: InvoiceItem[]
   total?:number;
   note?:string;
   importDate?:Date
@@ -26,12 +26,15 @@ export const InventoryImportStatus = {
   NEW: "New",
   PENDING_APPROVAL: "Pending approval",
   APPROVED: "Approved",
-  ORDER : "Order",
   TRANSPORT: "Transport",
   PAID: "Paid",
   WAREHOUSED: "Warehoused",
   CANCELLED: "Cancelled",
+  ORDER : "Order",
 }
+export const InventoryImportStatusArray = [
+  'NEW','ORDER','APPROVED','TRANSPORT','PAID','WAREHOUSED'
+]
 export interface InventoryImportSearch extends SearchObject{
   warehouseId?:number;
   supplierId?:number;

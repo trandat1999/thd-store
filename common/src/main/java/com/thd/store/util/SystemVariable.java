@@ -21,12 +21,12 @@ public class SystemVariable {
     public static final String COUNTRY = "store.variable.country";
     public static final String SUPPLIER = "store.variable.supplier";
     public static final String ATTRIBUTE = "store.variable.attribute";
-    public static final String MOVIE = "store.variable.movie";
     public static final String WAREHOUSE = "store.variable.warehouse";
     public static final String PROVINCE = "store.variable.province";
     public static final String DISTRICT = "store.variable.district";
     public static final String COMMUNE = "store.variable.commune";
     public static final String INVOICE_IMPORT = "store.variable.invoiceImport";
+    public static final String SALE_INVOICE = "store.variable.saleInvoice";
 
     public static final String ADMINISTRATIVE_UNIT = "AdministrativeUnit";
     public static final String PRODUCT = "store.variable.product";

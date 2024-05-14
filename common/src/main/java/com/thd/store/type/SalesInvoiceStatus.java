@@ -1,20 +1,18 @@
 package com.thd.store.type;
 
 /**
- * @author DatNuclear 17/04/2024
+ * @author DatNuclear 01/05/2024
  * @project store
  */
-public enum InvoiceImportType {
-    ORDER("Order"),
+public enum SalesInvoiceStatus {
     NEW("New"),
-    PENDING_APPROVAL("Pending Approval"),
+    PREPARING("Preparing"),
     APPROVED("Approved"),
-    PAID("Paid"),
     TRANSPORT("Transport"),
-    WAREHOUSED("Warehoused");
+    DELIVERED("Delivered");
     private String description;
 
-    InvoiceImportType(String description) {
+    SalesInvoiceStatus(String description) {
         this.description = description;
     }
 

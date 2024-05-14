@@ -72,7 +72,10 @@
     "inventoryImport": "Inventory import",
     "administrativeUnit": "Administrative Unit",
     "management": "Management",
-    "warehouse": "Warehouse"
+    "warehouse": "Warehouse",
+    "sale": "Sales",
+    "saleInvoice": "Sales Invoice",
+    "directSale": "Direct Sale"
   },
   "gender": {
     "male": "Male",
@@ -139,7 +142,8 @@
     "detail" : "Detail",
     "inventoryImport": "Inventory import",
     "administrativeUnit": "Administrative Unit",
-    "warehouse": "Warehouse"
+    "warehouse": "Warehouse",
+    "saleInvoice": "Sale Invoice"
   },
   "category": {
     "level": "Level",
@@ -151,7 +155,19 @@
     "product": "Product"
   },
   "productImport": {
-
+    "order": "Order",
+    "importDate": "Import date",
+    "supplier": "Supplier",
+    "warehouse": "Warehouse",
+    "note": "Note",
+    "price": "Price",
+    "product": "Product",
+    "quantity": "Quantity",
+    "total": "Total",
+    "approve": "Approve",
+    "transport" : "Transport",
+    "paid" : "Paid",
+    "warehoused": "Warehoused"
   },
   "product": {
     "images" : "Images",
@@ -159,5 +175,18 @@
   },
   "management": {
     "administrativeUnit" : "Administrative Unit"
+  },
+  "sale": {
+    "type": "Type",
+    "status": "Status",
+    "note": "Note",
+    "total": "Total"
+  },
+  "action": {
+    "backHome": "Back home"
+  },
+  "notification": {
+    "404": "Sorry, the page you visited does not exist.",
+    "403": "Sorry, you are not authorized to access this page."
   }
 }

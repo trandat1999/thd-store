@@ -6,6 +6,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {TranslateConfigService} from "../../services/translate.service";
 import {BehaviorSubject} from "rxjs";
 import {NavigationItem, navigation} from "./layout.model";
+import {SignalService} from "../../services/signal.service";
 
 @Component({
   selector: 'thd-layout',
@@ -20,8 +21,14 @@ export class LayoutComponent implements OnInit {
               private translateService: TranslateConfigService,
               private router: Router,
               private translate: TranslateService,
+              private signalService: SignalService,
               private storage: StorageService) {
     this.currentLanguage = this.storage.getLanguage();
+    this.signalService.subscribeToSignal().subscribe(signal => {
+      if(signal.type === 'navCollapsed'){
+        this.isCollapsed = signal.value || false;
+      }
+    });
   }
 
   ngOnInit(): void {

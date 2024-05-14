@@ -1,0 +1,25 @@
+.height-header{
+  height: 3rem;
+}
+.font-3{
+  font-size: 3rem;
+  color: black;
+}
+:host ::ng-deep .ant-tabs > .ant-tabs-nav {
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+}
+:host ::ng-deep .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab{
+  background-color: #6895d6;
+  border: 0;
+  color: #fff;
+}
+:host ::ng-deep .ant-tabs-tab-active{
+  background-color: #fff !important;
+}
+:host ::ng-deep .ant-tabs-nav-add{
+  color: #fff !important;
+  background-color: #6895d6 !important;
+  border: 0 !important;
+}

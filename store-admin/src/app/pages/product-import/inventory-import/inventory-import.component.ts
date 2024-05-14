@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {
   InventoryImport,
-  InventoryImportItem,
+  InvoiceItem,
   InventoryImportSearch,
   InventoryImportStatus,
   InventoryImportStatusColor,
@@ -71,8 +71,8 @@ export class InventoryImportComponent {
   }
 
   onCreateOrUpdate(data: any) {
-    if(data && data.id){
-      this.router.navigate(["/product-import/inventory-import", data.id])
+    if(data && data.code){
+      this.router.navigate(["/product-import/inventory-import", data.code])
       return;
     }
     this.isVisible = true;
@@ -125,7 +125,7 @@ export class InventoryImportComponent {
   get dataTable(){
     return [...this.items.controls]
   }
-  initItem(data: InventoryImportItem){
+  initItem(data: InvoiceItem){
     return new FormGroup({
       quantity: new FormControl(data.quantity, [Validators.required,Validators.min(1)]),
       price: new FormControl(data.price, [Validators.required]),

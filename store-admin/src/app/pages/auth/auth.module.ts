@@ -21,6 +21,7 @@ import { ActiveComponent } from './active/active.component';
 import {TranslateModule} from "@ngx-translate/core";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzAlertModule} from "ng-zorro-antd/alert";
+import {NzResultModule} from "ng-zorro-antd/result";
 
 
 @NgModule({
@@ -32,23 +33,24 @@ import {NzAlertModule} from "ng-zorro-antd/alert";
     NotFoundComponent,
     ActiveComponent
   ],
-  imports: [
-    CommonModule,
-    AuthRoutingModule,
-    NzFormModule,
-    NzButtonModule,
-    NzCheckboxModule,
-    FormsModule,
-    NzInputModule,
-    ReactiveFormsModule,
-    NzIconModule,
-    NzCardModule,
-    CommonsModule,
-    NzSpaceModule,
-    NzI18nModule,
-    TranslateModule,
-    NzModalModule,
-    NzAlertModule
-  ]
+    imports: [
+        CommonModule,
+        AuthRoutingModule,
+        NzFormModule,
+        NzButtonModule,
+        NzCheckboxModule,
+        FormsModule,
+        NzInputModule,
+        ReactiveFormsModule,
+        NzIconModule,
+        NzCardModule,
+        CommonsModule,
+        NzSpaceModule,
+        NzI18nModule,
+        TranslateModule,
+        NzModalModule,
+        NzAlertModule,
+        NzResultModule
+    ]
 })
 export class AuthModule { }

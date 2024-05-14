@@ -53,6 +53,18 @@ export const navigation: NavigationItem[] = [
       },
     ]
   }, {
+    translateKey: 'navigation.sale',
+    iconClass: "fa fa-shopping-bag",
+    children: [
+      {
+        translateKey: 'navigation.saleInvoice',
+        link: '/sale/invoice'
+      },{
+        translateKey: 'navigation.directSale',
+        link: '/direct-sale'
+      }
+    ]
+  },{
     translateKey: 'navigation.management',
     iconType: "appstore",
     children: [

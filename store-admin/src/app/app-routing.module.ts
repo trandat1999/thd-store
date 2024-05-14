@@ -27,6 +27,12 @@ const routes: Routes = [
         },
         loadChildren: () => import('./pages/product-import/product-import.module').then(m => m.ProductImportModule)
       },
+      { path: 'sale',
+        data: {
+          breadcrumb: 'breadcrumb.none',
+        },
+        loadChildren: () => import('./pages/sale/sale.module').then(m => m.SaleModule)
+      },
       { path: 'management',
         data: {
           breadcrumb: 'breadcrumb.none',
@@ -35,6 +41,7 @@ const routes: Routes = [
       },
     ]
   },
+  {path: "direct-sale", loadChildren: () => import('./pages/direct-sale/direct-sale.module').then(m => m.DirectSaleModule)},
   {path: "verification-account/:token", component: ActiveComponent},
   {path: "login",canActivate: [LoginGuard], component: LoginComponent},
   {path: "register", component: RegisterComponent},

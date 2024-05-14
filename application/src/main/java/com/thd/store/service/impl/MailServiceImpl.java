@@ -1,5 +1,6 @@
 package com.thd.store.service.impl;
 
+import com.thd.store.entity.InvoiceImport;
 import com.thd.store.service.MailService;
 import com.thd.store.entity.EmailNotification;
 import com.thd.store.entity.User;
@@ -99,6 +100,11 @@ public class MailServiceImpl extends BaseService implements MailService {
                 .build();
         emailNotification = emailNotificationRepository.save(emailNotification);
         sendMail(emailNotification, Collections.singletonMap(ConstUtil.PARAM_NEW_PASSWORD,newPassword));
+    }
+
+    @Override
+    public void sendMailOrderInvoiceImport(InvoiceImport invoiceImport) {
+
     }
 
     private VerificationToken generateVerificationToken(User user) {
