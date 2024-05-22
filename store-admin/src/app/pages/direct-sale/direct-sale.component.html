@@ -5,32 +5,65 @@
   <nz-divider class="font-3" nzType="vertical"></nz-divider>
   <nz-tabset
     [nzCentered]="false"
-    class="w-50 position-relative m-0"
+    class="w-50 position-relative m-0 tab-invoice"
     [(nzSelectedIndex)]="selectedIndex"
     nzType="editable-card"
     (nzAdd)="newTab()"
-    (nzClose)="closeTab($event)"
-  >
-          <nz-tab class="position-absolute bottom-0" *ngFor="let tab of tabs" nzClosable [nzTitle]="tab"></nz-tab>
+    (nzSelectChange)="changeTab($event)"
+    (nzClose)="closeTab($event)">
+          <nz-tab class="position-absolute bottom-0 tab-invoice" *ngFor="let item of saleInvoices;index as i" nzClosable nzTitle=" {{item?.customer?.fullName || ('sale.invoice' | translate ) +' '+ i }}"></nz-tab>
   </nz-tabset>
-<!--  <div class="align-items-end ps-1 d-flex justify-content-center w-50">-->
-<!--    <nz-tabset-->
-<!--      [(nzSelectedIndex)]="selectedIndex"-->
-<!--      nzType="editable-card"-->
-<!--      (nzAdd)="newTab()"-->
-<!--      (nzClose)="closeTab($event)"-->
-<!--    >-->
-<!--      <nz-tab *ngFor="let tab of tabs" nzClosable [nzTitle]="tab">Content of {{ tab }}</nz-tab>-->
-<!--    </nz-tabset>-->
-<!--  </div>-->
   <div class="align-items-center d-flex justify-content-end w-25">
     <button nz-button nzType="link" class="text-white"><span nz-icon><i class="fa fa-refresh" aria-hidden="true"></i></span></button>
     <button nz-button nzType="link" class="text-white"><span nz-icon nzType="printer"></span></button>
     <nz-divider class="font-3" nzType="vertical"></nz-divider>
     <button nz-button nzType="link" class="text-white"><span nz-icon nzType="menu"></span></button>
   </div>
-
+</div>
+<div nz-row [nzGutter]="8"  class="m-0 height-body">
+  <div nz-col class="ps-0 pt-3" style="background-color: #fff !important;" [nzSpan]="18">
+    <div class="card">aaa</div>
+    <nz-drawer
+      [nzClosable]="true"
+      [(nzVisible)]="drawerVisible"
+      (nzOnClose)="closeDrawer()"
+      nzPlacement="bottom"
+      nzTitle="Basic Drawer"
+    >
+      <ng-container *nzDrawerContent>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </ng-container>
+    </nz-drawer>
+  </div>
+  <div nz-col class="pe-0 bg-info-subtle" [nzSpan]="6">
+    <div class="p-2">
+      <thd-input placeHolder="{{'sale.searchCustomer' |translate}}" [isSearch]="true" [addOnAfter]="suffixIconButton" [showLabel]="false"></thd-input>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="plus"></span></button>
+      </ng-template>
+      <nz-divider class="font-bill m-1" nzText="{{'sale.bill' |translate}}" nzOrientation="left"></nz-divider>
+      <div class="d-flex justify-content-between">
+        <span>{{'sale.totalProductCost' |translate}}</span>
+        <span>{{entity?.total || 0 | number}}</span>
+      </div>
+      <div class="d-flex justify-content-between">
+        <span>{{'sale.customerNeedToPay' |translate}}</span>
+        <span class="text-danger">{{entity?.total || 0 | number}}</span>
+      </div>
+      <div class="d-flex justify-content-between">
+        <span>{{'sale.customerPay' |translate}}</span>
+        <span>{{entity?.total || 0 | number}}</span>
+      </div>
+      <nz-divider class="m-2"></nz-divider>
+      <div class="d-flex justify-content-between">
+        <span>{{'sale.moneyReturnCustomer' |translate}}</span>
+        <span>{{entity?.total || 0 | number}}</span>
+      </div>
+    </div>
+  </div>
 </div>
 <ng-template #suffixIconSearch>
-  <span nz-icon nzType="search"></span>
+  <button (click)="openDrawer()" nz-button nzType="text"><span nz-icon nzType="search"></span></button>
 </ng-template>

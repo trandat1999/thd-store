@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {SaleInvoice} from "../sale/sale.model";
+import {NzTabChangeEvent} from "ng-zorro-antd/tabs/interfaces";
 
 @Component({
   selector: 'thd-direct-sale',
@@ -6,15 +8,26 @@ import { Component } from '@angular/core';
   styleUrls: ['./direct-sale.component.scss']
 })
 export class DirectSaleComponent {
-  tabs = ['Tab 1', 'Tab 2'];
+  saleInvoices: SaleInvoice[] = [];
   selectedIndex = 0;
-
+  entity: SaleInvoice
+  drawerVisible = false;
   closeTab({ index }: { index: number }): void {
-    this.tabs.splice(index, 1);
+    this.saleInvoices.splice(index, 1);
   }
 
   newTab(): void {
-    this.tabs.push('New Tab');
-    this.selectedIndex = this.tabs.length;
+    this.saleInvoices.push({})
+    this.selectedIndex = this.saleInvoices.length;
+    this.entity = this.saleInvoices[this.saleInvoices.length];
+  }
+  changeTab({index}:NzTabChangeEvent): void {
+    this.entity = this.saleInvoices[index];
+  }
+  closeDrawer(){
+    this.drawerVisible = false;
+  }
+  openDrawer(){
+    this.drawerVisible = true;
   }
 }

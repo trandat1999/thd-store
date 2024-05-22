@@ -16,7 +16,13 @@ export interface SaleInvoice {
   status?: string;
   saleDate?: Date
   note?: string;
-  items?: InvoiceItem[]
+  items?: InvoiceItem[];
+  customer?: Customer
+}
+export interface Customer{
+  fullName?: string;
+  phoneNumber?: string;
+  id?:number;
 }
 
 export const SalesInvoiceType = []

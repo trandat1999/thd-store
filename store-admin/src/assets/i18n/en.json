@@ -180,7 +180,14 @@
     "type": "Type",
     "status": "Status",
     "note": "Note",
-    "total": "Total"
+    "total": "Total",
+    "invoice" : "Invoice",
+    "searchCustomer" : "Search customer",
+    "bill": "Bill",
+    "totalProductCost": "Total Product Cost",
+    "customerNeedToPay": "Customer needed to pay",
+    "customerPay": "Customer pay",
+    "moneyReturnCustomer": "Money return to customer"
   },
   "action": {
     "backHome": "Back home"

@@ -1,11 +1,17 @@
 .height-header{
   height: 3rem;
 }
+.height-body{
+  height:  calc(100vh - 3rem);
+}
 .font-3{
   font-size: 3rem;
   color: black;
 }
-:host ::ng-deep .ant-tabs > .ant-tabs-nav {
+.font-bill{
+  font-size: 1.2rem;
+}
+:host ::ng-deep .ant-tabs .ant-tabs-nav {
   position: absolute;
   bottom: 0;
   margin: 0;
