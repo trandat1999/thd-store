@@ -49,4 +49,8 @@ public class InvoiceImportController {
     public BaseResponse changeStatusWarehoused(@PathVariable String code){
         return invoiceImportService.changeStatus(InvoiceImportType.WAREHOUSED,code);
     }
+    @GetMapping("/last-price-imported/{id}")
+    public BaseResponse getLastPriceImported(@PathVariable Long id){
+        return invoiceImportService.getLastPriceImported(id);
+    }
 }

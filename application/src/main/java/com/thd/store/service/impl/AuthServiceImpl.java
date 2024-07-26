@@ -218,6 +218,10 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     }
 
     private void saveToken(String username, String jwtToken) {
+        var entity = tokenRepository.findByToken(jwtToken).orElse(null);
+        if (entity != null) {
+            return;
+        }
         var token = Token.builder()
                 .username(username)
                 .token(jwtToken)

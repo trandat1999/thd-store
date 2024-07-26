@@ -30,4 +30,7 @@ export class InventoryImportService {
   changeStatus(code:string,status: 'order'|'approve' | 'paid' | 'ship' | 'warehoused'){
     return this.base.get(this.URL+"/"+code+"/"+status);
   }
+  getLastPriceImported(id: number){
+    return this.base.get(this.URL+"/last-price-imported/"+id);
+  }
 }

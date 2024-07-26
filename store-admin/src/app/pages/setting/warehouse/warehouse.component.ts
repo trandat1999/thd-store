@@ -7,6 +7,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {WarehouseService} from "./warehouse.service";
 import {AdministrativeUnitService} from "../../management/administrative-unit/administrative-unit.service";
 import {AdministrativeUnit} from "../../management/management.model";
+import * as removeAccents from "remove-accents";
 
 @Component({
   selector: 'thd-warehouse',
@@ -147,5 +148,11 @@ export class WarehouseComponent {
       this.deleting = false;
       this.loadTable();
     })
+  }
+  onChangeCode(){
+    let code = this.formGroup.get('code').value || "";
+    code = removeAccents(code);
+    code = code.toLowerCase().replace(/\s+/g, '-');
+    this.formGroup.get('code').setValue(code)
   }
 }

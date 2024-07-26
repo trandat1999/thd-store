@@ -8,7 +8,7 @@
         <thd-input nz-col nzSpan="24" placeHolder="{{'auth.username'|translate}}"
                    prefixIcon="user" formControlName="username" [errorText]="getErrorMessage('username')"
                    label="{{'auth.username'|translate}}"></thd-input>
-        <thd-input nz-col nzSpan="24" prefixIcon="lock" formControlName="password"
+        <thd-input nz-col type="password" nzSpan="24" prefixIcon="lock" formControlName="password"
                    [errorText]="getErrorMessage('password')"
                    label="{{'auth.password'|translate}}"
                    placeHolder="{{'auth.password'|translate}}"></thd-input>

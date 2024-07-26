@@ -32,7 +32,22 @@ export const getErrorMessage = (control:string,formGroup: FormGroup,translate: T
     if (formGroup.get(control)?.errors?.['phoneNumber']) {
       return translate.instant("validation.phoneNumber");
     }
+    if (formGroup.get(control)?.errors?.['invalidMinValue']) {
+      return translate.instant("validation.invalidMinValue",{minValue:formGroup.get(control)?.errors?.['invalidMinValue'].minValue});
+    }
   }
   return "";
 }
 export const PHONE_NUMBER_REGEX = "((84|0|'+'84)[3|5|7|8|9])+([0-9]{8})";
+export const getDescription = (store: any[], value: any) =>{
+  return store.find((item: any) => item.value === value)?.label || "";
+}
+export const ProductShowStatus = [
+  {value:1 , label: "productShow.statusInStock"},
+  {value:2 , label: "productShow.statusOutOfStock"},
+  {value:3 , label: "productShow.statusNew"},
+  {value:4 , label: "productShow.statusDiscontinued"},
+  {value:5 , label: "productShow.statusLimitedStock"},
+  {value:6 , label: "productShow.statusOnSale"},
+  {value:7 , label: "productShow.statusUnavailable"},
+]

@@ -1,13 +1,12 @@
 import {Injectable} from '@angular/core';
 import {BaseService} from "../../../services/base.service";
 import {ProductSearch} from "../../../utils/search-object";
-import {Category} from "../setting.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductService {
-  private readonly URL = "/api/v1/products"
+export class ProductShowService {
+  private readonly URL = "/api/v1/product-shows"
   constructor(private base : BaseService) {
   }
   getAll() {
@@ -19,11 +18,11 @@ export class ProductService {
   get(id:number){
     return this.base.get(this.URL+"/"+id);
   }
-  save(category:Category){
-    return this.base.post(this.URL,category);
+  save(obj:any){
+    return this.base.post(this.URL,obj);
   }
-  update(category:Category,id:number){
-    return this.base.put(this.URL+"/"+id,category);
+  update(obj:any,id:number){
+    return this.base.put(this.URL+"/"+id,obj);
   }
   delete(id:number){
     return this.base.delete(this.URL+"/"+id);

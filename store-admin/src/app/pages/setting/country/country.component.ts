@@ -5,6 +5,7 @@ import {VOIDED_CHOICE} from "../../../utils/ConstUtil";
 import {CountrySearch} from "../../../utils/search-object";
 import {TranslateService} from "@ngx-translate/core";
 import {CountryService} from "./country.service";
+import * as removeAccents from "remove-accents";
 
 @Component({
   selector: 'thd-country',
@@ -99,5 +100,10 @@ export class CountryComponent implements OnInit {
       this.loadTable();
     })
   }
-
+  onChangeCode(){
+    let code = this.formGroup.get('code').value || "";
+    code = removeAccents(code);
+    code = code.toLowerCase().replace(/\s+/g, '-');
+    this.formGroup.get('code').setValue(code)
+  }
 }

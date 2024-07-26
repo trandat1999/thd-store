@@ -1,16 +1,21 @@
 <div class="row" nz-form nzLayout="vertical" [formGroup]="formGroup">
-  <thd-input class="col-md-6" label="{{'common.code'|translate}}" [hasFeedback]="true"
+  <thd-input class="col-md-4" label="{{'common.code'|translate}}" [hasFeedback]="true" (valueChange)="onChangeCode()"
              formControlName="code" [errorText]="getErrorMessage('code')">
   </thd-input>
-  <thd-input class="col-md-6" label="{{'common.name'|translate}}" [hasFeedback]="true" formControlName="name"
+  <thd-input class="col-md-4" label="{{'common.name'|translate}}" [hasFeedback]="true" formControlName="name"
               [errorText]="getErrorMessage('name')">
   </thd-input>
-  <thd-input class="col-md-6" label="{{'common.shortDescription'|translate}}" [hasFeedback]="true" formControlName="shortDescription"
-             [errorText]="getErrorMessage('shortDescription')">
-  </thd-input>
-  <thd-input class="col-md-6" label="{{'common.status'|translate}}" [hasFeedback]="true" formControlName="voided"
+  <thd-input class="col-md-4" label="{{'common.status'|translate}}" [hasFeedback]="true" formControlName="voided"
              bindValue="value" [isTranslation]="true" bindLabel="label"
              [items]="voidedList" type="select">
+  </thd-input>
+  <thd-input class="col-md-4" label="{{'common.shortDescription'|translate}}" [hasFeedback]="true"
+             formControlName="shortDescription" [errorText]="getErrorMessage('shortDescription')">
+  </thd-input>
+  <thd-input  class="col-md-8" label="{{'settingModule.category'|translate}}" [hasFeedback]="true"
+              formControlName="categories" [isTranslation]="false" bindLabel="name" [items]="[]"
+              [isServerSearch]="true" [urlSearch]="'/api/v1/categories/pages'" type="select"
+              selectMode="multiple" allowClear="true"  [errorText]="getErrorMessage('categories')">
   </thd-input>
   <thd-input class="col-md-12" label="{{'common.description'|translate}}" [hasFeedback]="true"
              formControlName="description" type="editor"
@@ -39,14 +44,15 @@
   <div class="col-md-12">
     <nz-form-label>{{ 'product.attributes' | translate }}</nz-form-label>
     <nz-table nzSize="small" nzBordered="true" nzOuterBordered="true" nzShowPagination="false"
-              nzFrontPagination="false" [nzData]="dataTable">
+              nzFrontPagination="false" [nzData]="dataTable" [nzScroll]="{ y: '350px' }">
       <thead>
       <tr>
-        <th><span class="text-danger">*</span>{{'common.key' |translate}}</th>
-        <th><span class="text-danger">*</span>{{'common.value' | translate}}</th>
-        <th class="text-center">
+        <th><span class="text-danger">*</span>{{ 'common.key' |translate }}</th>
+        <th><span class="text-danger">*</span>{{ 'common.value' | translate }}</th>
+        <th class="text-center" nzWidth="120px">
           <button nzSize="small" (click)="addAttribute()" type="button" nz-button nzType="primary">
-            <span nz-icon nzType="plus"></span> {{'common.add'|translate}}</button>
+            <span nz-icon nzType="plus"></span> {{ 'common.add'|translate }}
+          </button>
         </th>
       </tr>
       </thead>
@@ -65,7 +71,7 @@
                        [hasFeedback]="true">
             </thd-input>
           </td>
-          <td style="vertical-align: top">
+          <td style="vertical-align: top;" class="text-center">
             <button nzOkDanger nzIcon="delete" (nzOnConfirm)="attributes.removeAt(i)" nz-popconfirm
                     nzPopconfirmTitle="{{'common.confirmDelete' |translate}}" nz-button nzType="primary" nzDanger>
               <span nz-icon nzType="delete"></span>{{ 'common.delete'|translate }}

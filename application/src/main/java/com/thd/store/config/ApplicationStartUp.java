@@ -34,7 +34,11 @@ public class ApplicationStartUp {
 
     @EventListener
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        redisTemplate.getConnectionFactory().getConnection().flushAll();
+        try {
+            redisTemplate.getConnectionFactory().getConnection().flushAll();
+        }catch (Exception e){
+
+        }
         if (env.containsProperty(ConstUtil.PATH_FILE_IMAGE_PROPERTY) && env.getProperty(ConstUtil.PATH_FILE_IMAGE_PROPERTY) != null) {
             ConstUtil.FILE_PATH_IMAGE = env.getProperty(ConstUtil.PATH_FILE_IMAGE_PROPERTY);
         }

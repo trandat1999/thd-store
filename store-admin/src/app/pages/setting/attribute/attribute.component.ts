@@ -5,7 +5,7 @@ import {getErrorMessage, VOIDED_CHOICE} from "../../../utils/ConstUtil";
 import {CategorySearch} from "../../../utils/search-object";
 import {TranslateService} from "@ngx-translate/core";
 import {AttributeService} from "./attribute.service";
-
+import * as removeAccents from 'remove-accents'
 @Component({
   selector: 'thd-attribute',
   templateUrl: './attribute.component.html',
@@ -60,17 +60,20 @@ export class AttributeComponent {
   }
   onSubmit(){
     this.attributeService.save(this.formGroup.getRawValue()).subscribe(data=>{
-      if(data.code==400){
-        if (data.body) {
-          Object.keys(data.body).forEach(key => {
-            this.formGroup.controls[key]?.setErrors({ 'serverError': true, 'serverErrorMess': data.body[key] });
-          });
-          return;
-        }
-      }else{
+      if(data.code==200 || data.code==201){
         this.isVisible=false;
         this.submitSearch();
+      }else{
+        if(data.code==400){
+          if (data.body) {
+            Object.keys(data.body).forEach(key => {
+              this.formGroup.controls[key]?.setErrors({ 'serverError': true, 'serverErrorMess': data.body[key] });
+            });
+            return;
+          }
+        }
       }
+
     })
   }
   pageChange(page:any){
@@ -82,5 +85,11 @@ export class AttributeComponent {
       this.deleting = false;
       this.loadTable();
     })
+  }
+  onChangeCode(){
+    let code = this.formGroup.get('code').value || "";
+    code = removeAccents(code);
+    code = code.toLowerCase().replace(/\s+/g, '-');
+    this.formGroup.get('code').setValue(code)
   }
 }

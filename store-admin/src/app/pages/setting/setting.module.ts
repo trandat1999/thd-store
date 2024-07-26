@@ -24,6 +24,7 @@ import { AttributeComponent } from './attribute/attribute.component';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
 import {NzAffixModule} from "ng-zorro-antd/affix";
 import { WarehouseComponent } from './warehouse/warehouse.component';
+import { ProductShowComponent } from './product-show/product-show.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { WarehouseComponent } from './warehouse/warehouse.component';
     AttributeComponent,
     ProductEditComponent,
     WarehouseComponent,
+    ProductShowComponent,
   ],
     imports: [
         CommonModule,

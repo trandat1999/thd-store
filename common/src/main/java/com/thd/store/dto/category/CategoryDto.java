@@ -19,12 +19,6 @@ import lombok.Data;
 @RequiredConditionGOET(fieldName = "parentId", dependField = "level", value = 2)
 public class CategoryDto extends BaseInformationDto {
     @NotNull(message = "{store.validation.NotNull}")
-    @NotBlank(message = "{store.validation.NotBlank}")
-    private String name;
-    @NotNull(message = "{store.validation.NotNull}")
-    @NotBlank(message = "{store.validation.NotBlank}")
-    private String code;
-    @NotNull(message = "{store.validation.NotNull}")
     @Min(value = 1,message = "{store.validation.Min}")
     @Max(value = 3,message = "{store.validation.Max}")
     private Integer level;

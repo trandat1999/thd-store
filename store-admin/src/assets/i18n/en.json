@@ -11,6 +11,7 @@
     "create": "Create",
     "update": "Update",
     "loading": "Loading",
+    "loadingData": "Loading Data",
     "ok": "Ok",
     "save": "Save",
     "noEntriesFound": "No Entries Found",
@@ -76,6 +77,7 @@
     "sale": "Sales",
     "saleInvoice": "Sales Invoice",
     "directSale": "Direct Sale"
+    ,"productShow": "Product show"
   },
   "gender": {
     "male": "Male",
@@ -87,7 +89,8 @@
     "invalid": "Field is invalid",
     "password_not_match": "Confirm password must be match password",
     "email" : "Email must be a valid email address",
-    "phoneNumber": "Phone number must be a valid"
+    "phoneNumber": "Phone number must be a valid",
+    "invalidMinValue": "Min value required is {{minValue}}"
   },
   "person": {
     "firstName": "First Name",
@@ -119,7 +122,8 @@
     "attribute": "Attribute",
     "supplier" : "Supplier",
     "product" : "Product",
-    "warehouse" : "Warehouse"
+    "warehouse" : "Warehouse",
+    "productShow" : "Product show"
   },
   "layout": {
     "english": "English",
@@ -143,7 +147,8 @@
     "inventoryImport": "Inventory import",
     "administrativeUnit": "Administrative Unit",
     "warehouse": "Warehouse",
-    "saleInvoice": "Sale Invoice"
+    "saleInvoice": "Sale Invoice",
+    "productShow": "Product show"
   },
   "category": {
     "level": "Level",
@@ -172,6 +177,19 @@
   "product": {
     "images" : "Images",
     "attributes" : "Attributes"
+  },
+  "productShow": {
+    "price": "Price",
+    "status": "Status",
+    "statusInStock": "In stock",
+    "statusOutOfStock": "Out of stock",
+    "statusNew": "New",
+    "statusDiscontinued": "Discontinued",
+    "statusLimitedStock": "Limited stock",
+    "statusOnSale": "On sale",
+    "statusUnavailable": "Unavailable",
+    "lastPriceImported": "Last price imported",
+    "productNotImportedYet": "Product not imported yet"
   },
   "management": {
     "administrativeUnit" : "Administrative Unit"

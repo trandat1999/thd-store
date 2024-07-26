@@ -33,9 +33,9 @@ export class SupplierComponent {
   }
 
   ngOnInit(): void {
-    this.productService.getAll().subscribe(data => {
-      this.products = data.body || [];
-    })
+    // this.productService.getAll().subscribe(data => {
+    //   this.products = data.body || [];
+    // })
   }
 
   submitSearch() {

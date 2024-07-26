@@ -35,6 +35,9 @@ export const navigation: NavigationItem[] = [
       }, {
         translateKey: 'navigation.product',
         link: '/setting/product'
+      },{
+        translateKey: 'navigation.productShow',
+        link: '/setting/product-show'
       }, {
         translateKey: 'navigation.warehouse',
         link: '/setting/warehouse'

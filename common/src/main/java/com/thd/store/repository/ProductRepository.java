@@ -25,7 +25,6 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query(value = "select new com.thd.store.dto.product.ProductDto(entity) from Product entity " +
             "where (:voided is null or entity.voided =:voided) " +
             "and (:keyword is null or :keyword = '' or entity.code like concat('%',:keyword,'%') " +
-            "or entity.name like concat('%',:keyword,'%') ) " +
-            "order by entity.code ")
+            "or entity.name like concat('%',:keyword,'%') ) " )
     Page<ProductDto> search(String keyword, Boolean voided, Pageable pageable);
 }

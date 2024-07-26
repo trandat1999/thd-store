@@ -10,11 +10,21 @@
                [(ngModel)]="value" nz-input type="{{type}}" />
       </nz-input-group>
       <nz-select  [nzPlaceHolder]="placeHolder" [nzMode]="selectMode" *ngSwitchCase="'select'" [nzShowSearch]="allowSearch"
-                  [nzSize]="size" [nzAllowClear]="allowClear" [compareWith]="compareFn"
+                  [nzSize]="size" [nzAllowClear]="allowClear" [compareWith]="compareFn" [nzServerSearch]="isServerSearch"
                   #inputElements2="ngModel" [disabled]="isDisabled || ngControl?.disabled"
-                  [(ngModel)]="value">
-        <nz-option *ngFor="let item of items" [nzValue]="bindValue?item[bindValue]:item"
-                   [nzLabel]="isTranslation?(bindLabel?translate.instant(item[bindLabel]):translate.instant(item)):(bindLabel?item[bindLabel]:item)"></nz-option>
+                  [(ngModel)]="value" (nzOnSearch)="onSearch($event)" (nzScrollToBottom)="loadMore()" [nzDropdownRender]="renderTemplate">
+        <ng-container *ngFor="let item of items">
+          <nz-option *ngIf="!isLoading" [nzValue]="bindValue?item[bindValue]:item"
+                     [nzLabel]="isTranslation?(bindLabel?translate.instant(item[bindLabel]):translate.instant(item)):(bindLabel?item[bindLabel]:item)">
+          </nz-option>
+        </ng-container>
+        <ng-template #renderTemplate>
+          <nz-spin *ngIf="isLoadingMore"></nz-spin>
+        </ng-template>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <span nz-icon nzType="loading" class="loading-icon"></span>
+          {{'common.loadingData'|translate}}...
+        </nz-option>
       </nz-select>
       <angular-editor *ngSwitchCase="'editor'" [placeholder]="placeHolder" [disabled]="isDisabled || ngControl?.disabled"
                       #inputElements3="ngModel" [(ngModel)]="value"></angular-editor>

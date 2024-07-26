@@ -75,4 +75,15 @@ export class BaseService {
       })
     );
   }
+  search(url : string,request :any ){
+    return this.http.post(this.serverUrl+url, request).pipe(
+      map(value => {
+        return value as BaseResponse;
+      }),catchError(error => {
+        console.log(error);
+        this.toast.error(error?.error?.message? error.error?.message : this.translate.instant("common.commonError"), this.translate.instant("common.error") +(error?.error?.code? " "+error?.error?.code:""))
+        return of(error)
+      })
+    );
+  }
 }

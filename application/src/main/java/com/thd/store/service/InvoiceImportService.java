@@ -18,4 +18,5 @@ public interface InvoiceImportService {
     BaseResponse deleteById(Long id);
     BaseResponse search(InvoiceImportSearch search);
     BaseResponse changeStatus(InvoiceImportType status,String code);
+    BaseResponse getLastPriceImported(Long productId);
 }

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {VOIDED_CHOICE, getErrorMessage} from "../../../../utils/ConstUtil";
-import {Attribute, KeyValue, Product} from "../../setting.model";
+import {Attribute, Category, KeyValue, Product} from "../../setting.model";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ProductService} from "../product.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -9,6 +9,8 @@ import {TranslateService} from "@ngx-translate/core";
 import {ApplicationConfigService} from "../../../../services/application-config.service";
 import {NzUploadFile} from "ng-zorro-antd/upload";
 import {AttributeService} from "../../attribute/attribute.service";
+import {CategoryService} from "../../category/category.service";
+import * as removeAccents from "remove-accents";
 
 @Component({
   selector: 'thd-product-edit',
@@ -25,12 +27,14 @@ export class ProductEditComponent implements OnInit {
   previewImage: string;
   uploading : boolean = false;
   attributeList: Attribute[] = [];
+  categories: Category[] = [];
   constructor(private productService: ProductService,
               private router : Router,
               private route : ActivatedRoute,
               private fileService: FileService,
               private configService: ApplicationConfigService,
               private attributeService: AttributeService,
+              private categoryService: CategoryService,
               private translate: TranslateService) {
     this.serverUrl = this.configService.apiBaseUrl;
     let id = this.route.snapshot.params["id"];
@@ -104,10 +108,14 @@ export class ProductEditComponent implements OnInit {
       attributes: new FormArray([]),
       files: new FormControl(this.entity.files, [Validators.required]),
       voided: new FormControl(this.entity.voided ? this.entity.voided : false),
+      categories: new FormControl(this.entity.categories,[Validators.required]),
     });
     this.attributeService.getAll().subscribe(data => {
       this.attributeList = data?.body || [];
     })
+    // this.categoryService.getAll().subscribe(data => {
+    //   this.categories = data?.body || [];
+    // })
   }
   get attributes(){
     return this.formGroup?.get("attributes") as FormArray
@@ -163,5 +171,11 @@ export class ProductEditComponent implements OnInit {
         this.uploading = false;
         break;
     }
+  }
+  onChangeCode(){
+    let code = this.formGroup.get('code').value || "";
+    code = removeAccents(code);
+    code = code.toLowerCase().replace(/\s+/g, '-');
+    this.formGroup.get('code').setValue(code)
   }
 }

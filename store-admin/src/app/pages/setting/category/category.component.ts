@@ -5,6 +5,7 @@ import {CategorySearch} from "../../../utils/search-object";
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {TranslateService} from "@ngx-translate/core";
 import {getErrorMessage, VOIDED_CHOICE} from "../../../utils/ConstUtil";
+import * as removeAccents from "remove-accents";
 
 @Component({
   selector: 'thd-category',
@@ -116,5 +117,11 @@ export class CategoryComponent implements OnInit {
       this.deleting = false;
       this.loadTable();
     })
+  }
+  onChangeCode(){
+    let code = this.formGroup.get('code').value || "";
+    code = removeAccents(code);
+    code = code.toLowerCase().replace(/\s+/g, '-');
+    this.formGroup.get('code').setValue(code)
   }
 }

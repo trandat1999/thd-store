@@ -15,7 +15,7 @@ import java.util.List;
  * @project store
  */
 public interface AttributeRepository extends JpaRepository<Attribute,Long> {
-    @Query(value = "select count(1) from Category entity where entity.code = :code " +
+    @Query(value = "select count(1) from Attribute entity where entity.code = :code " +
             "and (:id is null or entity.id != :id)")
     long countExistByCode(String code, Long id);
 

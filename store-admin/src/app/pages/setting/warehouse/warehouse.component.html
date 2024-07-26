@@ -80,7 +80,7 @@
   <ng-container *nzModalContent >
     <div class="row" nz-form nzLayout="vertical" [formGroup]="formGroup">
       <thd-input class="col-md-6 mt-2" label="{{'common.code'|translate}}" [hasFeedback]="true"
-                 formControlName="code" [errorText]="getErrorMessage('code')">
+                 formControlName="code" [errorText]="getErrorMessage('code')" (valueChange)="onChangeCode()">
       </thd-input>
       <thd-input class="col-md-6 mt-2" label="{{'common.name'|translate}}" [hasFeedback]="true"  formControlName="name"
                  [errorText]="getErrorMessage('name')">

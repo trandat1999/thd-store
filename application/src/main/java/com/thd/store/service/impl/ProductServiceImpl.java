@@ -3,9 +3,8 @@ package com.thd.store.service.impl;
 import com.thd.store.dto.BaseResponse;
 import com.thd.store.dto.product.ProductDto;
 import com.thd.store.dto.product.ProductSearch;
-import com.thd.store.entity.File;
-import com.thd.store.entity.Product;
-import com.thd.store.entity.ProductFile;
+import com.thd.store.entity.*;
+import com.thd.store.repository.CategoryRepository;
 import com.thd.store.repository.FileRepository;
 import com.thd.store.repository.ProductRepository;
 import com.thd.store.service.ProductService;
@@ -30,6 +29,8 @@ import java.util.Optional;
 public class ProductServiceImpl extends BaseService implements ProductService {
     private final ProductRepository productRepository;
     private final FileRepository fileRepository;
+    private final CategoryRepository categoryRepository;
+
     @Override
     @Cacheable
     public BaseResponse getAll() {
@@ -40,7 +41,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
     public BaseResponse getById(Long id) {
         Optional<Product> optional = productRepository.findById(id);
         if (optional.isPresent()){
-            return getResponse200(new ProductDto(optional.get(),true,true),getMessage(SystemMessage.SUCCESS));
+            return getResponse200(new ProductDto(optional.get(),true,true,true),getMessage(SystemMessage.SUCCESS));
         }
         return getResponse400(getMessage(SystemMessage.NOT_FOUND, getMessage(SystemVariable.PRODUCT) ));
     }
@@ -83,6 +84,17 @@ public class ProductServiceImpl extends BaseService implements ProductService {
         if(!CollectionUtils.isEmpty(request.getAttributes())){
             for(var attribute : request.getAttributes()){
                 entity.getAttributes().put(attribute.getKey(),attribute.getValue());
+            }
+        }
+        entity.getCategories().clear();
+        if(!CollectionUtils.isEmpty(request.getCategories())){
+            for(var item : request.getCategories()){
+                if(item.getId()!=null){
+                    Category category = categoryRepository.findById(item.getId()).orElse(null);
+                    if(category!=null){
+                        entity.getCategories().add(new ProductCategory(entity,category));
+                    }
+                }
             }
         }
         entity.setVoided(request.getVoided());

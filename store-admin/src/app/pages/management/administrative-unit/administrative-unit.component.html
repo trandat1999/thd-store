@@ -92,7 +92,7 @@
               </td>
             </tr>
             <ng-container *ngIf="district.expand && district.children?.length>0">
-              <ng-container *ngFor="let commune of province.children">
+              <ng-container *ngFor="let commune of district.children">
                 <tr>
                   <td class="text-center" style="width: 100px" nzLeft>
                     <nz-button-group>

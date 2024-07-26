@@ -1,0 +1,73 @@
+<div class="row">
+  <nz-page-header class="col-12"
+                  nzTitle="{{'settingModule.productShow' | translate}}">
+  </nz-page-header>
+  <div class="col-md-12">
+    <div class="row">
+      <thd-input [offMb]="true" class="col-md-11 mt-2" [showLabel]="false" [isSearch]="true" [(ngModel)]="searchObject.keyword" placeHolder="{{'common.inputSearch'|translate}}"
+                 (keydown.enter)="submitSearch()" [addOnAfter]="suffixIconButton"></thd-input>
+      <ng-template #suffixIconButton>
+        <button (click)="submitSearch()" nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span>
+        </button>
+      </ng-template>
+      <div class="col-md-1 mt-2 d-flex justify-content-center">
+        <button (click)="onCreateOrUpdate(null)" nz-button nzType="primary">
+          <span nz-icon nzType="plus"></span>{{'common.add'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive-md">
+    <nz-table class="col-12 mt-2" [(nzPageIndex)]="searchObject.pageIndex" [(nzPageSize)]="searchObject.pageSize"
+              nzFrontPagination="false" nzOuterBordered="true"
+              [nzTotal]="totalElement" (nzQueryParams)="pageChange($event)"
+              nzBordered="true" nzSize="small" #table
+              nzShowPagination nzShowSizeChanger [nzData]="entities">
+      <thead>
+      <tr>
+        <th style="width: 100px" nzLeft>{{'common.action' |translate}}</th>
+        <th>{{'productShow.price' |translate}}</th>
+        <th>{{'productShow.status' |translate}}</th>
+        <th>{{'settingModule.product' |translate}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of table.data">
+        <td class="text-center" style="width: 100px" nzLeft>
+          <nz-button-group>
+            <button (click)="onCreateOrUpdate(data)"
+                    nz-tooltip="{{'common.edit'|translate}}" nz-button nzType="link">
+              <span  (click)="onCreateOrUpdate(data)" nz-icon nzType="edit"></span>
+            </button>
+          </nz-button-group>
+        </td>
+        <td>{{ data.price }}</td>
+        <td>{{ getDescription(data.status) | translate}}</td>
+        <td>{{data.product.name}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="isVisible" [nzOkDisabled]="formGroup?.invalid" (nzOnOk)="onSubmit()"
+          (nzOnCancel)="isVisible=false; showTooltip=false" nzTitle="{{(entity?.id?'common.update':'common.create')|translate}}">
+  <ng-container *nzModalContent>
+    <div class="row" nz-form nzLayout="horizontal" [formGroup]="formGroup">
+      <thd-input  class="col-md-12" label="{{'settingModule.product'|translate}}" [hasFeedback]="true" nz-tooltip
+                  nzTooltipTitle="{{(lastPrice?'productShow.lastPriceImported':'productShow.productNotImportedYet')|translate}}{{lastPrice?(': '+lastPrice):''}}"
+                  [nzTooltipVisible]="showTooltip" [nzTooltipTrigger]="null" nzTooltipColor="lime"
+                  formControlName="product" [isTranslation]="false" bindLabel="name"
+                  [items]="[]" [isServerSearch]="true" [urlSearch]="'/api/v1/products/pages'"
+                  type="select" [labelSpan]="6" (valueChange)="onChangeProduct()">
+      </thd-input>
+      <thd-input (valueChange)="console.log(formGroup)" class="col-md-12" label="{{'productShow.price'|translate}}" [hasFeedback]="true" formControlName="price"
+                 [labelSpan]="6" type="number" [inputSpan]="18" [errorText]="getErrorMessage('price')">
+      </thd-input>
+      <thd-input class="col-md-12" label="{{'common.status'|translate}}" [hasFeedback]="true"
+                 formControlName="status" type="select" [isTranslation]="true" bindLabel="label"  bindValue="value"
+                 [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('status')" [items]="productShowStatus">
+      </thd-input>
+    </div>
+  </ng-container>
+</nz-modal>

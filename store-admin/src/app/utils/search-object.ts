@@ -11,6 +11,9 @@ export interface CountrySearch extends SearchObject {
 export interface MovieSearch extends SearchObject {
 }
 export interface ProductSearch extends SearchObject {
+  status?: number
+  priceFrom?: number
+  priceTo?: number
 }
 export interface WarehouseSearch extends SearchObject {
   provinceId?:number;

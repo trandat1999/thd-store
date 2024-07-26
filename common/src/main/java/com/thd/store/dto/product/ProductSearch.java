@@ -9,4 +9,7 @@ import lombok.Data;
  */
 @Data
 public class ProductSearch extends SearchRequest {
+    private Integer status;
+    private Double priceFrom;
+    private Double priceTo;
 }

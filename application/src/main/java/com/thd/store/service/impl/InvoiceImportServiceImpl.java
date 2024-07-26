@@ -6,10 +6,7 @@ import com.thd.store.dto.invoice.InvoiceImportSearch;
 import com.thd.store.entity.InvoiceImport;
 import com.thd.store.entity.InvoiceImportItem;
 import com.thd.store.entity.Product;
-import com.thd.store.repository.InvoiceImportRepository;
-import com.thd.store.repository.ProductRepository;
-import com.thd.store.repository.SupplierRepository;
-import com.thd.store.repository.WarehouseRepository;
+import com.thd.store.repository.*;
 import com.thd.store.service.InventoryService;
 import com.thd.store.service.InvoiceImportService;
 import com.thd.store.type.InvoiceImportType;
@@ -34,6 +31,8 @@ public class InvoiceImportServiceImpl extends BaseService implements InvoiceImpo
     private final WarehouseRepository warehouseRepository;
     private final ProductRepository productRepository;
     private final InventoryService inventoryService;
+    private final InvoiceImportItemRepository invoiceImportItemRepository;
+
     @Override
     public BaseResponse getById(Long id) {
         Optional<InvoiceImport> optional = invoiceImportRepository.findById(id);
@@ -119,5 +118,11 @@ public class InvoiceImportServiceImpl extends BaseService implements InvoiceImpo
             inventoryService.warehoused(entity);
         }
         return getResponse200(new InvoiceImportDto(entity,true),getMessage(SystemMessage.SUCCESS));
+    }
+
+    @Override
+    public BaseResponse getLastPriceImported(Long productId) {
+        return getResponse200(invoiceImportItemRepository.findFirstPriceByProductIdOrderByCreatedDateDesc(productId),
+                getMessage(SystemMessage.SUCCESS));
     }
 }

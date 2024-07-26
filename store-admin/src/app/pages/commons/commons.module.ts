@@ -14,6 +14,7 @@ import {AngularEditorModule} from "@kolkov/angular-editor";
 import {NzInputNumberModule} from "ng-zorro-antd/input-number";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 import {TranslateModule} from "@ngx-translate/core";
+import {NzSpinModule} from "ng-zorro-antd/spin";
 
 
 
@@ -39,7 +40,8 @@ import {TranslateModule} from "@ngx-translate/core";
         AngularEditorModule,
         NzInputNumberModule,
         NzDatePickerModule,
-        TranslateModule
+        TranslateModule,
+        NzSpinModule
     ]
 })
 export class CommonsModule { }

@@ -6,6 +6,7 @@ import {AttributeComponent} from "./attribute/attribute.component";
 import {ProductComponent} from "./product/product.component";
 import {ProductEditComponent} from "./product/product-edit/product-edit.component";
 import {WarehouseComponent} from "./warehouse/warehouse.component";
+import {ProductShowComponent} from "./product-show/product-show.component";
 
 const routes: Routes = [
   {
@@ -51,6 +52,11 @@ const routes: Routes = [
   {
     path: "warehouse", component: WarehouseComponent, data: {
       breadcrumb: 'breadcrumb.warehouse'
+    },
+  },
+  {
+    path: "product-show", component: ProductShowComponent, data: {
+      breadcrumb: 'breadcrumb.productShow'
     },
   },
 ];

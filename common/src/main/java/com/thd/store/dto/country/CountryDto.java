@@ -1,5 +1,6 @@
 package com.thd.store.dto.country;
 
+import com.thd.store.dto.BaseInformationDto;
 import com.thd.store.entity.Country;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,12 +11,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class CountryDto {
-    private Long id;
-    private String name;
-    private String code;
-    private Boolean voided;
-    private String description;
+public class CountryDto extends BaseInformationDto {
     public CountryDto(Country entity) {
         if (entity != null){
             this.id = entity.getId();

@@ -91,8 +91,8 @@
                  [labelSpan]="6" [inputSpan]="18" [errorText]="getErrorMessage('phoneNumber')">
       </thd-input>
       <thd-input class="col-md-12" label="{{'supplier.product'|translate}}" [hasFeedback]="true"
-                 formControlName="products" type="select" bindLabel="name" [items]="products" selectMode="multiple"
-                 [labelSpan]="6" [inputSpan]="18">
+                 formControlName="products" type="select" bindLabel="name" [items]="[]" selectMode="multiple"
+                 [labelSpan]="6" [inputSpan]="18" [isServerSearch]="true" urlSearch="/api/v1/products/pages">
       </thd-input>
     </div>
   </ng-container>
