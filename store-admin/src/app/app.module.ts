@@ -17,6 +17,7 @@ import {AuthModule} from "./pages/auth/auth.module";
 import {ToastrModule} from 'ngx-toastr';
 import {ApplicationConfigService} from "./services/application-config.service";
 import {AuthInterceptor} from "./guards/auth.interceptor";
+import {NzConfig, provideNzConfig} from "ng-zorro-antd/core/config";
 
 registerLocaleData(en);
 registerLocaleData(vi);
@@ -24,7 +25,11 @@ registerLocaleData(vi);
 export function rootLoaderI18n(http: HttpClient) {
   return new TranslateHttpLoader(http, "assets/i18n/", ".json");
 }
-
+const ngZorroConfig: NzConfig = {
+  message:{
+    nzDuration: 5000,
+  }
+};
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,6 +64,7 @@ export function rootLoaderI18n(http: HttpClient) {
     }),
   ],
   providers: [
+    provideNzConfig(ngZorroConfig),
     {
       provide: NZ_I18N, useFactory: () => {
         const localId = inject(LOCALE_ID);
@@ -68,7 +74,7 @@ export function rootLoaderI18n(http: HttpClient) {
           case 'vi':
             return vi_VN;
           default:
-            return en_US;
+            return vi_VN;
         }
       }
     },

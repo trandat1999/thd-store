@@ -25,6 +25,7 @@ public class SaleInvoiceDto extends BaseDto {
     private AdministrativeUnitDto province;
     private AdministrativeUnitDto district;
     private AdministrativeUnitDto commune;
+    private String displayName;
     private String address;
     private String phoneNumber;
     private Double total;
@@ -49,6 +50,7 @@ public class SaleInvoiceDto extends BaseDto {
             this.address = entity.getAddress();
             this.status = entity.getStatus();
             this.phoneNumber = entity.getPhoneNumber();
+            this.displayName = entity.getDisplayName();
             this.saleDate = entity.getSaleDate();
             this.note = entity.getNote();
         }

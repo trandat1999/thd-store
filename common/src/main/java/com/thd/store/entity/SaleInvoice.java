@@ -40,6 +40,8 @@ public class SaleInvoice extends BaseEntity {
     private String address;
     @Column(name = "phone_number")
     private String phoneNumber;
+    @Column(name = "display_name")
+    private String displayName;
     @Column(name = "total")
     private Double total;
     @Column(name = "is_paid")

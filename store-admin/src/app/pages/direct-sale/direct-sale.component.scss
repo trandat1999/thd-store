@@ -4,6 +4,12 @@
 .height-body{
   height:  calc(100vh - 3rem);
 }
+.height-item{
+  height: auto;
+}
+.height-item-sale{
+  height: 60%;
+}
 .font-3{
   font-size: 3rem;
   color: black;
@@ -28,4 +34,56 @@
   color: #fff !important;
   background-color: #6895d6 !important;
   border: 0 !important;
+}
+div {
+  transition: all 0.3s ease;
+}
+
+.expanded {
+  height: auto; /* Hoặc một giá trị cụ thể nếu bạn muốn */
+  overflow: visible;
+}
+
+.collapsed {
+  height: 0;
+  overflow: hidden;
+}
+
+@media print {
+  #receipt {
+    width: 80mm; /* Hoặc 58mm nếu bạn sử dụng giấy in nhỏ hơn */
+    font-family: Arial, sans-serif;
+    font-size: 12px; /* Kích thước chữ nhỏ hơn để phù hợp với giấy */
+    line-height: 1.4;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 16px;
+    margin: 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+  }
+
+  th, td {
+    border: 1px solid #000;
+    padding: 2px;
+    text-align: left;
+  }
+
+  th {
+    font-weight: bold;
+  }
+
+  td {
+    font-size: 10px; /* Kích thước chữ cho các ô trong bảng */
+  }
+
+  p {
+    margin: 0;
+  }
 }

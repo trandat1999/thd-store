@@ -99,7 +99,7 @@ export class ProductShowComponent {
       })
     }
   }
-  getDescription(value){
+  getDescription(value: any){
     return getDescription(this.productShowStatus,value);
   }
 

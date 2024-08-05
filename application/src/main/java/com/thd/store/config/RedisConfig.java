@@ -12,7 +12,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 
 @Configuration
 @EnableCaching
-@ConditionalOnExpression("${application.caching.enabled}")
+@ConditionalOnExpression("${caching.enabled}")
 public class RedisConfig {
     @Value("${spring.data.redis.host}")
     private String redisHost;

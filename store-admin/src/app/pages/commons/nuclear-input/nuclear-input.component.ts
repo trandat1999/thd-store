@@ -113,6 +113,8 @@ export class NuclearInputComponent implements OnInit, ControlValueAccessor, OnCh
   @Input() disabledDate: (current: Date) => boolean
   @Input() isServerSearch = false;
   @Input() urlSearch = "";
+  @Input() autoClearSearchValue = true;
+  @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
   isLoading = false;
   isLoadingMore = false;
   searchChange$ = new BehaviorSubject("");
@@ -127,6 +129,7 @@ export class NuclearInputComponent implements OnInit, ControlValueAccessor, OnCh
       this.isLoading = true;
       this.searchChange$.next(value);
     }
+    this.searchChange.emit(value);
   }
 
   loadMore(): void {

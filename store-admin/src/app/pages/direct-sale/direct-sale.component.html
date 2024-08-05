@@ -1,6 +1,7 @@
 <div class="bg-primary height-header d-flex">
   <div class="align-items-center ps-1 d-flex justify-content-center w-25">
-    <thd-input class="w-100" [offMb]="true" [suffix]="suffixIconSearch" [showLabel]="false"></thd-input>
+    <thd-input [isServerSearch]="true" urlSearch="/api/v1/publish/products" type="select" bindLabel="name" [allowClear]="true"
+               class="w-100" [offMb]="true" [suffix]="suffixIconSearch" [showLabel]="false" (valueChange)="selectProduct()" [(ngModel)]="selectedProduct" ></thd-input>
   </div>
   <nz-divider class="font-3" nzType="vertical"></nz-divider>
   <nz-tabset
@@ -11,7 +12,9 @@
     (nzAdd)="newTab()"
     (nzSelectChange)="changeTab($event)"
     (nzClose)="closeTab($event)">
-          <nz-tab class="position-absolute bottom-0 tab-invoice" *ngFor="let item of saleInvoices;index as i" nzClosable nzTitle=" {{item?.customer?.fullName || ('sale.invoice' | translate ) +' '+ i }}"></nz-tab>
+          <nz-tab class="position-absolute bottom-0 tab-invoice" *ngFor="let item of saleInvoices;index as i" nzClosable nzTitle=" {{item?.customer?.displayName
+          || item?.displayName  || ( i == selectedIndex && entity?.customer?.displayName) || ( i == selectedIndex && entity?.displayName)
+          || ('sale.invoice' | translate ) +' '+ i }}"></nz-tab>
   </nz-tabset>
   <div class="align-items-center d-flex justify-content-end w-25">
     <button nz-button nzType="link" class="text-white"><span nz-icon><i class="fa fa-refresh" aria-hidden="true"></i></span></button>
@@ -20,50 +23,120 @@
     <button nz-button nzType="link" class="text-white"><span nz-icon nzType="menu"></span></button>
   </div>
 </div>
-<div nz-row [nzGutter]="8"  class="m-0 height-body">
-  <div nz-col class="ps-0 pt-3" style="background-color: #fff !important;" [nzSpan]="18">
-    <div class="card">aaa</div>
-    <nz-drawer
-      [nzClosable]="true"
-      [(nzVisible)]="drawerVisible"
-      (nzOnClose)="closeDrawer()"
-      nzPlacement="bottom"
-      nzTitle="Basic Drawer"
-    >
-      <ng-container *nzDrawerContent>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </ng-container>
-    </nz-drawer>
+<div nz-row nzGutter="[8,8]"  class="m-0 height-body">
+  <div nz-col class="p-2" style="background-color: #fff !important;" [nzSpan]="18" >
+    <nz-table class="h-75" nzSize="small"  #basicTable [nzFooter]="footer" [nzData]="entity?.items || []" nzFrontPagination="false" nzShowPagination="false" [nzScroll]="{y:'600px',x:'0'}">
+      <thead>
+      <tr>
+        <th translate>STT</th>
+        <th translate>Tên sản phẩm</th>
+        <th translate>Đơn giá</th>
+        <th translate>Số lượng</th>
+        <th translate>Thành tiền</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of basicTable.data;index as i">
+        <td>{{ i+1 }}</td>
+        <td>{{ data.product.name }}</td>
+        <td>{{ data.price | number}} vnđ</td>
+        <td>{{ data.quantity }}</td>
+        <td>{{ data.quantity * data.price | number}} vnđ</td>
+      </tr>
+      </tbody>
+    </nz-table>
+    <ng-template #footer>
+      <div class="text-end" style="padding-right: 160px">
+        <span class="fw-bold" translate>Tổng tiền: </span>
+        <span class="fw-bold">{{getTotalPrice() | currency : "VND":"vnđ":"":"vi"}} </span>
+      </div>
+    </ng-template>
+    <div class="height-item card mt-1 p-1">
+      <nz-pagination class="text-end" [nzPageSize]="searchRequest.pageSize" [nzPageIndex]="searchRequest.pageIndex"
+                     [nzTotal]="totalElement" nzSize="small" nzSimple (nzPageIndexChange)="pageChange($event)"></nz-pagination>
+      <div nz-row >
+          <div *ngFor="let item of products" class="card p-1 m-1" nz-col nzMd="3" nzSm="6" nzSpan="6" (click)="addProduct(item)">
+            <img width="100%" height="70px" *ngIf="item.files?.length>0" [src]="serverUrl+'/api/v1/publish/files/'+item.files[0]?.id" alt="">
+            <span class="fw-bold">{{item.name}}</span><br>
+            <span class="fw-bold text-danger">{{item.price | number}} vnđ</span>
+          </div>
+      </div>
+    </div>
   </div>
-  <div nz-col class="pe-0 bg-info-subtle" [nzSpan]="6">
+  <div nz-col class="pe-0 bg-info-subtle h-100" [nzSpan]="6">
     <div class="p-2">
-      <thd-input placeHolder="{{'sale.searchCustomer' |translate}}" [isSearch]="true" [addOnAfter]="suffixIconButton" [showLabel]="false"></thd-input>
-      <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="plus"></span></button>
-      </ng-template>
+      <div nz-row nzGutter="8">
+        <thd-input nz-col nzSpan="20" placeHolder="{{'sale.searchCustomer' |translate}}" [isSearch]="true" [allowClear]="true"
+                   [isServerSearch]="true" [autoClearSearchValue]="false" urlSearch="/api/v1/persons/pages" type="select" (searchChange)="searchChange($event)"
+                   bindLabel="displayName" [showLabel]="false" [(ngModel)]="entity.customer"></thd-input>
+        <div nz-col nzSpan="4">
+          <button nz-button nzType="primary" (click)="addCustomer()" nz-tooltip nzTooltipTitle="{{'Thêm khách hàng' |translate}}"><span nz-icon nzType="plus"></span></button>
+        </div>
+        <thd-input nz-col nzSpan="10" [showLabel]="false"  *ngIf="isAddCustomer" placeHolder="{{'Nhập tên khách hàng'|translate}}"  [(ngModel)]="entity.displayName"></thd-input>
+        <thd-input nz-col nzSpan="10" [showLabel]="false"   *ngIf="isAddCustomer" placeHolder="{{'Nhập số điện thoại'|translate}}"  [(ngModel)]="entity.phoneNumber"></thd-input>
+        <div *ngIf="isAddCustomer" nz-col nzSpan="4">
+          <button nz-button nzType="primary" (click)="saveCustomer()" nz-tooltip nzTooltipTitle="{{'Lưu khách hàng' |translate}}"><span nz-icon nzType="save"></span></button>
+        </div>
+      </div>
       <nz-divider class="font-bill m-1" nzText="{{'sale.bill' |translate}}" nzOrientation="left"></nz-divider>
       <div class="d-flex justify-content-between">
-        <span>{{'sale.totalProductCost' |translate}}</span>
-        <span>{{entity?.total || 0 | number}}</span>
+        <span translate>Tổng tiền sản phẩm</span>
+        <span>{{getTotalPrice() | number}} vnđ</span>
       </div>
       <div class="d-flex justify-content-between">
-        <span>{{'sale.customerNeedToPay' |translate}}</span>
-        <span class="text-danger">{{entity?.total || 0 | number}}</span>
+        <span translate>Tổng tiền khách cần trả</span>
+        <span class="text-danger">{{getTotalPrice() | number}} vnđ</span>
       </div>
       <div class="d-flex justify-content-between">
-        <span>{{'sale.customerPay' |translate}}</span>
-        <span>{{entity?.total || 0 | number}}</span>
+        <span translate>Tiền khách trả</span>
+        <thd-input [offMb]="true" size="small" [showLabel]="false" type="number" [(ngModel)]="entity.customerPay"></thd-input>
       </div>
       <nz-divider class="m-2"></nz-divider>
       <div class="d-flex justify-content-between">
-        <span>{{'sale.moneyReturnCustomer' |translate}}</span>
-        <span>{{entity?.total || 0 | number}}</span>
+        <span translate>Tiền thừa trả khách</span>
+        <span>{{(entity?.customerPay || 0 - entity?.total)>0?(entity?.customerPay || 0 - entity?.total):0 | number}} vnđ</span>
       </div>
+      <nz-divider class="m-2"></nz-divider>
+      <div class=" text-center w-100">
+        <button (click)="entity.showQr = !entity.showQr" nz-button nzType="primary" translate>Tạo QR thanh toán</button>
+      </div>
+      <div class=" text-center w-100 mt-3">
+        <img *ngIf="entity?.showQr" nz-image width="200px" class="text-center"
+             height="200px" nzSrc="https://img.vietqr.io/image/TPB-04599678910-qr_only.png?amount={{getTotalPrice()}}&addInfo=thanh%20toan%20hoa%20don%20THD%20Store" alt=""/>
+      </div>
+    </div>
+    <div class="p-2 bottom-0 d-flex justify-content-around" >
+      <button (click)="closeTab({index:selectedIndex})" nz-button nzType="primary" [nzDanger]="true" translate>Hủy bỏ</button>
+      <button (click)="printInvoice()" nz-button nzType="default"  translate>In hóa đơn</button>
+      <button (click)="saveInvoice()" nz-button nzType="primary" translate>Hoàn thành</button>
     </div>
   </div>
 </div>
 <ng-template #suffixIconSearch>
   <button (click)="openDrawer()" nz-button nzType="text"><span nz-icon nzType="search"></span></button>
 </ng-template>
+
+<div hidden="hidden" id="receipt">
+  <h1>HÓA ĐƠN</h1>
+  <p><strong>Khách hàng:</strong> {{ entity.customer?.displayName || entity.displayName }}</p>
+  <p><strong>Ngày:</strong> </p>
+  <table>
+    <thead>
+    <tr>
+      <th>Sản phẩm</th>
+      <th>Số lượng</th>
+      <th>Đơn giá</th>
+      <th>Thành tiền</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of entity.items">
+      <td>{{ item.product.name }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ item.price | currency }}</td>
+      <td>{{ item.quantity * item.price | currency }}</td>
+    </tr>
+    </tbody>
+  </table>
+  <p><strong>Tổng cộng:</strong> {{ getTotalPrice() | currency }}</p>
+</div>

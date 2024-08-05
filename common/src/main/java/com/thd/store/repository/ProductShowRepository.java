@@ -1,5 +1,6 @@
 package com.thd.store.repository;
 
+import com.thd.store.dto.product.ProductDto;
 import com.thd.store.dto.product.ProductShowDto;
 import com.thd.store.entity.ProductShow;
 import org.springframework.data.domain.Page;
@@ -19,4 +20,12 @@ public interface ProductShowRepository extends JpaRepository<ProductShow,Long> {
             "and (:priceFrom is null or entity.price>= :priceFrom) " +
             "and (:priceTo is null or entity.price <= :priceTo) ")
     Page<ProductShowDto> search(String keyword, Integer status, Double priceFrom, Double priceTo, Pageable pageable);
+
+    @Query(value = "select new com.thd.store.dto.product.ProductDto(entity) from ProductShow entity " +
+            "where (:keyword is null or :keyword = '' or entity.product.name like concat('%',:keyword,'%') " +
+            "or entity.product.code like concat('%',:keyword,'%') ) " +
+            "and (:status is null or entity.status = :status) " +
+            "and (:priceFrom is null or entity.price>= :priceFrom) " +
+            "and (:priceTo is null or entity.price <= :priceTo) ")
+    Page<ProductDto> searchPublic(String keyword, Integer status, Double priceFrom, Double priceTo, Pageable pageable);
 }

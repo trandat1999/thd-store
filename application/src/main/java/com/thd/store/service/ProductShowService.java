@@ -9,4 +9,5 @@ public interface ProductShowService {
     BaseResponse saveOrUpdate(ProductShowDto request, Long id);
     BaseResponse deleteById(Long id);
     BaseResponse search(ProductSearch search);
+    BaseResponse searchPublic(ProductSearch search);
 }

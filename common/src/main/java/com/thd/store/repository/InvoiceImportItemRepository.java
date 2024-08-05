@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.Query;
  * @package com.thd.store.repository
  **/
 public interface InvoiceImportItemRepository extends JpaRepository<InvoiceImportItem,Long> {
-    @Query("select entity.price from InvoiceImportItem entity where entity.product.id = :productId order by entity.createdDate desc ")
+    @Query("select entity.price from InvoiceImportItem entity where entity.product.id = :productId order by entity.createdDate desc limit 1")
     Double findFirstPriceByProductIdOrderByCreatedDateDesc(Long productId);
 }

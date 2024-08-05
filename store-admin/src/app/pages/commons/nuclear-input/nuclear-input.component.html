@@ -10,8 +10,8 @@
                [(ngModel)]="value" nz-input type="{{type}}" />
       </nz-input-group>
       <nz-select  [nzPlaceHolder]="placeHolder" [nzMode]="selectMode" *ngSwitchCase="'select'" [nzShowSearch]="allowSearch"
-                  [nzSize]="size" [nzAllowClear]="allowClear" [compareWith]="compareFn" [nzServerSearch]="isServerSearch"
-                  #inputElements2="ngModel" [disabled]="isDisabled || ngControl?.disabled"
+                  [nzSize]="size" [nzAllowClear]="allowClear" [compareWith]="compareFn" [nzServerSearch]="isServerSearch" [nzLoading]="isLoading"
+                  #inputElements2="ngModel" [disabled]="isDisabled || ngControl?.disabled" [nzAutoClearSearchValue]="autoClearSearchValue"
                   [(ngModel)]="value" (nzOnSearch)="onSearch($event)" (nzScrollToBottom)="loadMore()" [nzDropdownRender]="renderTemplate">
         <ng-container *ngFor="let item of items">
           <nz-option *ngIf="!isLoading" [nzValue]="bindValue?item[bindValue]:item"
@@ -32,11 +32,11 @@
                       *ngSwitchCase="'date'" #inputElements5="ngModel" [nzShowTime]="showTime" [nzShowNow]="showNow"
                       [nzShowToday]="showToday" [nzFormat]="dateTimeFormat" [nzDisabledDate]="disabledDate"
                       [(ngModel)]="value" [nzSize]="size"></nz-date-picker>
-      <nz-input-number-group class="w-100" *ngSwitchCase="'number'"  [nzPrefix]="prefix"
+      <nz-input-number-group class="w-100" *ngSwitchCase="'number'"  [nzPrefix]="prefix" [nzSize]="size"
                              [nzAddOnBefore]="addOnBefore" [nzAddOnAfter]="addOnAfter"
                              [nzAddOnBeforeIcon]="addOnBeforeIcon" [nzAddOnAfterIcon]="addOnAfterIcon">
         <nz-input-number [nzPlaceHolder]="placeHolder" [nzDisabled]="isDisabled || ngControl?.disabled"
-                         [style.width.%]="100"  #inputElements4="ngModel" [nzMin]="min" [nzMax]="max" [nzSize]="size"
+                         [style.width.%]="100"  #inputElements4="ngModel" [nzMin]="min" [nzMax]="max"
                          [(ngModel)]="value" [nzStep]="step"></nz-input-number>
       </nz-input-number-group>
     </ng-container>

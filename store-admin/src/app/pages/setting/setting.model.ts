@@ -21,6 +21,7 @@ export interface Product extends BaseObject {
   files?: File[];
   attributes?: KeyValue[];
   categories?: Category[];
+  price?:number
 }
 
 export interface KeyValue {

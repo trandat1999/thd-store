@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 
 import { DirectSaleRoutingModule } from './direct-sale-routing.module';
 import { DirectSaleComponent } from './direct-sale.component';
@@ -13,6 +13,14 @@ import {TranslateModule} from "@ngx-translate/core";
 import {NzGridModule} from "ng-zorro-antd/grid";
 import {NzMenuModule} from "ng-zorro-antd/menu";
 import {NzDrawerModule} from "ng-zorro-antd/drawer";
+import {NzCollapseModule} from "ng-zorro-antd/collapse";
+import {NzAffixModule} from "ng-zorro-antd/affix";
+import {NzToolTipModule} from "ng-zorro-antd/tooltip";
+import {FormsModule} from "@angular/forms";
+import {NzPaginationModule} from "ng-zorro-antd/pagination";
+import {NzListModule} from "ng-zorro-antd/list";
+import {NzTableModule} from "ng-zorro-antd/table";
+import {NzImageModule} from "ng-zorro-antd/image";
 
 
 @NgModule({
@@ -31,7 +39,16 @@ import {NzDrawerModule} from "ng-zorro-antd/drawer";
     TranslateModule,
     NzGridModule,
     NzMenuModule,
-    NzDrawerModule
+    NzDrawerModule,
+    NzCollapseModule,
+    NzAffixModule,
+    NzToolTipModule,
+    FormsModule,
+    NzPaginationModule,
+    NgOptimizedImage,
+    NzListModule,
+    NzTableModule,
+    NzImageModule,
   ]
 })
 export class DirectSaleModule { }

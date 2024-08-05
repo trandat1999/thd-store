@@ -64,7 +64,10 @@
               "src/styles.scss",
               "src/theme.less"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "remove-accents"
+            ]
           },
           "configurations": {
             "production": {

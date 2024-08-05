@@ -35,9 +35,6 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     if (!request.url.includes('/api/v1/auth') && !request.url.includes('/api/v1/publish')) {
       const token = this.storageService.getToken();
-      // if (!token || token.length <= 0) {
-      //   this.router.navigate(['/login']);
-      // }
       if(token && token.length>0){
         request = request.clone({
           setHeaders: {"Authorization": "Bearer "+ this.storageService.getToken()}

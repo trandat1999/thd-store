@@ -113,6 +113,18 @@ public abstract class BaseService {
         }
         return PageRequest.of(pageIndex, pageSize, Sort.by(LAST_MODIFIED_DATE).descending());
     }
+    protected Pageable getPageableES(Object object) {
+        SearchRequest searchRequest = (SearchRequest) object;
+        int pageIndex = 0;
+        int pageSize = 10;
+        if (!ObjectUtils.isEmpty(searchRequest.getPageIndex()) && searchRequest.getPageIndex() >= 0) {
+            pageIndex = searchRequest.getPageIndex();
+        }
+        if (!ObjectUtils.isEmpty(searchRequest.getPageSize()) && searchRequest.getPageSize() > 0) {
+            pageSize = searchRequest.getPageSize();
+        }
+        return PageRequest.of(pageIndex, pageSize);
+    }
 
     protected HashMap<String, String> validation(Object object) {
         HashMap<String, String> rs = new HashMap<>();

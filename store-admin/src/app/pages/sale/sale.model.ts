@@ -9,6 +9,7 @@ export interface SaleInvoice {
   commune?: AdministrativeUnit;
   address?: string;
   phoneNumber?: string;
+  displayName?: string;
   total?: number;
   paid?: boolean;
   paymentType?: string;
@@ -18,9 +19,11 @@ export interface SaleInvoice {
   note?: string;
   items?: InvoiceItem[];
   customer?: Customer
+  customerPay?:number
+  showQr?: boolean
 }
 export interface Customer{
-  fullName?: string;
+  displayName?: string;
   phoneNumber?: string;
   id?:number;
 }

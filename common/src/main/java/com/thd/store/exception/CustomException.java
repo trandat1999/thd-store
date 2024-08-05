@@ -74,6 +74,7 @@ public class CustomException extends ResponseEntityExceptionHandler {
     @ExceptionHandler({Exception.class,StoreException.class})
     public final ResponseEntity<BaseResponse> handleAllExceptions(Exception ex, WebRequest request) {
         log.error(ex.getMessage());
+        ex.printStackTrace();
         BaseResponse error = BaseResponse.builder()
                 .message(ex.getMessage())
                 .timestamp(LocalDateTime.now())

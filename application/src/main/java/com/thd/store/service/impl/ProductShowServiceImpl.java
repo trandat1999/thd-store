@@ -1,8 +1,11 @@
 package com.thd.store.service.impl;
 
 import com.thd.store.dto.BaseResponse;
+import com.thd.store.dto.product.ProductDto;
 import com.thd.store.dto.product.ProductSearch;
 import com.thd.store.dto.product.ProductShowDto;
+import com.thd.store.elasticsearch.dto.ProductES;
+import com.thd.store.elasticsearch.service.ProductEsService;
 import com.thd.store.entity.Product;
 import com.thd.store.entity.ProductShow;
 import com.thd.store.repository.ProductRepository;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class ProductShowServiceImpl extends BaseService implements ProductShowService {
     private final ProductShowRepository productShowRepository;
     private final ProductRepository productRepository;
+    private final ProductEsService productEsService;
 
     @Override
     public BaseResponse getById(Long id) {
@@ -55,6 +59,7 @@ public class ProductShowServiceImpl extends BaseService implements ProductShowSe
         }
         entity.setProduct(product);
         entity = productShowRepository.save(entity);
+        productEsService.saveOrUpdate(new ProductES(new ProductDto(entity,true,true,true)));
         return getResponse200(new ProductShowDto(entity), getMessage(SystemMessage.SUCCESS));
     }
 
@@ -66,6 +71,12 @@ public class ProductShowServiceImpl extends BaseService implements ProductShowSe
     @Override
     public BaseResponse search(ProductSearch search) {
         return getResponse200(productShowRepository.search(search.getKeyword(), search.getStatus(), search.getPriceFrom(),
+                        search.getPriceTo(), getPageable(search)),
+                getMessage(SystemMessage.SUCCESS));
+    }
+    @Override
+    public BaseResponse searchPublic(ProductSearch search) {
+        return getResponse200(productShowRepository.searchPublic(search.getKeyword(), search.getStatus(), search.getPriceFrom(),
                         search.getPriceTo(), getPageable(search)),
                 getMessage(SystemMessage.SUCCESS));
     }

@@ -71,7 +71,14 @@ public class ProductDto extends BaseInformationDto {
         }
     }
     public ProductDto(ProductShow entity) {
-        this(entity==null?null:entity.getProduct());
+        this(entity==null?null:entity.getProduct(),true,false);
+        if(entity!=null){
+            this.price = entity.getPrice();
+            this.status = entity.getStatus();
+        }
+    }
+    public ProductDto(ProductShow entity,boolean files, boolean attributes, boolean category) {
+        this(entity==null?null:entity.getProduct(),files,attributes,category);
         if(entity!=null){
             this.price = entity.getPrice();
             this.status = entity.getStatus();
