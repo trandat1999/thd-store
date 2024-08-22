@@ -39,6 +39,8 @@ public class Person extends BaseEntity {
     private Date idNumberIssueDate;
     @Column(name = "email")
     private String email;
+    @Column(name = "photo_url")
+    private String photoUrl;
     @ManyToOne
     @JoinColumn(name = "photo_id")
     private File photoFile;

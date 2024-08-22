@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -63,6 +64,11 @@ public class SecurityConfig{
                             .addLogoutHandler(logoutHandler)
                             .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
                 });
+        http.oauth2Login(oauth2Login ->{
+            oauth2Login.userInfoEndpoint(userInfoEndpointConfig -> {
+                userInfoEndpointConfig.oidcUserService(new OidcUserService());
+            });
+        });
         return http.build();
     }
     @Bean

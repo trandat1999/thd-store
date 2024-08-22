@@ -22,6 +22,8 @@ import {TranslateModule} from "@ngx-translate/core";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzAlertModule} from "ng-zorro-antd/alert";
 import {NzResultModule} from "ng-zorro-antd/result";
+import {NzDividerModule} from "ng-zorro-antd/divider";
+import {GoogleSigninButtonModule} from "@abacritt/angularx-social-login";
 
 
 @NgModule({
@@ -33,24 +35,26 @@ import {NzResultModule} from "ng-zorro-antd/result";
     NotFoundComponent,
     ActiveComponent
   ],
-    imports: [
-        CommonModule,
-        AuthRoutingModule,
-        NzFormModule,
-        NzButtonModule,
-        NzCheckboxModule,
-        FormsModule,
-        NzInputModule,
-        ReactiveFormsModule,
-        NzIconModule,
-        NzCardModule,
-        CommonsModule,
-        NzSpaceModule,
-        NzI18nModule,
-        TranslateModule,
-        NzModalModule,
-        NzAlertModule,
-        NzResultModule
-    ]
+  imports: [
+    CommonModule,
+    AuthRoutingModule,
+    NzFormModule,
+    NzButtonModule,
+    NzCheckboxModule,
+    FormsModule,
+    NzInputModule,
+    ReactiveFormsModule,
+    NzIconModule,
+    NzCardModule,
+    CommonsModule,
+    NzSpaceModule,
+    NzI18nModule,
+    TranslateModule,
+    NzModalModule,
+    NzAlertModule,
+    NzResultModule,
+    NzDividerModule,
+    GoogleSigninButtonModule
+  ]
 })
 export class AuthModule { }

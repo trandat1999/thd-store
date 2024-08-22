@@ -7,6 +7,8 @@ import {TranslateConfigService} from "../../services/translate.service";
 import {BehaviorSubject} from "rxjs";
 import {NavigationItem, navigation} from "./layout.model";
 import {SignalService} from "../../services/signal.service";
+import {RootService} from "../../services/root.service";
+import {SocialAuthService} from "@abacritt/angularx-social-login";
 
 @Component({
   selector: 'thd-layout',
@@ -16,14 +18,18 @@ import {SignalService} from "../../services/signal.service";
 export class LayoutComponent implements OnInit {
   isCollapsed = false;
   currentLanguage = "en";
+  currentUser: any;
   navigation = navigation;
   constructor(private authService: AuthService,
               private translateService: TranslateConfigService,
               private router: Router,
               private translate: TranslateService,
               private signalService: SignalService,
+              private rootService: RootService,
+              private socialAuthService : SocialAuthService,
               private storage: StorageService) {
     this.currentLanguage = this.storage.getLanguage();
+    this.currentUser = this.rootService.currentUser;
     this.signalService.subscribeToSignal().subscribe(signal => {
       if(signal.type === 'navCollapsed'){
         this.isCollapsed = signal.value || false;
@@ -37,8 +43,12 @@ export class LayoutComponent implements OnInit {
   logout(): void {
     this.authService.logout().subscribe(data => {
     });
+    this.socialAuthService.signOut().catch((error) => {
+      console.error('Error during sign out:', error);
+    });
     this.storage.signOut();
-    this.router.navigate(['/login'])
+    this.router.navigate(['/login']);
+    this.rootService.currentUser = null;
   }
 
   changeLanguage(lang: string) {

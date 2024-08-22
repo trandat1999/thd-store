@@ -1,5 +1,6 @@
 package com.thd.store.rest;
 
+import com.thd.store.dto.auth.OAuthRequest;
 import com.thd.store.service.AuthService;
 import com.thd.store.dto.auth.AuthRequest;
 import com.thd.store.dto.auth.ForgotPasswordRequest;
@@ -8,6 +9,9 @@ import com.thd.store.dto.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 /**
  * @author DatNuclear 16/01/2024
@@ -50,5 +54,9 @@ public class AuthController {
     @GetMapping("/refresh-token/{token}")
     public ResponseEntity<BaseResponse> refreshToken(@PathVariable("token") String token) {
         return ResponseEntity.ok(authService.refreshToken(token));
+    }
+    @PostMapping("/login-google")
+    public BaseResponse loginWithGoogle(@RequestBody OAuthRequest request) throws GeneralSecurityException, IOException {
+        return authService.loginGoogle(request);
     }
 }

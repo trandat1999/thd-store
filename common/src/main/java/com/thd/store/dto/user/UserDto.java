@@ -19,7 +19,7 @@ public class UserDto {
     private String email;
     private List<String> roles = new ArrayList<>();
     private String displayName;
-
+    private String photoUrl;
     public UserDto() {
     }
     public UserDto(User entity) {
@@ -27,6 +27,7 @@ public class UserDto {
             return;
         }
         this.displayName = entity.getPerson().getDisplayName();
+        this.photoUrl = entity.getPerson().getPhotoUrl();
         this.username = entity.getUsername();
         this.email = entity.getEmail();
         if(!CollectionUtils.isEmpty(entity.getRoles())){

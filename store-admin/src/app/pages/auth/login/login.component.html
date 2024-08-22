@@ -18,6 +18,9 @@
       </div>
       <button nz-button type="submit" (click)="submitForm()" class="w-100 mt-3 mb-2" [nzType]="'primary'">Log in</button>
       <a routerLink="/register">Register now!</a>
+      <nz-divider nzPlain nzText="Or"></nz-divider>
+      <asl-google-signin-button  [width]="200" text="signin_with" type='standard' size='medium'></asl-google-signin-button>
+
     </div>
   </div>
 </div>

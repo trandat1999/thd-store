@@ -1,15 +1,15 @@
 package com.thd.store.service.impl;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.json.gson.GsonFactory;
+import com.thd.store.dto.auth.*;
 import com.thd.store.service.AuthService;
 import com.thd.store.service.JwtService;
 import com.thd.store.service.MailService;
-import com.thd.store.dto.auth.AuthRequest;
-import com.thd.store.dto.auth.AuthResponse;
-import com.thd.store.dto.auth.ForgotPasswordRequest;
-import com.thd.store.dto.auth.RegisterRequest;
 import com.thd.store.dto.BaseResponse;
 import com.thd.store.entity.*;
 import com.thd.store.repository.*;
+import com.thd.store.type.Gender;
 import com.thd.store.type.TokenType;
 import com.thd.store.util.ConstUtil;
 import com.thd.store.util.SystemMessage;
@@ -25,6 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -38,6 +40,8 @@ import java.util.*;
 public class AuthServiceImpl extends BaseService implements AuthService {
     @Value("${application.security.jwt.expiration.refreshToken}")
     private long refreshTokenExpiration;
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    private String CLIENT_ID;
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -214,6 +218,50 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         AuthResponse authResponse = AuthResponse.builder()
                 .refreshToken(token)
                 .accessToken(jwtToken).build();
+        return getResponse200(authResponse, getMessage(SystemMessage.SUCCESS));
+    }
+
+    @Override
+    public BaseResponse loginGoogle(OAuthRequest request) throws GeneralSecurityException, IOException {
+        GoogleIdToken idToken =GoogleIdToken.parse(GsonFactory.getDefaultInstance(), request.getIdToken());
+        GoogleIdToken.Payload payload = idToken.getPayload();
+        String email = payload.getEmail();
+        Optional<User> userOptional = userRepository.findByUsername(email);
+        if(userOptional.isEmpty()){
+            Role role = roleRepository.findByName(ConstUtil.USER_ROLE).orElse(Role.builder().name(ConstUtil.USER_ROLE).build());
+            Person person = Person.builder()
+                    .displayName(payload.get("name").toString())
+                    .email(email)
+                    .firstName(payload.get("given_name").toString())
+                    .gender(Gender.MALE)
+                    .lastName(payload.get("family_name").toString())
+                    .photoUrl(payload.get("picture").toString())
+                    .build();
+            var user = User.builder()
+                    .accountNonLocked(true)
+                    .credentialsNonExpired(true)
+                    .accountNonExpired(true)
+                    .enabled(true)
+                    .email(email)
+                    .password(passwordEncoder.encode(ConstUtil.ADMIN_PASSWORD))
+                    .username(email)
+                    .person(person)
+                    .roles(Set.of(role))
+                    .build();
+            userRepository.save(user);
+        }else{
+            var user = userOptional.get();
+            user.getPerson().setPhotoUrl(payload.get("picture").toString());
+            userRepository.save(user);
+        }
+        var token = jwtService.generateToken(email);
+        var refreshToken = UUID.randomUUID().toString();
+        revokeAllTokenAndRefreshToken(email,true);
+        saveToken(email, token);
+        saveRefreshToken(email, refreshToken);
+        AuthResponse authResponse = AuthResponse.builder()
+                .refreshToken(refreshToken)
+                .accessToken(token).build();
         return getResponse200(authResponse, getMessage(SystemMessage.SUCCESS));
     }
 

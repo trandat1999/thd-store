@@ -7,7 +7,7 @@ import {ApplicationConfigService} from "./application-config.service";
   providedIn: 'root'
 })
 export class RootService {
-  public currentUser;
+  public currentUser: any;
   readonly URL_API = "/api/v1/users/current"
   constructor(private http : HttpClient,
               private configService: ApplicationConfigService) { }

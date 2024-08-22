@@ -21,4 +21,7 @@ export class ApplicationConfigService {
   get apiBaseUrl(): string {
     return this.appConfig.server_url;
   }
+  get googleClientID():string {
+    return this.appConfig.google_client_id
+  }
 }

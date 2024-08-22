@@ -18,6 +18,8 @@ import {ToastrModule} from 'ngx-toastr';
 import {ApplicationConfigService} from "./services/application-config.service";
 import {AuthInterceptor} from "./guards/auth.interceptor";
 import {NzConfig, provideNzConfig} from "ng-zorro-antd/core/config";
+import {GoogleLoginProvider, SocialAuthServiceConfig} from "@abacritt/angularx-social-login";
+import {environment} from "../environments/environment";
 
 registerLocaleData(en);
 registerLocaleData(vi);
@@ -85,6 +87,28 @@ const ngZorroConfig: NzConfig = {
       useFactory: (applicationConfigService: ApplicationConfigService) => () => applicationConfigService.loadAppConfig()
     },
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        lang: 'vi',
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(environment.googleClientId,{
+              oneTapEnabled: false,
+            })
+          },
+          // {
+          //   id: FacebookLoginProvider.PROVIDER_ID,
+          //   provider: new FacebookLoginProvider('clientId')
+          // }
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig,
+    }
   ],
   bootstrap: [AppComponent]
 })

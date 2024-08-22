@@ -36,5 +36,7 @@ export class AuthService{
   register(request: RegisterRequest){
     return this.base.post(this.apiUrl+"/register",request);
   }
-
+  loginGoogle(request: any){
+    return this.base.post(this.apiUrl+"/login-google",request);
+  }
 }

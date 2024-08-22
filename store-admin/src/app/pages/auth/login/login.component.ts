@@ -5,6 +5,7 @@ import {StorageService} from "../../../services/storage.service";
 import {Router} from "@angular/router";
 import {getErrorMessage} from "../../../utils/ConstUtil";
 import {TranslateService} from "@ngx-translate/core";
+import {SocialAuthService, SocialUser} from "@abacritt/angularx-social-login";
 
 @Component({
   selector: 'thd-login',
@@ -15,12 +16,25 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService,
               private router: Router,
               private translate: TranslateService,
+              private socialAuthService: SocialAuthService,
               private storageService: StorageService) {
   }
   ngOnInit(): void {
     this.formGroup = new FormGroup({
       username: new FormControl("",[Validators.required]),
       password: new FormControl("",[Validators.required]),
+    })
+    this.socialAuthService.authState.subscribe(socialUser => {
+      if(socialUser){
+        let rs = socialUser as SocialUser;
+        localStorage.setItem('google_auth_token', rs.authToken);
+        this.authService.loginGoogle(rs).subscribe(data => {
+          if(data.code==200){
+            this.storageService.saveToken(data.body);
+            this.router.navigate(["/welcome"])
+          }
+        })
+      }
     })
   }
   formGroup : FormGroup;
