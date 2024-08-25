@@ -60,4 +60,8 @@ public class ConstUtil {
     public static final String BEARER = "Bearer ";
     public static final String LAST_MODIFIED_DATE = "lastModifiedDate";
 
+
+    //kafka
+    public static final String KAFKA_GROUP_ORDER = "Order";
+
 }
