@@ -30,4 +30,8 @@ public class SaleInvoiceController {
     public BaseResponse getByCode(@PathVariable String code){
         return saleInvoiceService.getByCode(code);
     }
+    @PostMapping("direct-sale")
+    public BaseResponse saveDirectSale(@RequestBody SaleInvoiceDto request){
+        return saleInvoiceService.saveDirectSale(request);
+    }
 }

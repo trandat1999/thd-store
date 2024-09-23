@@ -12,4 +12,5 @@ public interface SaleInvoiceService {
     BaseResponse saveOrUpdate(SaleInvoiceDto request,Long id);
     BaseResponse search(SaleInvoiceSearch request);
     BaseResponse getByCode(String code);
+    BaseResponse saveDirectSale(SaleInvoiceDto request);
 }

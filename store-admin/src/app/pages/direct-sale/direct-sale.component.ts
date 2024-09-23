@@ -38,6 +38,7 @@ export class DirectSaleComponent implements OnInit{
   products: Product[] = [];
   totalElement = 0;
   selectedProduct: any;
+  now : Date
   selectProduct(){
     if(this.selectedProduct){
       this.addProduct(this.selectedProduct);
@@ -118,6 +119,7 @@ export class DirectSaleComponent implements OnInit{
     }
   }
   printInvoice(){
+    this.now = new Date();
     const content = document.getElementById("receipt")?.innerHTML;
     const printWindow = window.open('', '', 'height=600,width=800');
     printWindow?.document.write('<html lang=""><head><title>In hóa đơn</title></head><body>');

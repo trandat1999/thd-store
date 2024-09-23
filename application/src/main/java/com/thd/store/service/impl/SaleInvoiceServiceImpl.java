@@ -15,10 +15,14 @@ import com.thd.store.util.DateUtils;
 import com.thd.store.util.SystemMessage;
 import com.thd.store.util.SystemVariable;
 import lombok.AllArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
+
+import static com.thd.store.util.ConstUtil.KAFKA_TOPIC_UPDATE_WAREHOUSE;
 
 /**
  * @author DatNuclear 02/05/2024
@@ -30,6 +34,7 @@ public class SaleInvoiceServiceImpl extends BaseService implements SaleInvoiceSe
     private final SaleInvoiceRepository saleInvoiceRepository;
     private final ProductRepository productRepository;
     private final AdministrativeUnitRepository administrativeUnitRepository;
+    private final KafkaTemplate<String,Object> kafkaTemplate;
 
     @Override
     public BaseResponse saveOrUpdate(SaleInvoiceDto request, Long id) {
@@ -66,7 +71,7 @@ public class SaleInvoiceServiceImpl extends BaseService implements SaleInvoiceSe
             entity.setCommune(administrativeUnitRepository.findById(request.getCommune().getId()).orElse(null));
         }
         entity.setAddress(request.getAddress());
-        Double total = 0d;
+        double total = 0d;
         entity.getItems().clear();
         Product product;
         for (var item : request.getItems()) {
@@ -99,5 +104,36 @@ public class SaleInvoiceServiceImpl extends BaseService implements SaleInvoiceSe
             return getResponse200(new SaleInvoiceDto(optional.get(), true), getMessage(SystemMessage.SUCCESS));
         }
         return getResponse400(getMessage(SystemMessage.NOT_FOUND, getMessage(SystemVariable.SALE_INVOICE)));
+    }
+
+    @Override
+    public BaseResponse saveDirectSale(SaleInvoiceDto request) {
+        var validator = validation(request);
+        if (!validator.isEmpty()) {
+            return getResponse400(getMessage(SystemMessage.BAD_REQUEST), validator);
+        }
+        SaleInvoice entity = new SaleInvoice();
+        entity.setCode(UUID.randomUUID().toString());
+        entity.setStatus(SalesInvoiceStatus.DELIVERED);
+        entity.setSaleDate(new Date());
+        entity.setNote(request.getNote());
+        entity.setPaid(true);
+        entity.setPaymentType(entity.getPaymentType());
+        entity.setPhoneNumber(request.getPhoneNumber());
+        entity.setType(request.getType());
+        double total = 0d;
+        entity.getItems().clear();
+        Product product;
+        for (var item : request.getItems()) {
+            product = productRepository.findById(item.getProduct().getId()).orElse(null);
+            if (product != null) {
+                total += item.getPrice() * item.getQuantity();
+                entity.getItems().add(new SaleItem(product, item.getQuantity(), item.getPrice(), entity));
+            }
+        }
+        entity.setTotal(total);
+        entity = saleInvoiceRepository.save(entity);
+        kafkaTemplate.send(KAFKA_TOPIC_UPDATE_WAREHOUSE, entity);
+        return getResponse200(new SaleInvoiceDto(entity, true), getMessage(SystemMessage.SUCCESS));
     }
 }

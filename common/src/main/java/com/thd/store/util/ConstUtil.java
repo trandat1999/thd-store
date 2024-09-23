@@ -63,5 +63,6 @@ public class ConstUtil {
 
     //kafka
     public static final String KAFKA_GROUP_ORDER = "Order";
+    public static final String KAFKA_TOPIC_UPDATE_WAREHOUSE = "update_warehouse";
 
 }
