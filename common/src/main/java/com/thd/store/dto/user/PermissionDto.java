@@ -1,21 +1,36 @@
 package com.thd.store.dto.user;
 
+import com.thd.store.entity.Permission;
 import com.thd.store.type.ApplicationModule;
 import com.thd.store.type.PermissionType;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Value;
+import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 
 /**
  * DTO for {@link com.thd.store.entity.Permission}
  */
-@Value
+@Data
+@NoArgsConstructor
 public class PermissionDto implements Serializable {
-    Long id;
-    Boolean voided;
+    private Long id;
+    private Boolean voided;
     @NotNull(message = "{store.validation.NotNull}")
-    ApplicationModule module;
+    private ApplicationModule module;
     @NotNull(message = "{store.validation.NotNull}")
-    PermissionType action;
+    private PermissionType action;
+
+    public PermissionDto(Permission entity) {
+        if(entity!=null){
+            this.id = entity.getId();
+            this.voided = entity.getVoided();
+            this.module = entity.getModule();
+            this.action = entity.getAction();
+        }
+    }
 }

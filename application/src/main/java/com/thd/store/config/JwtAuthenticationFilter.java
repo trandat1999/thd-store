@@ -3,7 +3,7 @@ package com.thd.store.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thd.store.dto.BaseResponse;
 import com.thd.store.repository.TokenRepository;
-import com.thd.store.service.JwtService;
+import com.thd.store.service.impl.JwtService;
 import com.thd.store.util.SystemMessage;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

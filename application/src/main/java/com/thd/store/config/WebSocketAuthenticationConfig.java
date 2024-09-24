@@ -1,6 +1,6 @@
 package com.thd.store.config;
 
-import com.thd.store.service.JwtService;
+import com.thd.store.service.impl.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;

@@ -4,7 +4,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.json.gson.GsonFactory;
 import com.thd.store.dto.auth.*;
 import com.thd.store.service.AuthService;
-import com.thd.store.service.JwtService;
 import com.thd.store.service.MailService;
 import com.thd.store.dto.BaseResponse;
 import com.thd.store.entity.*;
