@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../auth.service";
 import {TranslateService} from "@ngx-translate/core";
-import {getErrorMessage} from "../../../utils/ConstUtil";
+import {getErrorMessageValidator} from "../../../utils/ConstUtil";
 import {Router} from "@angular/router";
 import {NzModalService} from "ng-zorro-antd/modal";
 
@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit {
     })
   }
   getErrorMessage(control:string):string{
-    return getErrorMessage(control,this.formGroup,this.translate);
+    return getErrorMessageValidator(control,this.formGroup,this.translate);
   }
   redirectLogin(content: string){
     this.modal.info({

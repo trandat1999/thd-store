@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
-import {getErrorMessage, VOIDED_CHOICE} from "../../../utils/ConstUtil";
+import {getErrorMessageValidator, VOIDED_CHOICE} from "../../../utils/ConstUtil";
 import {TranslateService} from "@ngx-translate/core";
 import {AdministrativeUnit} from "../management.model";
 import {AdministrativeUnitService} from "./administrative-unit.service";
@@ -66,7 +66,7 @@ export class AdministrativeUnitComponent {
     return null;
   };
   getErrorMessage(control:string):string{
-    return getErrorMessage(control,this.formGroup,this.translate);
+    return getErrorMessageValidator(control,this.formGroup,this.translate);
   }
   onSubmit(){
     this.administrativeUnitService.save(this.formGroup.getRawValue()).subscribe(data=>{

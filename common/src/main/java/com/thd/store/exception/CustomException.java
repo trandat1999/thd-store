@@ -1,5 +1,6 @@
 package com.thd.store.exception;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.thd.store.dto.BaseResponse;
 import com.thd.store.util.SystemMessage;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -8,8 +9,11 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
@@ -20,6 +24,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author DatNuclear 17/01/2024
@@ -69,6 +76,31 @@ public class CustomException extends ResponseEntityExceptionHandler {
         errorDetail.setCode(httpStatus.value());
         errorDetail.setStatus(httpStatus.name());
         return ResponseEntity.status(httpStatus).body(errorDetail);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        BaseResponse errorDetail = BaseResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .build();
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        errorDetail.setCode(httpStatus.value());
+        errorDetail.setStatus(httpStatus.name());
+        errorDetail.setBody("Invalid value. Please provide one of the valid values.");;
+        if (ex.getCause() instanceof InvalidFormatException cause) {
+            Class<?> targetType = cause.getTargetType();
+            if (targetType.isEnum()) {
+                Map<String,String> rs = new HashMap<>();
+                String[] validValues = Arrays.stream(targetType.getEnumConstants())
+                        .map(Object::toString)
+                        .toArray(String[]::new);
+                rs.put(cause.getPath().get(0).getFieldName(),String.format("Invalid value for field '%s'. Allowed values are: %s",
+                        cause.getPath().get(0).getFieldName(),
+                        String.join(", ", validValues)));
+                errorDetail.setBody(rs);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetail);
     }
 
     @ExceptionHandler({Exception.class,StoreException.class})

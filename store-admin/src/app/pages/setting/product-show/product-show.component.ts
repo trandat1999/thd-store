@@ -5,7 +5,7 @@ import {ProductSearch} from "../../../utils/search-object";
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
 import {ProductShowService} from "./product-show.service";
-import {VOIDED_CHOICE, getErrorMessage, ProductShowStatus, getDescription} from "../../../utils/ConstUtil";
+import {getDescription, getErrorMessageValidator, ProductShowStatus} from "../../../utils/ConstUtil";
 import {InventoryImportService} from "../../product-import/inventory-import/inventory-import.service";
 
 @Component({
@@ -64,7 +64,7 @@ export class ProductShowComponent {
     };
   }
   getErrorMessage(control:string):string{
-    return getErrorMessage(control,this.formGroup,this.translate);
+    return getErrorMessageValidator(control,this.formGroup,this.translate);
   }
   onSubmit(){
     this.productShowService.save(this.formGroup.getRawValue()).subscribe(data=>{
@@ -104,5 +104,4 @@ export class ProductShowComponent {
   }
 
   protected readonly productShowStatus = ProductShowStatus;
-  protected readonly console = console;
 }

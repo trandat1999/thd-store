@@ -1,34 +1,34 @@
 import {Component} from '@angular/core';
-import {Attribute} from "../setting.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {getErrorMessageValidator, VOIDED_CHOICE} from "../../../utils/ConstUtil";
+import {getDescription, getErrorMessageValidator, PermissionAction, VOIDED_CHOICE} from "../../../utils/ConstUtil";
 import {CategorySearch} from "../../../utils/search-object";
 import {TranslateService} from "@ngx-translate/core";
-import {AttributeService} from "./attribute.service";
-import * as removeAccents from 'remove-accents'
+import {Permission} from "../management.model";
+import {PermissionService} from "./permission.service";
+
 @Component({
-  selector: 'thd-attribute',
-  templateUrl: './attribute.component.html',
-  styleUrls: ['./attribute.component.scss']
+  selector: 'thd-permission',
+  templateUrl: './permission.component.html',
+  styleUrls: ['./permission.component.scss']
 })
-export class AttributeComponent {
+export class PermissionComponent {
   deleting = false;
   isVisible= false;
-  entity:Attribute;
+  entity:Permission;
   formGroup: FormGroup;
   voidedList = VOIDED_CHOICE
-
   searchObject : CategorySearch ={
     pageIndex: 1,
     pageSize: 10,
   }
   totalElement = 0;
-  entities: Attribute[] = [];
-  constructor(private attributeService: AttributeService,
-              private translate : TranslateService) { }
-
-  ngOnInit(): void {
-    // this.loadTable();
+  entities: Permission[] = [];
+  modules = [];
+  constructor(private permissionService: PermissionService,
+              private translate : TranslateService) {
+    this.permissionService.getAllModule().subscribe(data => {
+      this.modules = data.body;
+    })
   }
   submitSearch(){
     this.searchObject.pageIndex = 1;
@@ -37,7 +37,7 @@ export class AttributeComponent {
   loadTable(){
     let search = {...this.searchObject}
     search.pageIndex=search.pageIndex-1;
-    this.attributeService.search(search).subscribe(data=>{
+    this.permissionService.search(search).subscribe(data=>{
       if(data.body){
         this.entities = data.body.content;
         this.totalElement = data.body.totalElements;
@@ -49,9 +49,8 @@ export class AttributeComponent {
     this.entity = data?data:{}
     this.formGroup = new FormGroup({
       id : new FormControl(this.entity.id),
-      name : new FormControl(this.entity.name,[Validators.required]),
-      code : new FormControl(this.entity.code,[Validators.required]),
-      description : new FormControl(this.entity.description),
+      module : new FormControl(this.entity.module,[Validators.required]),
+      action : new FormControl(this.entity.action,[Validators.required]),
       voided : new FormControl(this.entity.voided?this.entity.voided:false),
     })
   }
@@ -59,7 +58,7 @@ export class AttributeComponent {
     return getErrorMessageValidator(control,this.formGroup,this.translate);
   }
   onSubmit(){
-    this.attributeService.save(this.formGroup.getRawValue()).subscribe(data=>{
+    this.permissionService.save(this.formGroup.getRawValue()).subscribe(data=>{
       if(data.code==200 || data.code==201){
         this.isVisible=false;
         this.submitSearch();
@@ -81,15 +80,12 @@ export class AttributeComponent {
   }
   delete(id:number){
     this.deleting = true;
-    this.attributeService.delete(id).subscribe(data =>{
+    this.permissionService.delete(id).subscribe(data =>{
       this.deleting = false;
       this.loadTable();
     })
   }
-  onChangeCode(){
-    let code = this.formGroup.get('code').value || "";
-    code = removeAccents(code);
-    code = code.toLowerCase().replace(/\s+/g, '-');
-    this.formGroup.get('code').setValue(code)
-  }
+
+  protected readonly getDescription = getDescription;
+  protected readonly PermissionAction = PermissionAction;
 }

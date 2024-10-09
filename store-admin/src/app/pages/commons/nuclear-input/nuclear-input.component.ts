@@ -115,6 +115,7 @@ export class NuclearInputComponent implements OnInit, ControlValueAccessor, OnCh
   @Input() urlSearch = "";
   @Input() autoClearSearchValue = true;
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
+  @Input() isWrapLabel: boolean = false;
   isLoading = false;
   isLoadingMore = false;
   searchChange$ = new BehaviorSubject("");

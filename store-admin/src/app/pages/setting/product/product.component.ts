@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {Category, Product} from "../setting.model";
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
-import {VOIDED_CHOICE, getErrorMessage} from "../../../utils/ConstUtil";
+import {VOIDED_CHOICE, getErrorMessageValidator} from "../../../utils/ConstUtil";
 import {CategorySearch} from "../../../utils/search-object";
 import {TranslateService} from "@ngx-translate/core";
 import {ProductService} from "./product.service";

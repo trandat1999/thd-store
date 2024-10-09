@@ -15,7 +15,7 @@ import {
 } from "../../product-import.model";
 import {Product, Warehouse} from "../../../setting/setting.model";
 import {differenceInCalendarDays} from "date-fns";
-import {getErrorMessage, VOIDED_CHOICE} from "../../../../utils/ConstUtil";
+import {getErrorMessageValidator, VOIDED_CHOICE} from "../../../../utils/ConstUtil";
 
 @Component({
   selector: 'thd-inventory-import-detail',
@@ -107,7 +107,7 @@ export class InventoryImportDetailComponent implements OnInit {
   }
 
   getErrorMessage(control: string): string {
-    return getErrorMessage(control, this.formGroup, this.translate);
+    return getErrorMessageValidator(control, this.formGroup, this.translate);
   }
 
   onSubmit() {

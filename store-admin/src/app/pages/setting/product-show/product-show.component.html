@@ -61,7 +61,7 @@
                   [items]="[]" [isServerSearch]="true" [urlSearch]="'/api/v1/products/pages'"
                   type="select" [labelSpan]="6" (valueChange)="onChangeProduct()">
       </thd-input>
-      <thd-input (valueChange)="console.log(formGroup)" class="col-md-12" label="{{'productShow.price'|translate}}" [hasFeedback]="true" formControlName="price"
+      <thd-input class="col-md-12" label="{{'productShow.price'|translate}}" [hasFeedback]="true" formControlName="price"
                  [labelSpan]="6" type="number" [inputSpan]="18" [errorText]="getErrorMessage('price')">
       </thd-input>
       <thd-input class="col-md-12" label="{{'common.status'|translate}}" [hasFeedback]="true"

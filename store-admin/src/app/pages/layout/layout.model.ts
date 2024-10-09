@@ -75,6 +75,10 @@ export const navigation: NavigationItem[] = [
         translateKey: 'navigation.administrativeUnit',
         link: '/management/administrative-unit'
       },
+      {
+        translateKey: 'Quyền hạn',
+        link: '/management/permission'
+      },
     ]
   }
 ]

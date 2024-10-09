@@ -1,17 +1,18 @@
-import {Component} from '@angular/core';
-import {Attribute} from "../setting.model";
+import { Component } from '@angular/core';
+import {Attribute} from "../../setting/setting.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {getErrorMessageValidator, VOIDED_CHOICE} from "../../../utils/ConstUtil";
+import {VOIDED_CHOICE, getErrorMessageValidator} from "../../../utils/ConstUtil";
 import {CategorySearch} from "../../../utils/search-object";
+import {AttributeService} from "../../setting/attribute/attribute.service";
 import {TranslateService} from "@ngx-translate/core";
-import {AttributeService} from "./attribute.service";
-import * as removeAccents from 'remove-accents'
+import * as removeAccents from "remove-accents";
+
 @Component({
-  selector: 'thd-attribute',
-  templateUrl: './attribute.component.html',
-  styleUrls: ['./attribute.component.scss']
+  selector: 'thd-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.scss']
 })
-export class AttributeComponent {
+export class UserComponent {
   deleting = false;
   isVisible= false;
   entity:Attribute;

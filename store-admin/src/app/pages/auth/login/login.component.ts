@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../auth.service";
 import {StorageService} from "../../../services/storage.service";
 import {Router} from "@angular/router";
-import {getErrorMessage} from "../../../utils/ConstUtil";
+import {getErrorMessageValidator} from "../../../utils/ConstUtil";
 import {TranslateService} from "@ngx-translate/core";
 import {SocialAuthService, SocialUser} from "@abacritt/angularx-social-login";
 
@@ -55,6 +55,6 @@ export class LoginComponent implements OnInit {
     })
   }
   getErrorMessage(control : string): string {
-    return getErrorMessage(control,this.formGroup,this.translate)
+    return getErrorMessageValidator(control,this.formGroup,this.translate)
   }
 }

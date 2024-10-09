@@ -1,21 +1,11 @@
 version: '3'
 services:
-  mysql8:
-    image: mysql:8.0.38
-    container_name: mysql8-container
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: store
-    ports:
-      - "3307:3306" # ánh xạ cổng từ máy chủ đến container
   app:
     container_name: thd-store-app
     image: thd-store
     build:
       context: ./
       dockerfile: Dockerfile
-    depends_on:
-      - mysql8
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql8:3306/store?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root

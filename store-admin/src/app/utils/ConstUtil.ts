@@ -17,7 +17,7 @@ export const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
   });
-export const getErrorMessage = (control:string,formGroup: FormGroup,translate: TranslateService)=>{
+export const getErrorMessageValidator = (control:string,formGroup: FormGroup,translate: TranslateService)=>{
   if (formGroup && control) {
     if (formGroup.get(control)?.errors?.['serverError'] ||
       formGroup.get(control)?.errors?.['serverErrorMess']) {
@@ -50,4 +50,10 @@ export const ProductShowStatus = [
   {value:5 , label: "productShow.statusLimitedStock"},
   {value:6 , label: "productShow.statusOnSale"},
   {value:7 , label: "productShow.statusUnavailable"},
+]
+export const PermissionAction = [
+  {value: "READ", label: "Đọc"},
+  {value: "WRITE", label: "Viết"},
+  {value: "DELETE", label: "Xóa"},
+  {value: "UPDATE", label: "Cập nhật"},
 ]

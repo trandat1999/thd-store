@@ -7,3 +7,10 @@ export interface AdministrativeUnit extends BaseObject{
   expand?:boolean
   children?:AdministrativeUnit[]
 }
+
+export interface Permission{
+  id?: number;
+  voided?:boolean;
+  module?:string;
+  action?: string;
+}

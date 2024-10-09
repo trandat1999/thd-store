@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Warehouse} from "../setting.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {getErrorMessage, VOIDED_CHOICE} from "../../../utils/ConstUtil";
+import {getErrorMessageValidator, VOIDED_CHOICE} from "../../../utils/ConstUtil";
 import {WarehouseSearch} from "../../../utils/search-object";
 import {TranslateService} from "@ngx-translate/core";
 import {WarehouseService} from "./warehouse.service";
@@ -121,7 +121,7 @@ export class WarehouseComponent {
     this.getAllByParent("commune",true,false);
   }
   getErrorMessage(control:string):string{
-    return getErrorMessage(control,this.formGroup,this.translate);
+    return getErrorMessageValidator(control,this.formGroup,this.translate);
   }
   onSubmit(){
     this.warehouseService.save(this.formGroup.getRawValue()).subscribe(data=>{

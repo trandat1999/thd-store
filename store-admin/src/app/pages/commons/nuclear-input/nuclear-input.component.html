@@ -1,5 +1,5 @@
 <nz-form-item [ngClass]="{'mb-0':offMb}" class="w-100" id="{{id}}">
-  <nz-form-label *ngIf="showLabel" [nzRequired]="isRequired" [nzTooltipTitle]="tooltipTitle" [nzSpan]="labelSpan">{{label}}</nz-form-label>
+  <nz-form-label *ngIf="showLabel" [nzRequired]="isRequired" [nzTooltipTitle]="tooltipTitle" [nzSpan]="labelSpan" [nzLabelWrap]="isWrapLabel">{{label}}</nz-form-label>
   <nz-form-control [nzSpan]="inputSpan" [nzWarningTip]="warningText" [nzValidatingTip]="hint"
                    [nzErrorTip]="errorText" [nzHasFeedback]="hasFeedback">
     <ng-container [ngSwitch]="type">

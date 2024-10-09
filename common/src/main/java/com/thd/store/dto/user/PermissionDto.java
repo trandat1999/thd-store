@@ -3,6 +3,8 @@ package com.thd.store.dto.user;
 import com.thd.store.entity.Permission;
 import com.thd.store.type.ApplicationModule;
 import com.thd.store.type.PermissionType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;

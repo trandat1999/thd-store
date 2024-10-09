@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Supplier} from "../product-import.model";
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
-import {getErrorMessage, PHONE_NUMBER_REGEX, VOIDED_CHOICE} from "../../../utils/ConstUtil";
+import {getErrorMessageValidator, PHONE_NUMBER_REGEX, VOIDED_CHOICE} from "../../../utils/ConstUtil";
 import {CategorySearch} from "../../../utils/search-object";
 import {TranslateService} from "@ngx-translate/core";
 import {SupplierService} from "./supplier.service";
@@ -83,7 +83,7 @@ export class SupplierComponent {
   };
 
   getErrorMessage(control: string): string {
-    return getErrorMessage(control, this.formGroup, this.translate);
+    return getErrorMessageValidator(control, this.formGroup, this.translate);
   }
 
   onSubmit() {

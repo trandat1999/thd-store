@@ -15,11 +15,17 @@ import {NzTableModule} from "ng-zorro-antd/table";
 import {NzToolTipModule} from "ng-zorro-antd/tooltip";
 import {TranslateModule} from "@ngx-translate/core";
 import {NzUploadModule} from "ng-zorro-antd/upload";
+import { UserComponent } from './user/user.component';
+import { RoleComponent } from './role/role.component';
+import { PermissionComponent } from './permission/permission.component';
 
 
 @NgModule({
   declarations: [
-    AdministrativeUnitComponent
+    AdministrativeUnitComponent,
+    UserComponent,
+    RoleComponent,
+    PermissionComponent
   ],
     imports: [
         CommonModule,

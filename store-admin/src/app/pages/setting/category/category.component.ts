@@ -4,7 +4,7 @@ import {CategoryService} from "./category.service";
 import {CategorySearch} from "../../../utils/search-object";
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {TranslateService} from "@ngx-translate/core";
-import {getErrorMessage, VOIDED_CHOICE} from "../../../utils/ConstUtil";
+import {getErrorMessageValidator, VOIDED_CHOICE} from "../../../utils/ConstUtil";
 import * as removeAccents from "remove-accents";
 
 @Component({
@@ -91,7 +91,7 @@ export class CategoryComponent implements OnInit {
     return null;
   };
   getErrorMessage(control:string):string{
-    return getErrorMessage(control,this.formGroup,this.translate);
+    return getErrorMessageValidator(control,this.formGroup,this.translate);
   }
   onSubmit(){
     this.categoryService.save(this.formGroup.getRawValue()).subscribe(data=>{

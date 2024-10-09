@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {VOIDED_CHOICE, getErrorMessage} from "../../../../utils/ConstUtil";
+import {VOIDED_CHOICE, getErrorMessageValidator} from "../../../../utils/ConstUtil";
 import {Attribute, Category, KeyValue, Product} from "../../setting.model";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ProductService} from "../product.service";
@@ -72,7 +72,7 @@ export class ProductEditComponent implements OnInit {
     }
   }
   getErrorMessage(control:string):string{
-    return getErrorMessage(control,this.formGroup,this.translate);
+    return getErrorMessageValidator(control,this.formGroup,this.translate);
   }
   back(){
     this.router.navigate(['/setting/product'])

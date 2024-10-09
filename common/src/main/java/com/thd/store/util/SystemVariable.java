@@ -15,6 +15,7 @@ public class SystemVariable {
     public static final String CONFIRM_PASSWORD = "confirmPassword";
 
     public static final String CODE = "code";
+    public static final String MODULE = "module";
 
     public static final String CATEGORY_PARENT = "parent category";
     public static final String CATEGORY = "store.variable.category";
@@ -27,6 +28,7 @@ public class SystemVariable {
     public static final String COMMUNE = "store.variable.commune";
     public static final String INVOICE_IMPORT = "store.variable.invoiceImport";
     public static final String SALE_INVOICE = "store.variable.saleInvoice";
+    public static final String PERMISSION = "store.variable.permission";
 
     public static final String ADMINISTRATIVE_UNIT = "AdministrativeUnit";
     public static final String PRODUCT = "store.variable.product";
