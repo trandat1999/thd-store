@@ -8,7 +8,7 @@ services:
     ports:
       - "2181:2181"
     networks:
-      - kafka-network
+      - app-net
   kafka:
     image: bitnami/kafka:latest
     container_name: kafka
@@ -23,7 +23,7 @@ services:
       KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
     networks:
-      - kafka-network
+      - app-net
   elasticsearch:
     container_name: es-container
     image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
@@ -31,7 +31,7 @@ services:
       - xpack.security.enabled=false
       - "discovery.type=single-node"
     networks:
-      - es-net
+      - app-net
     ports:
       - 9200:9200
   kibana:
@@ -40,7 +40,7 @@ services:
     environment:
       - ELASTICSEARCH_HOSTS=http://es-container:9200
     networks:
-      - es-net
+      - app-net
     depends_on:
       - elasticsearch
     ports:
@@ -50,6 +50,8 @@ services:
     container_name: redis_container
     ports:
       - "6379:6379"
+    networks:
+      - app-net
     volumes:
       - redis_data:/data
   mysql8:
@@ -60,10 +62,10 @@ services:
       MYSQL_DATABASE: store
     ports:
       - "3307:3306" # ánh xạ cổng từ máy chủ đến container
+    networks:
+      - app-net
 networks:
-  es-net:
-    driver: bridge
-  kafka-network:
+  app-net:
     driver: bridge
 volumes:
   redis_data:
